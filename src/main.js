@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const odlmSelect = document.getElementById('odlmSelect');
     if (odlmSelect) {
         odlmSelect.addEventListener('change', (e) => {
-            setupIndexDownLinks(e.target.value);
+            window.setupIndexDownLinks(e.target.value);
         });
     }
     

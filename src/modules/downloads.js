@@ -37,17 +37,18 @@ function createCollapsiblePanel(title, content) {
     return panel;
 }
 
-/**
- * 加载下载线路
- * @param {string} url - 文件树JSON的URL
- * @param {string} containerId - 容器元素的ID
- * @param {string} lineName - 线路名称（用于日志标识）
- * @returns {Promise<void>} 无返回值
- */
+/**\n * 加载下载线路\n * @param {string} url - 文件树JSON的URL\n * @param {string} containerId - 容器元素的ID\n * @param {string} lineName - 线路名称（用于日志标识）\n * @returns {Promise<void>} 无返回值\n */
 async function loadFclDownWay(url, containerId, lineName) {
     const container = document.getElementById(containerId);
     if (!container) {
         console.error(`${lineName}：找不到容器：${containerId}`);
+        return;
+    }
+
+    // 检查SOURCE_MAP[lineName]是否存在
+    if (!SOURCE_MAP[lineName]) {
+        console.error(`${lineName}：未在SOURCE_MAP中找到配置`);
+        container.innerHTML = `<div class="text-red-500 p-4">${lineName}：配置错误</div>`;
         return;
     }
 
@@ -67,26 +68,35 @@ async function loadFclDownWay(url, containerId, lineName) {
         if (SOURCE_MAP[lineName] && SOURCE_MAP[lineName].nestedPath) {
             console.log(`${lineName}：特殊处理嵌套路径`);
             let currentChildren = fileTree.children;
-            // 对于FCL线2和ZL2线2，直接取第一个子目录的children
-            if (lineName === 'F2' || lineName === 'Z22') {
-                if (currentChildren.length > 0 && currentChildren[0].children) {
-                    currentChildren = currentChildren[0].children;
-                }
-            } else {
-                // 其他线路按名称查找
-                for (const dirName of SOURCE_MAP[lineName].nestedPath) {
-                    const dir = currentChildren.find(
-                        d => d.name === dirName && d.type === 'directory'
+            
+            // 对于FCL线2和ZL2线2，按名称查找嵌套目录
+            // 其他线路也按名称查找（保持一致性）
+            for (const dirName of SOURCE_MAP[lineName].nestedPath) {
+                console.log(`${lineName}：查找目录: ${dirName}`);
+                console.log(`${lineName}：当前目录列表:`, currentChildren.map(d => d.name));
+                const dir = currentChildren.find(
+                    d => d.name === dirName && d.type === 'directory'
+                );
+                console.log(`${lineName}：找到目录:`, dir);
+                if (!dir || !dir.children) {
+                    console.error(`${lineName}：在以下目录中未找到匹配的子目录:`, currentChildren);
+                    // 如果找不到嵌套目录，就直接使用当前的children作为版本目录
+                    versionDirs = currentChildren.filter(
+                        child => child.type === 'directory' && child.name !== 'root'
                     );
-                    if (!dir || !dir.children) {
-                        throw new Error(`未找到嵌套目录: ${dirName}`);
-                    }
-                    currentChildren = dir.children;
+                    break;
                 }
+                currentChildren = dir.children;
+                console.log(`${lineName}：更新后的children:`, currentChildren);
             }
-            versionDirs = currentChildren.filter(
-                child => child.type === 'directory' && child.name !== 'root'
-            );
+            
+            // 如果成功遍历完所有嵌套路径，则使用最终的children作为版本目录
+            if (!versionDirs) {
+                versionDirs = currentChildren.filter(
+                    child => child.type === 'directory' && child.name !== 'root'
+                );
+            }
+            console.log(`${lineName}：最终versionDirs:`, versionDirs);
         } else {
             versionDirs = fileTree.children.filter(
                 child => child.type === 'directory' && child.name !== 'root'
@@ -304,7 +314,7 @@ async function loadAllFclDownWays() {
     fclLines.forEach(async (line) => {
         const sourceConfig = SOURCE_MAP[line.key];
         if (sourceConfig) {
-            await loadFclDownWay(sourceConfig.path, `fcl-${line.key}`, line.name);
+            await loadFclDownWay(sourceConfig.path, `fcl-${line.key}`, line.key);
         }
     });
 }
@@ -405,7 +415,7 @@ async function loadAllZlDownWays() {
     zlLines.forEach(async (line) => {
         const sourceConfig = SOURCE_MAP[line.key];
         if (sourceConfig) {
-            await loadFclDownWay(sourceConfig.path, `zl-${line.key}`, line.name);
+            await loadFclDownWay(sourceConfig.path, `zl-${line.key}`, line.key);
         }
     });
 }
