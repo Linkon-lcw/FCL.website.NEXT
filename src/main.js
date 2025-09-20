@@ -5,15 +5,25 @@ import { initAutoLineSelection } from './modules/autoLineSelection.js';
 import { setupIndexDownLinks } from './modules/indexDownLinks.js';
 import { loadAllFclDownWays, loadAllZlDownWays } from './modules/downloads.js';
 import { loadIntroFcl, loadChecksums, loadAbout } from './modules/staticContent.js';
+import { perfMonitor } from './modules/performanceMonitor.js';
+import { openNotice } from './modules/notice.js';
+import { initCollapsiblePanels } from './modules/collapsiblePanel.js';
 import { SOURCE_MAP } from './modules/downloadWays.js';
+
+// 记录主脚本开始执行时间
+perfMonitor.mark('MainScriptStart');
 
 // 将setupIndexDownLinks函数挂载到window对象上，以便其他模块可以访问
 window.setupIndexDownLinks = setupIndexDownLinks;
 
 // 简单的路由和DOM操作
 document.addEventListener('DOMContentLoaded', () => {
+    // 记录DOM内容加载完成时间
+    perfMonitor.mark('DOMContentReady');
+    
     // 填充线路选择下拉菜单
     function populateLineSelection() {
+        perfMonitor.mark('StartPopulateLineSelection');
         const selectElement = document.getElementById('odlmSelect');
         if (!selectElement) return;
         
@@ -66,12 +76,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (zlGroup.children.length > 0) {
             selectElement.appendChild(zlGroup);
         }
+        perfMonitor.mark('EndPopulateLineSelection');
     }
     
     // 初始化线路选择下拉菜单
     populateLineSelection();
+    perfMonitor.mark('LineSelectionPopulated');
+    
     // 检查URL中的hash并自动导航到相应部分
     const checkHashAndNavigate = () => {
+        perfMonitor.mark('StartCheckHash');
         const hash = window.location.hash;
         if (hash) {
             const targetId = hash.substring(1);
@@ -94,14 +108,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 // 根据目标页面加载相应内容
                 switch (targetId) {
                     case 'downloads':
+                        perfMonitor.mark('StartLoadDownloads');
                         loadAllFclDownWays();
                         loadAllZlDownWays();
+                        perfMonitor.mark('EndLoadDownloads');
                         break;
                     case 'verification':
+                        perfMonitor.mark('StartLoadVerification');
                         loadChecksums('verification-content');
+                        perfMonitor.mark('EndLoadVerification');
                         break;
                     case 'about':
+                        perfMonitor.mark('StartLoadAbout');
                         loadAbout('about-content');
+                        perfMonitor.mark('EndLoadAbout');
                         break;
                 }
                 
@@ -116,6 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
         }
+        perfMonitor.mark('EndCheckHash');
     };
 
     // 主题切换
@@ -140,6 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.querySelectorAll('.nav-link');
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
+            perfMonitor.mark(`StartNavigateTo_${link.getAttribute('href').substring(1)}`);
             e.preventDefault();
             const targetId = link.getAttribute('href').substring(1);
             
@@ -161,14 +183,20 @@ document.addEventListener('DOMContentLoaded', () => {
             // 根据目标页面加载相应内容
             switch (targetId) {
                 case 'downloads':
+                    perfMonitor.mark('StartLoadDownloadsOnClick');
                     loadAllFclDownWays();
                     loadAllZlDownWays();
+                    perfMonitor.mark('EndLoadDownloadsOnClick');
                     break;
                 case 'verification':
+                    perfMonitor.mark('StartLoadVerificationOnClick');
                     loadChecksums('verification');
+                    perfMonitor.mark('EndLoadVerificationOnClick');
                     break;
                 case 'about':
+                    perfMonitor.mark('StartLoadAboutOnClick');
                     loadAbout('about-content');
+                    perfMonitor.mark('EndLoadAboutOnClick');
                     break;
             }
             
@@ -187,6 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     behavior: 'smooth'
                 });
             }
+            perfMonitor.mark(`EndNavigateTo_${link.getAttribute('href').substring(1)}`);
         });
     });
 
@@ -209,4 +238,19 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // 监听hash变化
     window.addEventListener('hashchange', checkHashAndNavigate);
+    
+    // 初始化折叠面板组件
+    initCollapsiblePanels();
+    
+    // 添加公告按钮
+    setTimeout(() => {
+        const noticeBtn = document.createElement('button');
+        noticeBtn.id = 'notice-btn';
+        noticeBtn.className = 'fixed bottom-4 left-4 bg-primary-600 text-white px-3 py-2 rounded-full shadow-lg hover:bg-primary-700 transition';
+        noticeBtn.innerHTML = '<i class="fas fa-bullhorn mr-1"></i>公告';
+        noticeBtn.onclick = () => {
+            openNotice();
+        };
+        document.body.appendChild(noticeBtn);
+    }, 1000);
 });

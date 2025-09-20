@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>性能监控报告 - FCL下载站</title>
+    <link rel="stylesheet" href="/dist/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .metric-card {
+            transition: transform 0.2s ease-in-out;
+        }
+        .metric-card:hover {
+            transform: translateY(-2px);
+        }
+        .chart-container {
+            height: 300px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="z-10 fixed bg-primary-600 shadow-md w-full text-white">
+            <div class="flex justify-between items-center mx-auto px-4 py-3 container">
+                <div class="flex items-center space-x-3">
+                    <img src="/file/picture/FCL_icon.webp" alt="FCL Icon" width="40" height="40" class="w-10 h-10">
+                    <h1 class="font-bold text-xl">FCL下载站 - 性能监控</h1>
+                </div>
+                <a href="/" class="bg-white text-primary-600 hover:bg-gray-100 px-4 py-2 rounded-md font-medium transition">
+                    <i class="fas fa-arrow-left mr-2"></i>返回首页
+                </a>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow mx-auto mt-20 px-4 py-6 container">
+            <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+                <h2 class="mb-4 font-bold text-primary-700 text-2xl">性能监控报告</h2>
+                <p class="text-gray-600 mb-6">详细分析网站加载性能和资源使用情况</p>
+                
+                <!-- 总体指标 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                    <div class="metric-card bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-tachometer-alt text-blue-500 text-xl mr-2"></i>
+                            <h3 class="font-semibold text-blue-700">总加载时间</h3>
+                        </div>
+                        <p class="text-2xl font-bold text-blue-600" id="total-load-time">-</p>
+                        <p class="text-xs text-blue-500">从请求到完全加载</p>
+                    </div>
+                    
+                    <div class="metric-card bg-green-50 border border-green-200 rounded-lg p-4">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-network-wired text-green-500 text-xl mr-2"></i>
+                            <h3 class="font-semibold text-green-700">DNS查询</h3>
+                        </div>
+                        <p class="text-2xl font-bold text-green-600" id="dns-time">-</p>
+                        <p class="text-xs text-green-500">域名解析时间</p>
+                    </div>
+                    
+                    <div class="metric-card bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-plug text-yellow-500 text-xl mr-2"></i>
+                            <h3 class="font-semibold text-yellow-700">TCP连接</h3>
+                        </div>
+                        <p class="text-2xl font-bold text-yellow-600" id="tcp-time">-</p>
+                        <p class="text-xs text-yellow-500">建立连接时间</p>
+                    </div>
+                    
+                    <div class="metric-card bg-purple-50 border border-purple-200 rounded-lg p-4">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-memory text-purple-500 text-xl mr-2"></i>
+                            <h3 class="font-semibold text-purple-700">内存使用</h3>
+                        </div>
+                        <p class="text-2xl font-bold text-purple-600" id="memory-usage">-</p>
+                        <p class="text-xs text-purple-500">JS堆内存</p>
+                    </div>
+                </div>
+                
+                <!-- 详细时间线 -->
+                <div class="mb-8">
+                    <h3 class="mb-4 font-bold text-primary-600 text-xl">加载时间线</h3>
+                    <div class="border border-gray-200 rounded-lg p-4" id="timeline-container">
+                        <div class="space-y-3" id="timeline-content">
+                            <!-- 时间线内容将通过JavaScript动态生成 -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 资源加载详情 -->
+                <div class="mb-8">
+                    <h3 class="mb-4 font-bold text-primary-600 text-xl">资源加载详情</h3>
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">资源</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">大小</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">加载时间</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">开始时间</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200" id="resources-table-body">
+                                    <!-- 资源详情将通过JavaScript动态生成 -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 性能建议 -->
+                <div>
+                    <h3 class="mb-4 font-bold text-primary-600 text-xl">性能优化建议</h3>
+                    <div class="border border-gray-200 rounded-lg p-4 bg-yellow-50" id="optimization-suggestions">
+                        <!-- 优化建议将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-primary-800 py-6 text-white">
+            <div class="mx-auto px-4 container">
+                <div class="flex md:flex-row flex-col justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <p>&copy; 2025 FCL下载站. All rights reserved.</p>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="https://github.com/XiaoluoFoxington/FCL.website.mdui" target="_blank" class="hover:text-primary-200 transition">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://wj.qq.com/s2/22395480/df5b/" target="_blank" class="hover:text-primary-200 transition">
+                            <i class="fas fa-bug"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // 性能数据获取和显示
+        document.addEventListener('DOMContentLoaded', () => {
+            // 获取性能数据
+            const navigation = performance.getEntriesByType('navigation')[0];
+            const resources = performance.getEntriesByType('resource');
+            
+            // 显示总体指标
+            if (navigation) {
+                document.getElementById('total-load-time').textContent = navigation.loadEventEnd.toFixed(2) + ' ms';
+                document.getElementById('dns-time').textContent = (navigation.domainLookupEnd - navigation.domainLookupStart).toFixed(2) + ' ms';
+                document.getElementById('tcp-time').textContent = (navigation.connectEnd - navigation.connectStart).toFixed(2) + ' ms';
+            }
+            
+            // 显示内存使用情况
+            if (performance.memory) {
+                const usedMB = (performance.memory.usedJSHeapSize / 1024 / 1024).toFixed(2);
+                document.getElementById('memory-usage').textContent = usedMB + ' MB';
+            }
+            
+            // 显示时间线
+            const timelineContent = document.getElementById('timeline-content');
+            if (navigation) {
+                const timelineEvents = [
+                    { name: '开始获取', time: navigation.fetchStart, color: 'blue' },
+                    { name: '域名查询开始', time: navigation.domainLookupStart, color: 'green' },
+                    { name: '域名查询结束', time: navigation.domainLookupEnd, color: 'green' },
+                    { name: 'TCP连接开始', time: navigation.connectStart, color: 'yellow' },
+                    { name: 'TCP连接结束', time: navigation.connectEnd, color: 'yellow' },
+                    { name: '请求开始', time: navigation.requestStart, color: 'purple' },
+                    { name: '响应开始', time: navigation.responseStart, color: 'indigo' },
+                    { name: '响应结束', time: navigation.responseEnd, color: 'indigo' },
+                    { name: 'DOM加载开始', time: navigation.domLoading, color: 'pink' },
+                    { name: 'DOM可交互', time: navigation.domInteractive, color: 'pink' },
+                    { name: 'DOM内容加载完成', time: navigation.domContentLoadedEventEnd, color: 'red' },
+                    { name: '页面加载完成', time: navigation.loadEventEnd, color: 'red' }
+                ];
+                
+                timelineEvents.forEach(event => {
+                    const eventElement = document.createElement('div');
+                    eventElement.className = 'flex items-center p-2 hover:bg-gray-50 rounded';
+                    eventElement.innerHTML = `
+                        <div class="w-32 font-medium text-${event.color}-600">${event.name}</div>
+                        <div class="flex-grow mx-4 h-2 bg-gray-200 rounded-full overflow-hidden">
+                            <div class="h-full bg-${event.color}-500" style="width: ${(event.time / navigation.loadEventEnd) * 100}%"></div>
+                        </div>
+                        <div class="w-20 text-right font-mono text-sm">${event.time.toFixed(2)}ms</div>
+                    `;
+                    timelineContent.appendChild(eventElement);
+                });
+            }
+            
+            // 显示资源加载详情
+            const resourcesTableBody = document.getElementById('resources-table-body');
+            resources.slice(0, 20).forEach(resource => { // 限制显示前20个资源
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 max-w-xs truncate" title="${resource.name}">
+                        ${getResourceIcon(resource.name)} 
+                        <span class="ml-2">${getResourceName(resource.name)}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${(resource.decodedBodySize / 1024).toFixed(2)} KB
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${resource.duration.toFixed(2)} ms
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${resource.startTime.toFixed(2)} ms
+                    </td>
+                `;
+                resourcesTableBody.appendChild(row);
+            });
+            
+            // 显示性能优化建议
+            const suggestionsContainer = document.getElementById('optimization-suggestions');
+            const suggestions = generateOptimizationSuggestions(navigation, resources);
+            suggestionsContainer.innerHTML = suggestions.map(suggestion => `
+                <div class="mb-2 p-3 bg-white border border-yellow-200 rounded flex items-start">
+                    <i class="fas fa-lightbulb text-yellow-500 mt-1 mr-3"></i>
+                    <div>
+                        <h4 class="font-medium text-yellow-800">${suggestion.title}</h4>
+                        <p class="text-yellow-700 text-sm">${suggestion.description}</p>
+                    </div>
+                </div>
+            `).join('');
+        });
+        
+        // 获取资源图标
+        function getResourceIcon(resourceName) {
+            if (resourceName.endsWith('.css')) return '<i class="fas fa-file-code text-blue-500"></i>';
+            if (resourceName.endsWith('.js')) return '<i class="fas fa-file-code text-yellow-500"></i>';
+            if (resourceName.endsWith('.png') || resourceName.endsWith('.jpg') || resourceName.endsWith('.jpeg') || resourceName.endsWith('.webp') || resourceName.endsWith('.gif')) 
+                return '<i class="fas fa-file-image text-green-500"></i>';
+            if (resourceName.endsWith('.woff') || resourceName.endsWith('.woff2') || resourceName.endsWith('.ttf')) 
+                return '<i class="fas fa-font text-purple-500"></i>';
+            return '<i class="fas fa-file text-gray-500"></i>';
+        }
+        
+        // 获取资源名称
+        function getResourceName(resourceName) {
+            try {
+                const url = new URL(resourceName);
+                return url.pathname.split('/').pop() || url.hostname;
+            } catch {
+                return resourceName;
+            }
+        }
+        
+        // 生成性能优化建议
+        function generateOptimizationSuggestions(navigation, resources) {
+            const suggestions = [];
+            
+            // 检查总加载时间
+            if (navigation && navigation.loadEventEnd > 3000) {
+                suggestions.push({
+                    title: '页面加载时间过长',
+                    description: `当前页面加载时间为 ${(navigation.loadEventEnd/1000).toFixed(2)} 秒，建议优化关键资源加载。`
+                });
+            }
+            
+            // 检查资源大小
+            const largeResources = resources.filter(r => r.decodedBodySize > 100 * 1024); // 大于100KB的资源
+            if (largeResources.length > 5) {
+                suggestions.push({
+                    title: '存在大量大体积资源',
+                    description: `检测到 ${largeResources.length} 个大于100KB的资源，建议压缩或懒加载这些资源。`
+                });
+            }
+            
+            // 检查CSS/JS资源数量
+            const cssJsResources = resources.filter(r => r.name.endsWith('.css') || r.name.endsWith('.js'));
+            if (cssJsResources.length > 10) {
+                suggestions.push({
+                    title: 'CSS/JS资源过多',
+                    description: `页面加载了 ${cssJsResources.length} 个CSS/JS资源，建议合并或按需加载。`
+                });
+            }
+            
+            // 检查重复资源
+            const resourceUrls = resources.map(r => r.name);
+            const duplicateResources = resourceUrls.filter((url, index) => resourceUrls.indexOf(url) !== index);
+            if (duplicateResources.length > 0) {
+                suggestions.push({
+                    title: '存在重复加载的资源',
+                    description: `检测到 ${duplicateResources.length} 个重复加载的资源，建议优化资源引用。`
+                });
+            }
+            
+            // 如果没有建议，显示积极反馈
+            if (suggestions.length === 0) {
+                suggestions.push({
+                    title: '性能表现良好',
+                    description: '当前页面性能表现良好，继续保持！'
+                });
+            }
+            
+            return suggestions;
+        }
+    </script>
+</body>
+</html>

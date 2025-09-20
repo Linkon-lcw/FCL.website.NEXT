@@ -1,42 +1,7 @@
-// 可折叠面板组件
+// 折叠面板组件
 
 /**
- * 创建一个可折叠的面板项
- * @param {string} title - 面板标题
- * @param {string} content - 面板内容
- * @returns {HTMLElement} 创建好的面板元素
- */
-function createCollapsiblePanel(title, content) {
-    const panel = document.createElement('div');
-    panel.className = 'border border-gray-200 rounded-md';
-
-    const header = document.createElement('div');
-    header.className = 'flex justify-between items-center p-4 cursor-pointer bg-gray-50';
-    header.innerHTML = `
-        <h4 class="font-medium">${title}</h4>
-        <i class="fas fa-chevron-down transition-transform duration-200"></i>
-    `;
-
-    const body = document.createElement('div');
-    body.className = 'p-4 hidden';
-    body.innerHTML = content;
-
-    // 切换折叠状态
-    header.addEventListener('click', () => {
-        body.classList.toggle('hidden');
-        const icon = header.querySelector('i');
-        icon.classList.toggle('fa-chevron-down');
-        icon.classList.toggle('fa-chevron-up');
-    });
-
-    panel.appendChild(header);
-    panel.appendChild(body);
-
-    return panel;
-}
-
-/**
- * 创建带有动画效果的可折叠面板
+ * 创建一个带动画效果的可折叠面板
  * @param {string} title - 面板标题
  * @param {string} content - 面板内容
  * @param {string} id - 面板唯一标识符
@@ -50,16 +15,16 @@ function createAnimatedCollapsiblePanel(title, content, id) {
 
     // 创建标题部分
     const header = document.createElement('div');
-    header.className = 'flex justify-between items-center p-4 cursor-pointer bg-gray-100';
+    header.className = 'flex justify-between items-center p-4 cursor-pointer bg-gray-100 notice-panel-header';
     header.id = `${id}-header`;
 
     header.innerHTML = `
         <h3 class="font-medium">${title}</h3>
-        <i class="fas fa-chevron-down transition-transform duration-300" id="${id}-icon"></i>
+        <i class="fas fa-chevron-down transition-transform duration-300"></i>
     `;
 
     const body = document.createElement('div');
-    body.className = 'max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-content';
+    body.className = 'max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out notice-panel-body';
     body.id = `${id}-body`;
     body.innerHTML = `<div class="p-4">${content}</div>`;
 
@@ -67,50 +32,98 @@ function createAnimatedCollapsiblePanel(title, content, id) {
     outerPanel.appendChild(header);
     outerPanel.appendChild(body);
 
-    // 为外层折叠面板添加折叠功能
-    header.addEventListener('click', () => {
-        const icon = header.querySelector('i');
-        // 切换状态类
-        body.classList.toggle('collapsed');
-
-        if (body.classList.contains('collapsed')) {
-            // 折叠
-            // 先设置一个具体的maxHeight值以触发动画
-            body.style.maxHeight = body.scrollHeight + 'px';
-            // 触发重排
-            body.offsetHeight;
-            body.style.maxHeight = '0px';
-            body.style.opacity = '0';
-            icon.classList.remove('fa-chevron-up');
-            icon.classList.add('fa-chevron-down');
-            
-            // 动画结束后重置状态
-            const onTransitionEnd = () => {
-                body.removeEventListener('transitionend', onTransitionEnd);
-            };
-            body.addEventListener('transitionend', onTransitionEnd);
-        } else {
-            // 展开
-            // 先设置一个具体的maxHeight值以触发动画
-            body.style.maxHeight = body.scrollHeight + 'px';
-            body.style.opacity = '1';
-            icon.classList.remove('fa-chevron-down');
-            icon.classList.add('fa-chevron-up');
-
-            // 在动画结束后，将maxHeight设置为'none'以适应内容变化
-            const onTransitionEnd = () => {
-                body.style.maxHeight = 'none';
-                body.removeEventListener('transitionend', onTransitionEnd);
-            };
-            body.addEventListener('transitionend', onTransitionEnd);
-        }
-    });
-
-    // 初始化时添加collapsed类，以确保第一次点击能正确工作
-    body.classList.add('collapsed');
-
     return outerPanel;
 }
 
+/**
+ * 初始化折叠面板组件
+ * 为所有带有notice-panel-header类的元素添加折叠功能
+ */
+function initCollapsiblePanels() {
+    // 获取所有折叠面板头部元素
+    const panelHeaders = document.querySelectorAll('.notice-panel-header');
+    
+    // 为每个头部元素添加点击事件监听器
+    panelHeaders.forEach(header => {
+        // 确保每个面板只添加一次事件监听器
+        if (!header.dataset.listenerAdded) {
+            header.addEventListener('click', function() {
+                // 切换面板展开/收起状态
+                togglePanel(this);
+            });
+            
+            // 标记已添加监听器
+            header.dataset.listenerAdded = 'true';
+        }
+    });
+}
+
+/**
+ * 切换面板展开/收起状态
+ * @param {HTMLElement} header - 面板头部元素
+ */
+function togglePanel(header) {
+    // 获取对应的面板主体元素
+    const panelBody = header.nextElementSibling;
+    
+    if (panelBody) {
+        // 切换面板状态
+        if (panelBody.classList.contains('collapsed') || panelBody.style.maxHeight === '0px' || !panelBody.style.maxHeight) {
+            // 展开面板
+            panelBody.style.maxHeight = panelBody.scrollHeight + 'px';
+            panelBody.style.opacity = '1';
+            panelBody.classList.remove('collapsed');
+            
+            // 更新图标
+            const icon = header.querySelector('i');
+            if (icon) {
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            }
+        } else {
+            // 收起面板
+            panelBody.style.maxHeight = '0px';
+            panelBody.style.opacity = '0';
+            panelBody.classList.add('collapsed');
+            
+            // 更新图标
+            const icon = header.querySelector('i');
+            if (icon) {
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            }
+        }
+    }
+}
+
+/**
+ * 展开指定面板
+ * @param {HTMLElement} header - 面板头部元素
+ */
+function expandPanel(header) {
+    const panelBody = header.nextElementSibling;
+    
+    if (panelBody && (panelBody.classList.contains('collapsed') || panelBody.style.maxHeight === '0px' || !panelBody.style.maxHeight)) {
+        togglePanel(header);
+    }
+}
+
+/**
+ * 收起指定面板
+ * @param {HTMLElement} header - 面板头部元素
+ */
+function collapsePanel(header) {
+    const panelBody = header.nextElementSibling;
+    
+    if (panelBody && !(panelBody.classList.contains('collapsed') || panelBody.style.maxHeight === '0px' || !panelBody.style.maxHeight)) {
+        togglePanel(header);
+    }
+}
+
+// 页面加载完成后初始化折叠面板
+document.addEventListener('DOMContentLoaded', () => {
+    initCollapsiblePanels();
+});
+
 // 导出函数
-export { createCollapsiblePanel, createAnimatedCollapsiblePanel };
+export { createAnimatedCollapsiblePanel, initCollapsiblePanels, togglePanel, expandPanel, collapsePanel };
