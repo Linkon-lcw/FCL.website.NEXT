@@ -10,6 +10,39 @@ window.setupIndexDownLinks = setupIndexDownLinks;
 
 // 简单的路由和DOM操作
 document.addEventListener('DOMContentLoaded', () => {
+    // 检查URL中的hash并自动导航到相应部分
+    const checkHashAndNavigate = () => {
+        const hash = window.location.hash;
+        if (hash) {
+            const targetId = hash.substring(1);
+            const targetElement = document.getElementById(targetId);
+            
+            if (targetElement) {
+                // 更新导航激活状态
+                navLinks.forEach(l => l.classList.remove('active'));
+                const targetNavLink = document.querySelector(`.nav-link[href="#${targetId}"]`);
+                if (targetNavLink) {
+                    targetNavLink.classList.add('active');
+                }
+                
+                // 显示对应的内容区域
+                document.querySelectorAll('.section').forEach(section => {
+                    section.classList.add('hidden');
+                });
+                targetElement.classList.remove('hidden');
+                
+                // 如果是下载页面，加载下载线路
+                if (targetId === 'downloads') {
+                    loadAllFclDownWays();
+                    loadAllZlDownWays();
+                }
+                
+                // 滚动到目标元素
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    };
+
     // 主题切换
     const themeToggle = document.getElementById('theme-toggle');
     if (themeToggle) {
@@ -55,6 +88,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 loadAllFclDownWays();
                 loadAllZlDownWays();
             }
+            
+            // 更新URL hash
+            window.location.hash = targetId;
         });
     });
 
@@ -72,9 +108,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // 默认加载下载页面的内容（如果当前在下载页面）
-    if (window.location.hash === '#downloads') {
-        loadAllFclDownWays();
-        loadAllZlDownWays();
-    }
+    // 页面加载时检查hash
+    checkHashAndNavigate();
+    
+    // 监听hash变化
+    window.addEventListener('hashchange', checkHashAndNavigate);
 });

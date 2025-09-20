@@ -67,14 +67,22 @@ async function loadFclDownWay(url, containerId, lineName) {
         if (SOURCE_MAP[lineName] && SOURCE_MAP[lineName].nestedPath) {
             console.log(`${lineName}：特殊处理嵌套路径`);
             let currentChildren = fileTree.children;
-            for (const dirName of SOURCE_MAP[lineName].nestedPath) {
-                const dir = currentChildren.find(
-                    d => d.name === dirName && d.type === 'directory'
-                );
-                if (!dir || !dir.children) {
-                    throw new Error(`未找到嵌套目录: ${dirName}`);
+            // 对于FCL线2和ZL2线2，直接取第一个子目录的children
+            if (lineName === 'F2' || lineName === 'Z22') {
+                if (currentChildren.length > 0 && currentChildren[0].children) {
+                    currentChildren = currentChildren[0].children;
                 }
-                currentChildren = dir.children;
+            } else {
+                // 其他线路按名称查找
+                for (const dirName of SOURCE_MAP[lineName].nestedPath) {
+                    const dir = currentChildren.find(
+                        d => d.name === dirName && d.type === 'directory'
+                    );
+                    if (!dir || !dir.children) {
+                        throw new Error(`未找到嵌套目录: ${dirName}`);
+                    }
+                    currentChildren = dir.children;
+                }
             }
             versionDirs = currentChildren.filter(
                 child => child.type === 'directory' && child.name !== 'root'
@@ -159,6 +167,10 @@ async function loadFclDownWay(url, containerId, lineName) {
                     
                     if (body.classList.contains('collapsed')) {
                         // 折叠
+                        // 先设置一个具体的maxHeight值以触发动画
+                        body.style.maxHeight = body.scrollHeight + 'px';
+                        // 触发重排
+                        body.offsetHeight;
                         body.style.maxHeight = '0px';
                         body.style.opacity = '0';
                         icon.classList.remove('fa-chevron-up');
@@ -180,6 +192,9 @@ async function loadFclDownWay(url, containerId, lineName) {
                         body.addEventListener('transitionend', cleanup);
                     }
                 });
+                
+                // 初始化时添加collapsed类，以确保第一次点击能正确工作
+                body.classList.add('collapsed');
             }
         });
         
@@ -254,6 +269,10 @@ async function loadAllFclDownWays() {
             
             if (body.classList.contains('collapsed')) {
                 // 折叠
+                // 先设置一个具体的maxHeight值以触发动画
+                body.style.maxHeight = body.scrollHeight + 'px';
+                // 触发重排
+                body.offsetHeight;
                 body.style.maxHeight = '0px';
                 body.style.opacity = '0';
                 icon.classList.remove('fa-chevron-up');
@@ -274,6 +293,9 @@ async function loadAllFclDownWays() {
                 body.addEventListener('transitionend', cleanup);
             }
         });
+        
+        // 初始化时添加collapsed类，以确保第一次点击能正确工作
+        body.classList.add('collapsed');
         
         container.appendChild(outerPanel);
     });
@@ -348,6 +370,10 @@ async function loadAllZlDownWays() {
             
             if (body.classList.contains('collapsed')) {
                 // 折叠
+                // 先设置一个具体的maxHeight值以触发动画
+                body.style.maxHeight = body.scrollHeight + 'px';
+                // 触发重排
+                body.offsetHeight;
                 body.style.maxHeight = '0px';
                 body.style.opacity = '0';
                 icon.classList.remove('fa-chevron-up');
@@ -368,6 +394,9 @@ async function loadAllZlDownWays() {
                 body.addEventListener('transitionend', cleanup);
             }
         });
+        
+        // 初始化时添加collapsed类，以确保第一次点击能正确工作
+        body.classList.add('collapsed');
         
         container.appendChild(outerPanel);
     });
