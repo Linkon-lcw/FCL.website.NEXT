@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fold Craft Launcher 下载站</title>
+    <meta name="keywords" content="fcl, foldcraftlauncher, fcl启动器, fcl官网, 官方原版, 下载, 最新版, fcl渲染器, fcl插件, fclava, pojav ffmpeg plugin, zl, zalithlauncher, zl启动器">
+    <meta name="description" content="这里是由FCL玩家社区自行搭建的公益下载站。可以在此页面下载《Fold Craft Launcher》（简称FCL），这里提供了FCL最新版、FCL单架构版、FCL历史版本、FCL渲染器、FCL插件、Java和Pojav FFmpeg Plugin，甚至还有ZL启动器。有直链、官方HG、网盘等多个可靠下载源。此网站没有烦人的广告，没有乱七八糟的套路，玩家能够方便快捷地下载到最新版FCL。">
+    <link rel="icon" href="/old/file/picture/FCL_icon.webp">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#e0f2f1',
+                            100: '#b2dfdb',
+                            200: '#80cbc4',
+                            300: '#4db6ac',
+                            400: '#26a69a',
+                            500: '#009688',
+                            600: '#00897b',
+                            700: '#00796b',
+                            800: '#00695c',
+                            900: '#004d40',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <div id="app" class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-primary-600 text-white shadow-md">
+            <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <img src="/old/file/picture/FCL_icon.webp" alt="FCL Icon" class="h-10 w-10">
+                    <h1 class="text-xl font-bold">FCL下载站</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-primary-500 transition">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <a href="https://github.com/XiaoluoFoxington/FCL.website.mdui" target="_blank" class="p-2 rounded-full hover:bg-primary-500 transition">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <button id="menu-toggle" class="md:hidden p-2 rounded-full hover:bg-primary-500 transition">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav id="main-nav" class="bg-primary-500 text-white hidden md:block">
+            <div class="container mx-auto px-4">
+                <ul class="flex space-x-6 py-3">
+                    <li><a href="#home" class="hover:text-primary-100 transition nav-link active"><i class="fas fa-home mr-1"></i>主页</a></li>
+                    <li><a href="#downloads" class="hover:text-primary-100 transition nav-link"><i class="fas fa-download mr-1"></i>下载</a></li>
+                    <li><a href="#verification" class="hover:text-primary-100 transition nav-link"><i class="fas fa-check-circle mr-1"></i>校验</a></li>
+                    <li><a href="#sponsors" class="hover:text-primary-100 transition nav-link"><i class="fas fa-gift mr-1"></i>赞助</a></li>
+                    <li><a href="#about" class="hover:text-primary-100 transition nav-link"><i class="fas fa-info-circle mr-1"></i>关于</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden bg-primary-500 text-white hidden">
+            <ul class="py-2">
+                <li><a href="#home" class="block px-4 py-2 hover:bg-primary-400 transition nav-link active"><i class="fas fa-home mr-2"></i>主页</a></li>
+                <li><a href="#downloads" class="block px-4 py-2 hover:bg-primary-400 transition nav-link"><i class="fas fa-download mr-2"></i>下载</a></li>
+                <li><a href="#verification" class="block px-4 py-2 hover:bg-primary-400 transition nav-link"><i class="fas fa-check-circle mr-2"></i>校验</a></li>
+                <li><a href="#sponsors" class="block px-4 py-2 hover:bg-primary-400 transition nav-link"><i class="fas fa-gift mr-2"></i>赞助</a></li>
+                <li><a href="#about" class="block px-4 py-2 hover:bg-primary-400 transition nav-link"><i class="fas fa-info-circle mr-2"></i>关于</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <main class="flex-grow container mx-auto px-4 py-6">
+            <!-- Home Section -->
+            <section id="home" class="section fade-in">
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <h2 class="text-2xl font-bold text-primary-700 mb-4">开门见山</h2>
+                    <div class="mb-4">
+                        <label for="odlmSelect" class="block text-sm font-medium text-gray-700 mb-1">选择下载线路:</label>
+                        <select id="odlmSelect" class="w-full p-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500">
+                            <option value="F1">FCL线1</option>
+                            <option value="F2" selected>FCL线2</option>
+                            <option value="F3">FCL线3</option>
+                            <option value="F4">FCL线4</option>
+                            <option value="F5">FCL线5</option>
+                            <option value="F6">FCL线6</option>
+                            <option value="F8">FCL线8</option>
+                            <option value="Z1">ZL线1</option>
+                            <option value="Z3">ZL线3</option>
+                            <option value="Z21">ZL2线1</option>
+                            <option value="Z22">ZL2线2</option>
+                        </select>
+                    </div>
+                    <div id="odlm-arch-buttons" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- 架构按钮将通过JavaScript动态生成 -->
+                    </div>
+                    <div id="deviceInfo" class="mt-4 text-sm text-gray-600"></div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <h2 class="text-2xl font-bold text-primary-700 mb-4">🎉 FCL 下载站 🎉</h2>
+                    <p class="mb-4">欢迎来到这个<mark>由玩家社区搭建的</mark>非官方 FCL 下载站！</p>
+                    <p class="mb-4">在这里，你可以下载到：</p>
+                    <ul class="list-disc list-inside mb-4">
+                        <li>FCL 最新多架构版</li>
+                        <li>FCL 最新单架构版</li>
+                        <li>FCL 所有历史版本</li>
+                        <li>Zalith Launcher 最新多架构版</li>
+                        <li>Zalith Launcher 最新单架构版</li>
+                        <li>FCL 渲染器插件</li>
+                        <li>FCL Vulkan 驱动插件</li>
+                        <li>Java</li>
+                        <li>Pojav FFmpeg Plugin</li>
+                    </ul>
+                    <p>尽情享受吧！</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold text-primary-700 mb-4">介绍 FCL</h2>
+                    <div id="introFcl" class="prose max-w-none">
+                        <!-- FCL介绍内容将在这里加载 -->
+                        <p>FCL (Fold Craft Launcher) 是一个为移动设备设计的 Minecraft 启动器，让你可以在手机或平板上畅玩 Minecraft Java 版。</p>
+                        <p>它具有以下特点：</p>
+                        <ul>
+                            <li><strong>移动端优化:</strong> 专为触屏设备设计，操作流畅。</li>
+                            <li><strong>多架构支持:</strong> 支持多种 CPU 架构，兼容性好。</li>
+                            <li><strong>社区驱动:</strong> 由活跃的社区开发和维护。</li>
+                            <li><strong>开源:</strong> 代码公开，安全可靠。</li>
+                        </ul>
+                        <p>更多信息请访问 <a href="https://github.com/FCL-Team/FoldCraftLauncher" target="_blank" class="text-primary-600 hover:underline">FCL GitHub 仓库</a>。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Downloads Section -->
+            <section id="downloads" class="section fade-in hidden">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold text-primary-700 mb-4">下载</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- FCL Downloads -->
+                        <div>
+                            <h3 class="text-xl font-semibold mb-3 text-primary-600">FCL 下载</h3>
+                            <div class="space-y-4" id="fcl-downloads">
+                                <!-- FCL下载线路将在这里动态加载 -->
+                                <!-- 占位符，实际内容将通过JavaScript动态生成 -->
+                                <div class="text-center py-4 text-gray-500" id="fcl-downloads-placeholder">
+                                    <p>正在加载FCL下载线路...</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ZL Downloads -->
+                        <div>
+                            <h3 class="text-xl font-semibold mb-3 text-primary-600">ZL 下载</h3>
+                            <div class="space-y-4" id="zl-downloads">
+                                <!-- ZL下载线路将在这里动态加载 -->
+                                <!-- 占位符，实际内容将通过JavaScript动态生成 -->
+                                <div class="text-center py-4 text-gray-500" id="zl-downloads-placeholder">
+                                    <p>正在加载ZL下载线路...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Verification Section -->
+            <section id="verification" class="section fade-in hidden">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold text-primary-700 mb-4">校验</h2>
+                    <p>校验功能正在开发中...</p>
+                </div>
+            </section>
+
+            <!-- Sponsors Section -->
+            <section id="sponsors" class="section fade-in hidden">
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <h2 class="text-2xl font-bold text-primary-700 mb-4">微信赞赏码</h2>
+                    <p class="mb-4">下载流量高昂，我们一直坚守使此站保持公益性质。如果您觉得此站对您有帮助，可考虑在下方赞助我。赞助后您可以在<a href="https://wj.qq.com/s2/20865225/25ca/" target="_blank" class="text-primary-600 hover:underline">此处</a>填写您的赞助信息，我们看到后会显示在此页面。</p>
+                    <p class="mb-4">背后的软件开发者也不容易，<a href="https://afdian.com/@tungs" target="_blank" class="text-primary-600 hover:underline">赞助FCL开发者</a>，<a href="https://afdian.com/a/MovTery" target="_blank" class="text-primary-600 hover:underline">赞助ZL开发者</a>，<a href="https://www.buymeacoffee.com/Swung0x48" target="_blank" class="text-primary-600 hover:underline">赞助MG渲染器开发者</a>。</p>
+                    <p class="mb-4 text-red-600"><mark>赞助是纯自愿的，请结合您的经济状况实力再考虑是否要赞助！赞助后无法退款！这里赞助的是此下载站！</mark></p>
+                    <img src="/old/file/picture/微信赞赏码.png" alt="微信赞赏码" class="mx-auto max-w-xs border border-gray-300">
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold text-primary-700 mb-4">赞助列表（时间排序，最新在前）</h2>
+                    <p class="mb-4">更新时间：2025年8月29日19时17分。</p>
+                    <div id="sponsorList" class="space-y-3">
+                        <!-- 赞助列表将在这里加载 -->
+                        <div class="border-b border-gray-200 pb-3">
+                            <p class="font-medium">赞助者A</p>
+                            <p class="text-sm text-gray-600">赞助金额: ¥50.00</p>
+                            <p class="text-sm text-gray-600">留言: 感谢你们的努力！</p>
+                        </div>
+                        <div class="border-b border-gray-200 pb-3">
+                            <p class="font-medium">赞助者B</p>
+                            <p class="text-sm text-gray-600">赞助金额: ¥20.00</p>
+                            <p class="text-sm text-gray-600">留言: 无</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section id="about" class="section fade-in hidden">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold text-primary-700 mb-4">关于</h2>
+                    <div class="prose max-w-none" id="about-content">
+                        <!-- 关于页面内容将在这里加载 -->
+                        <h3>贡献者</h3>
+                        <ul>
+                            <li>XiaoluoFoxington</li>
+                            <li>LateDream</li>
+                            <li>柠枺</li>
+                            <li>梦泽</li>
+                            <li>哈哈66623332</li>
+                            <li>咬一口的鱼py</li>
+                            <li>MLFKWMC</li>
+                            <li>Linkong</li>
+                            <li>广告哥</li>
+                            <li>LANt</li>
+                        </ul>
+                        <h3>链接</h3>
+                        <ul>
+                            <li><a href="https://github.com/XiaoluoFoxington/FCL.website.mdui" target="_blank">GitHub 项目地址</a></li>
+                            <li><a href="https://foldcraftlauncher.cn" target="_blank">主域名</a></li>
+                        </ul>
+                        <h3>版权信息</h3>
+                        <p>洛狐XIAOLUOFOXINGTON 2025</p>
+                        <p><a href="https://creativecommons.org/licenses/by-sa/4.0/legalcode.zh-hans" target="_blank">CC BY-SA</a></p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-primary-800 text-white py-6">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <p>&copy; 2025 FCL下载站. All rights reserved.</p>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="https://github.com/XiaoluoFoxington/FCL.website.mdui" target="_blank" class="hover:text-primary-200 transition">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://wj.qq.com/s2/22395480/df5b/" target="_blank" class="hover:text-primary-200 transition">
+                            <i class="fas fa-bug"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="/src/main.js" type="module"></script>
+</body>
+</html>

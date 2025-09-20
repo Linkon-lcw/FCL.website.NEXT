@@ -1,0 +1,74 @@
+{
+  "latest": "1.4.0.8（此源最新）",
+  "children": [
+  {
+    "name": "1.4.0.8（此源最新）",
+    "type": "directory",
+    "children": [
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/gG1iP/ZalithLauncher-1.4.0.8.apk",
+      "arch": "all"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/xWwIl/ZalithLauncher-1.4.0.8-arm64-v8a.apk",
+      "arch": "arm64-v8a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/RnqTl/ZalithLauncher-1.4.0.8-armeabi-v7a.apk",
+      "arch": "armeabi-v7a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/11KS4/ZalithLauncher-1.4.0.8-x86.apk",
+      "arch": "x86"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/ym7UV/ZalithLauncher-1.4.0.8-x86_64.apk",
+      "arch": "x86_64"
+    }]
+  },
+  {
+    "name": "1.4.0.7",
+    "type": "directory",
+    "children": [
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/eb1f1/ZalithLauncher-1.4.0.7.apk",
+      "arch": "all"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/vM4iZ/ZalithLauncher-1.4.0.7-arm64-v8a.apk",
+      "arch": "arm64-v8a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/5mnhm/ZalithLauncher-1.4.0.7-armeabi-v7a.apk",
+      "arch": "armeabi-v7a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/4WEUW/ZalithLauncher-1.4.0.7-x86.apk",
+      "arch": "x86"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/bZ2c1/ZalithLauncher-1.4.0.7-x86_64.apk",
+      "arch": "x86_64"
+    }]
+  },
+  {
+    "name": "1.4.0.6",
+    "type": "directory",
+    "children": [
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/v9LtZ/ZalithLauncher-1.4.0.6.apk",
+      "arch": "点击下载（all）"
+    }]
+  }]
+}

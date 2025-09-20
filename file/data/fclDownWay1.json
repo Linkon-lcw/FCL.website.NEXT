@@ -1,0 +1,664 @@
+{
+  "latest": "1.2.4.9（此源最新）",
+  "children": [
+  {
+    "name": "1.2.4.9（此源最新）",
+    "type": "directory",
+    "children": [
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/PLqTq/FCL-release-1.2.4.9-all.apk",
+      "arch": "all"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/dN2tW/FCL-release-1.2.4.9-arm64-v8a.apk",
+      "arch": "arm64-v8a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/21mt6/FCL-release-1.2.4.9-armeabi-v7a.apk",
+      "arch": "armeabi-v7a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/z71iE/FCL-release-1.2.4.9-x86.apk",
+      "arch": "x86"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/9kgCx/FCL-release-1.2.4.9-x86_64.apk",
+      "arch": "x86_64"
+    }]
+  },
+  {
+    "name": "1.2.4.8",
+    "type": "directory",
+    "children": [
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/LMdSj/FCL-release-1.2.4.8-all.apk",
+      "arch": "all"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/KMjcZ/FCL-release-1.2.4.8-arm64-v8a.apk",
+      "arch": "arm64-v8a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/nk1hB/FCL-release-1.2.4.8-armeabi-v7a.apk",
+      "arch": "armeabi-v7a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/ok6HA/FCL-release-1.2.4.8-x86.apk",
+      "arch": "x86"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/DMEiD/FCL-release-1.2.4.8-x86_64.apk",
+      "arch": "x86_64"
+    }]
+  },
+  {
+    "name": "1.2.4.7",
+    "type": "directory",
+    "children": [
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/mknf2/FCL-release-1.2.4.7-all.apk",
+      "arch": "all"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/7YMFX/FCL-release-1.2.4.7-arm64-v8a.apk",
+      "arch": "arm64-v8a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/lkBtM/FCL-release-1.2.4.7-armeabi-v7a.apk",
+      "arch": "armeabi-v7a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/NMmTM/FCL-release-1.2.4.7-x86.apk",
+      "arch": "x86"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/EM1I3/FCL-release-1.2.4.7-x86_64.apk",
+      "arch": "x86_64"
+    }]
+  },
+  {
+    "name": "1.2.4.6",
+    "type": "directory",
+    "children": [
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/zq1FE/FCL-release-1.2.4.6-all.apk",
+      "arch": "all"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/9Mgtx/FCL-release-1.2.4.6-arm64-v8a.apk",
+      "arch": "arm64-v8a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/Q4otO/FCL-release-1.2.4.6-armeabi-v7a.apk",
+      "arch": "armeabi-v7a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/kkMix/FCL-release-1.2.4.6-x86.apk",
+      "arch": "x86"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/wk2f8/FCL-release-1.2.4.6-x86_64.apk",
+      "arch": "x86_64"
+    }]
+  },
+  {
+    "name": "1.2.4.5",
+    "type": "directory",
+    "children": [
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/YEoSd/FCL-release-1.2.4.5-all.apk",
+      "arch": "all"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/Z8ecw/FCL-release-1.2.4.5-arm64-v8a.apk",
+      "arch": "arm64-v8a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/gk1tP/FCL-release-1.2.4.5-armeabi-v7a.apk",
+      "arch": "armeabi-v7a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/xBwUl/FCL-release-1.2.4.5-x86.apk",
+      "arch": "x86"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/Rbqil/FCL-release-1.2.4.5-x86_64.apk",
+      "arch": "x86_64"
+    }]
+  },
+  {
+    "name": "1.2.4.4",
+    "type": "directory",
+    "children": [
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/Ev1T3/FCL-release-1.2.4.4-all.apk",
+      "arch": "all"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/8XRc8/FCL-release-1.2.4.4-arm64-v8a.apk",
+      "arch": "arm64-v8a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/GGniz/FCL-release-1.2.4.4-armeabi-v7a.apk",
+      "arch": "armeabi-v7a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/KojcZ/FCL-release-1.2.4.4-x86.apk",
+      "arch": "x86"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/LDdtj/FCL-release-1.2.4.4-x86_64.apk",
+      "arch": "x86_64"
+    }]
+  },
+  {
+    "name": "1.2.4.3",
+    "type": "directory",
+    "children": [
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/mmjH2/FCL-release-1.2.4.3-all.apk",
+      "arch": "all"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/769uX/FCL-release-1.2.4.3-arm64-v8a.apk",
+      "arch": "arm64-v8a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/lWbIM/FCL-release-1.2.4.3-armeabi-v7a.apk",
+      "arch": "armeabi-v7a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/NXXcM/FCL-release-1.2.4.3-x86.apk",
+      "arch": "x86"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/EvMh3/FCL-release-1.2.4.3-x86_64.apk",
+      "arch": "x86_64"
+    }]
+  },
+  {
+    "name": "1.2.4.2",
+    "type": "directory",
+    "children": [
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/K6qFZ/FCL-release-1.2.4.2-all.apk",
+      "arch": "all"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/nMLfB/FCL-release-1.2.4.2-arm64-v8a.apk",
+      "arch": "arm64-v8a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/oMLiA/FCL-release-1.2.4.2-armeabi-v7a.apk",
+      "arch": "armeabi-v7a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/D88tD/FCL-release-1.2.4.2-x86.apk",
+      "arch": "x86"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/6n2s1/FCL-release-1.2.4.2-x86_64.apk",
+      "arch": "x86_64"
+    }]
+  },
+  {
+    "name": "1.2.4.1",
+    "type": "directory",
+    "children": [
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/6nvC1/FCL-release-1.2.4.1-all.apk",
+      "arch": "all"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/7o3FX/FCL-release-1.2.4.1-arm64-v8a.apk",
+      "arch": "arm64-v8a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/lM2TM/FCL-release-1.2.4.1-armeabi-v7a.apk",
+      "arch": "armeabi-v7a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/NbWIM/FCL-release-1.2.4.1-x86.apk",
+      "arch": "x86"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/EGac3/FCL-release-1.2.4.1-x86_64.apk",
+      "arch": "x86_64"
+    }]
+  },
+  {
+    "name": "1.2.4.0",
+    "type": "directory",
+    "children": [
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/Gv8Cz/FCL-release-1.2.4.0-all.apk",
+      "arch": "all"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/L5kfj/FCL-release-1.2.4.0-arm64-v8a.apk",
+      "arch": "arm64-v8a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/K6wiZ/FCL-release-1.2.4.0-armeabi-v7a.apk",
+      "arch": "armeabi-v7a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/nMVtB/FCL-release-1.2.4.0-x86.apk",
+      "arch": "x86"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/oMgsA/FCL-release-1.2.4.0-x86_64.apk",
+      "arch": "x86_64"
+    }]
+  },
+  {
+    "name": "1.2.3.9",
+    "type": "directory",
+    "children": [
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/QDKfO/FCL-release-1.2.3.9-all.apk",
+      "arch": "all"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/w2lF8/FCL-release-1.2.3.9-arm64-v8a.apk",
+      "arch": "arm64-v8a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/kNGux/FCL-release-1.2.3.9-armeabi-v7a.apk",
+      "arch": "armeabi-v7a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/MLYCv/FCL-release-1.2.3.9-x86.apk",
+      "arch": "x86"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/B4PHD/FCL-release-1.2.3.9-x86_64.apk",
+      "arch": "x86_64"
+    }]
+  },
+  {
+    "name": "1.2.3.8",
+    "type": "directory",
+    "children": [
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/qovi6/FCL-release-1.2.3.8-all.apk",
+      "arch": "all"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/OK5T2/FCL-release-1.2.3.8-arm64-v8a.apk",
+      "arch": "arm64-v8a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/34XS6/FCL-release-1.2.3.8-armeabi-v7a.apk",
+      "arch": "armeabi-v7a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/eA1S1/FCL-release-1.2.3.8-x86.apk",
+      "arch": "x86"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/vW4sZ/FCL-release-1.2.3.8-x86_64.apk",
+      "arch": "x86_64"
+    }]
+  },
+  {
+    "name": "1.2.3.7",
+    "type": "directory",
+    "children": [
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/dbEfW/FCL-release-1.2.3.7-all.apk",
+      "arch": "all"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/25ec6/FCL-release-1.2.3.7-arm64-v8a.apk",
+      "arch": "arm64-v8a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/zNXfE/FCL-release-1.2.3.7-armeabi-v7a.apk",
+      "arch": "armeabi-v7a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/QoKHO/FCL-release-1.2.3.7-x86.apk",
+      "arch": "x86"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/9lMFx/FCL-release-1.2.3.7-x86_64.apk",
+      "arch": "x86_64"
+    }]
+  },
+  {
+    "name": "1.2.3.6",
+    "type": "directory",
+    "children": [
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/oP3CA/FCL-release-1.2.3.6-all.apk",
+      "arch": "all"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/DgZfD/FCL-release-1.2.3.6-arm64-v8a.apk",
+      "arch": "arm64-v8a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/6LlC1/FCL-release-1.2.3.6-armeabi-v7a.apk",
+      "arch": "armeabi-v7a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/7KGiX/FCL-release-1.2.3.6-x86.apk",
+      "arch": "x86"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/lwncM/FCL-release-1.2.3.6-x86_64.apk",
+      "arch": "x86_64"
+    }]
+  },
+  {
+    "name": "1.2.3.5",
+    "type": "directory",
+    "children": [
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/WR6uX/FCL-release-1.2.3.5-all.apk",
+      "arch": "all"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/mP1h2/FCL-release-1.2.3.5-arm64-v8a.apk",
+      "arch": "arm64-v8a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/7KPsX/FCL-release-1.2.3.5-armeabi-v7a.apk",
+      "arch": "armeabi-v7a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/NjPtM/FCL-release-1.2.3.5-x86.apk",
+      "arch": "x86"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/lw7fM/FCL-release-1.2.3.5-x86_64.apk",
+      "arch": "x86_64"
+    }]
+  },
+  {
+    "name": "1.2.3.4",
+    "type": "directory",
+    "children": [
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/Bz5fD/FCL-release-1.2.3.4-all.apk",
+      "arch": "all"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/q9nc6/FCL-release-1.2.3.4-arm64-v8a.apk",
+      "arch": "arm64-v8a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/OBAI2/FCL-release-1.2.3.4-armeabi-v7a.apk",
+      "arch": "armeabi-v7a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/3EYu6/FCL-release-1.2.3.4-x86.apk",
+      "arch": "x86"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/eR8f1/FCL-release-1.2.3.4-x86_64.apk",
+      "arch": "x86_64"
+    }]
+  },
+  {
+    "name": "1.2.3.3",
+    "type": "directory",
+    "children": [
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/9gRix/FCL-release-1.2.3.3-all.apk",
+      "arch": "all"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/Q3OFO/FCL-release-1.2.3.3-arm64-v8a.apk",
+      "arch": "arm64-v8a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/wqyf8/FCL-release-1.2.3.3-armeabi-v7a.apk",
+      "arch": "armeabi-v7a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/kwXFx/FCL-release-1.2.3.3-x86.apk",
+      "arch": "x86"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/Mqqtv/FCL-release-1.2.3.3-x86_64.apk",
+      "arch": "x86_64"
+    }]
+  },
+  {
+    "name": "1.2.3.2",
+    "type": "directory",
+    "children": [
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/jPqtV/FCL-release-1.2.3.2-all.apk",
+      "arch": "all"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/PjwTq/FCL-release-1.2.3.2-arm64-v8a.apk",
+      "arch": "arm64-v8a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/dzluW/FCL-release-1.2.3.2-armeabi-v7a.apk",
+      "arch": "armeabi-v7a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/z9eCE/FCL-release-1.2.3.2-x86.apk",
+      "arch": "x86"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/2NVT6/FCL-release-1.2.3.2-x86_64.apk",
+      "arch": "x86_64"
+    }]
+  },
+  {
+    "name": "1.2.3.1",
+    "type": "directory",
+    "children": [
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/ZRwIw/FCL-release-1.2.3.1-all.apk",
+      "arch": "all"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/gPgSP/FCL-release-1.2.3.1-arm64-v8a.apk",
+      "arch": "arm64-v8a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/x9PSl/FCL-release-1.2.3.1-armeabi-v7a.apk",
+      "arch": "armeabi-v7a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/Rjasl/FCL-release-1.2.3.1-x86.apk",
+      "arch": "x86"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/1l9u4/FCL-release-1.2.3.1-x86_64.apk",
+      "arch": "x86_64"
+    }]
+  },
+  {
+    "name": "1.2.3.0",
+    "type": "directory",
+    "children": [
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/z1efE/FCL-release-1.2.3.0-all.apk",
+      "arch": "all"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/9mRtx/FCL-release-1.2.3.0-arm64-v8a.apk",
+      "arch": "arm64-v8a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/QgOfO/FCL-release-1.2.3.0-armeabi-v7a.apk",
+      "arch": "armeabi-v7a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/wGyh8/FCL-release-1.2.3.0-x86.apk",
+      "arch": "x86"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/kXXUx/FCL-release-1.2.3.0-x86_64.apk",
+      "arch": "x86_64"
+    }]
+  },
+  {
+    "name": "1.2.2.9",
+    "type": "directory",
+    "children": [
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/MDqhv/FCL-release-1.2.2.9-all.apk",
+      "arch": "all"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/BD5HD/FCL-release-1.2.2.9-arm64-v8a.apk",
+      "arch": "arm64-v8a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/qmnI6/FCL-release-1.2.2.9-armeabi-v7a.apk",
+      "arch": "armeabi-v7a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/3yYu6/FCL-release-1.2.2.9-x86.apk",
+      "arch": "x86"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/ODAc2/FCL-release-1.2.2.9-x86_64.apk",
+      "arch": "x86_64"
+    }]
+  },
+  {
+    "name": "1.2.2.8",
+    "type": "directory",
+    "children": [
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/ey8T1/FCL-release-1.2.2.8-all.apk",
+      "arch": "all"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/v8LSZ/FCL-release-1.2.2.8-arm64-v8a.apk",
+      "arch": "arm64-v8a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/54oUm/FCL-release-1.2.2.8-armeabi-v7a.apk",
+      "arch": "armeabi-v7a"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/bz7u1/FCL-release-1.2.2.8-x86.apk",
+      "arch": "x86"
+    },
+    {
+      "type": "file",
+      "download_link": "https://pan.huang1111.cn/f/45vTW/FCL-release-1.2.2.8-x86_64.apk",
+      "arch": "x86_64"
+    }]
+  }]
+}
