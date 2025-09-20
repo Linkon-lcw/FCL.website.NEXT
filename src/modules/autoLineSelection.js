@@ -47,6 +47,9 @@ async function autoSelectFastestLine() {
         // 启动延迟检测流，只检测FCL线路
         checkAllLatenciesStream(
             (key, latency) => { // onResult
+                // 排除F1线路
+                if (key === 'F1') return;
+                
                 if (!isCompleted) {
                     console.log(`智能线路选择: 线路 ${key} 延迟 ${latency}ms`);
                     if (latency < Infinity) { // 忽略检测失败的线路

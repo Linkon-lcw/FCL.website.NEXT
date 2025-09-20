@@ -1,41 +1,7 @@
 // 下载模块功能
 
 import { SOURCE_MAP } from './downloadWays.js';
-
-/**
- * 创建一个可折叠的面板项
- * @param {string} title - 面板标题
- * @param {string} content - 面板内容
- * @returns {HTMLElement} 创建好的面板元素
- */
-function createCollapsiblePanel(title, content) {
-    const panel = document.createElement('div');
-    panel.className = 'border border-gray-200 rounded-md';
-    
-    const header = document.createElement('div');
-    header.className = 'flex justify-between items-center p-4 cursor-pointer bg-gray-50';
-    header.innerHTML = `
-        <h4 class="font-medium">${title}</h4>
-        <i class="fas fa-chevron-down transition-transform duration-200"></i>
-    `;
-    
-    const body = document.createElement('div');
-    body.className = 'p-4 hidden';
-    body.innerHTML = content;
-    
-    // 切换折叠状态
-    header.addEventListener('click', () => {
-        body.classList.toggle('hidden');
-        const icon = header.querySelector('i');
-        icon.classList.toggle('fa-chevron-down');
-        icon.classList.toggle('fa-chevron-up');
-    });
-    
-    panel.appendChild(header);
-    panel.appendChild(body);
-    
-    return panel;
-}
+import { createAnimatedCollapsiblePanel } from './CollapsiblePanel.js';
 
 /**\n * 加载下载线路\n * @param {string} url - 文件树JSON的URL\n * @param {string} containerId - 容器元素的ID\n * @param {string} lineName - 线路名称（用于日志标识）\n * @returns {Promise<void>} 无返回值\n */
 async function loadFclDownWay(url, containerId, lineName) {
@@ -68,7 +34,7 @@ async function loadFclDownWay(url, containerId, lineName) {
         if (SOURCE_MAP[lineName] && SOURCE_MAP[lineName].nestedPath) {
             console.log(`${lineName}：特殊处理嵌套路径`);
             let currentChildren = fileTree.children;
-            
+
             // 对于FCL线2和ZL2线2，按名称查找嵌套目录
             // 其他线路也按名称查找（保持一致性）
             for (const dirName of SOURCE_MAP[lineName].nestedPath) {
@@ -89,7 +55,7 @@ async function loadFclDownWay(url, containerId, lineName) {
                 currentChildren = dir.children;
                 console.log(`${lineName}：更新后的children:`, currentChildren);
             }
-            
+
             // 如果成功遍历完所有嵌套路径，则使用最终的children作为版本目录
             if (!versionDirs) {
                 versionDirs = currentChildren.filter(
@@ -121,12 +87,12 @@ async function loadFclDownWay(url, containerId, lineName) {
                 .forEach(file => {
                     archMap[file.arch] = file.download_link;
                 });
-            
+
             const allArchs = Object.keys(archMap);
-            
+
             // 为每个版本面板创建唯一的ID
             const versionId = `${containerId}-version-${index}`;
-            
+
             // 创建版本面板的标题
             contentHtml += `
                 <div class="border border-gray-200 rounded-md overflow-hidden mb-3" id="${versionId}-panel">
@@ -136,10 +102,12 @@ async function loadFclDownWay(url, containerId, lineName) {
                     </div>
                     <div class="max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-content" id="${versionId}-body" style="max-height: 0px;">
             `;
-            
+
             if (allArchs.length === 0) {
                 contentHtml += '<div class="p-3"><p class="text-gray-500 text-sm">此版本无可用下载文件</p></div>';
             } else {
+                // 显示JSON源链接
+                contentHtml += `<div class="p-3 text-xs text-gray-500">数据源: ${url}</div>`;
                 // 创建架构按钮
                 contentHtml += '<div class="p-3"><div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">';
                 allArchs.forEach(arch => {
@@ -152,29 +120,38 @@ async function loadFclDownWay(url, containerId, lineName) {
                 });
                 contentHtml += '</div></div>';
             }
-            
+
             // 结束版本面板
             contentHtml += `
                     </div>
                 </div>
             `;
         });
-        
+
         // 更新容器内容
         container.innerHTML = contentHtml;
-        
+
         // 为新添加的版本面板添加折叠功能和动画
         const versionPanels = container.querySelectorAll('[id$="-panel"]');
         versionPanels.forEach(panel => {
             const header = panel.querySelector('[id$="-header"]');
             const body = panel.querySelector('[id$="-body"]');
             const icon = panel.querySelector('[id$="-icon"]');
-            
+
             if (header && body && icon) {
+                // 添加一个标志来跟踪动画状态
+                let isAnimating = false;
+                
                 header.addEventListener('click', () => {
+                    // 如果正在动画中，则不处理点击事件
+                    if (body.dataset.isAnimating === 'true') return;
+                    
+                    // 设置动画状态为true
+                    body.dataset.isAnimating = 'true';
+                    
                     // 切换状态类
                     body.classList.toggle('collapsed');
-                    
+
                     if (body.classList.contains('collapsed')) {
                         // 折叠
                         // 先设置一个具体的maxHeight值以触发动画
@@ -193,21 +170,23 @@ async function loadFclDownWay(url, containerId, lineName) {
                         body.style.opacity = '1';
                         icon.classList.remove('fa-chevron-down');
                         icon.classList.add('fa-chevron-up');
-                        
-                        // 在动画结束后，将maxHeight设置为'none'以适应内容变化
-                        const cleanup = () => {
-                            body.style.maxHeight = 'none';
-                            body.removeEventListener('transitionend', cleanup);
+
+                        // 动画结束后重置状态
+                        const onTransitionEnd = () => {
+                            body.dataset.isAnimating = 'false';
+                            body.removeEventListener('transitionend', onTransitionEnd);
                         };
-                        body.addEventListener('transitionend', cleanup);
+                        body.addEventListener('transitionend', onTransitionEnd);
                     }
                 });
-                
+
                 // 初始化时添加collapsed类，以确保第一次点击能正确工作
                 body.classList.add('collapsed');
+                // 初始化动画状态
+                body.dataset.isAnimating = 'false';
             }
         });
-        
+
         console.log(`${lineName}：完成`);
     } catch (error) {
         console.error(`${lineName}：出错：`, error);
@@ -225,91 +204,47 @@ async function loadAllFclDownWays() {
         console.error('FCL下载：找不到容器：fcl-downloads');
         return;
     }
-    
+
     // 清空容器
     container.innerHTML = '';
-    
+
     // 定义需要加载的FCL线路
-    const fclLines = [
-        { key: 'F1', name: 'FCL线1' },
-        { key: 'F2', name: 'FCL线2' },
-        { key: 'F3', name: 'FCL线3' },
-        { key: 'F4', name: 'FCL线4' },
-        { key: 'F5', name: 'FCL线5' },
-        { key: 'F6', name: 'FCL线6' },
-        { key: 'F8', name: 'FCL线8' }
-    ];
-    
+    const fclLines = Object.entries(SOURCE_MAP)
+        .filter(([key, _]) => key.startsWith('F'))
+        .map(([key, config]) => ({ key, name: config.name }));
+
     // 为每个线路创建外层折叠面板
     fclLines.forEach(line => {
-        // 创建外层折叠面板容器
-        const outerPanel = document.createElement('div');
-        outerPanel.className = 'border border-gray-200 rounded-md mb-4 overflow-hidden';
-        outerPanel.id = `fcl-line-${line.key}-panel`;
+        const sourceConfig = SOURCE_MAP[line.key]; // 获取线路配置
         
-        // 创建标题部分
-        const header = document.createElement('div');
-        header.className = 'flex justify-between items-center p-4 cursor-pointer bg-gray-100';
-        header.id = `fcl-line-${line.key}-header`;
-        header.innerHTML = `
-            <h3 class="font-medium">${line.name}</h3>
-            <i class="fas fa-chevron-down transition-transform duration-300" id="fcl-line-${line.key}-icon"></i>
-        `;
-        
-        const body = document.createElement('div');
-            body.className = 'max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-content';
-            body.id = `fcl-line-${line.key}-body`;
-            body.innerHTML = `
-                <div class="p-4" id="fcl-${line.key}" class="space-y-3">
-                    <div class="text-center py-4 text-gray-500">
-                        <p>正在加载${line.name}...</p>
-                    </div>
+        // 构建显示文本
+        let text = `${line.name}`;
+        if (sourceConfig.description) {
+            text += ` (${sourceConfig.description})`;
+        }
+        if (sourceConfig.provider) {
+            text += ` [${sourceConfig.provider}]`;
+        }
+
+        // 创建折叠面板内容
+        const panelContent = `
+            <div class="p-4" id="fcl-${line.key}" class="space-y-3">
+                <div class="text-center py-4 text-gray-500">
+                    <p>正在加载${line.name}...</p>
                 </div>
-            `;
-        
-        // 组装外层面板
-        outerPanel.appendChild(header);
-        outerPanel.appendChild(body);
-        
-        // 为外层折叠面板添加折叠功能
-        header.addEventListener('click', () => {
-            const icon = header.querySelector('i');
-            // 切换状态类
-            body.classList.toggle('collapsed');
-            
-            if (body.classList.contains('collapsed')) {
-                // 折叠
-                // 先设置一个具体的maxHeight值以触发动画
-                body.style.maxHeight = body.scrollHeight + 'px';
-                // 触发重排
-                body.offsetHeight;
-                body.style.maxHeight = '0px';
-                body.style.opacity = '0';
-                icon.classList.remove('fa-chevron-up');
-                icon.classList.add('fa-chevron-down');
-            } else {
-                // 展开
-                // 先设置一个具体的maxHeight值以触发动画
-                body.style.maxHeight = body.scrollHeight + 'px';
-                body.style.opacity = '1';
-                icon.classList.remove('fa-chevron-down');
-                icon.classList.add('fa-chevron-up');
-                
-                // 在动画结束后，将maxHeight设置为'none'以适应内容变化
-                const cleanup = () => {
-                    body.style.maxHeight = 'none';
-                    body.removeEventListener('transitionend', cleanup);
-                };
-                body.addEventListener('transitionend', cleanup);
-            }
-        });
-        
-        // 初始化时添加collapsed类，以确保第一次点击能正确工作
-        body.classList.add('collapsed');
-        
-        container.appendChild(outerPanel);
+            </div>
+        `;
+
+        // 使用独立的折叠面板组件
+        const panel = createAnimatedCollapsiblePanel(
+            text,
+            panelContent,
+            `fcl-line-${line.key}`
+        );
+
+        container.appendChild(panel);
     });
-    
+
     // 并行加载所有线路，谁先加载完谁先显示
     fclLines.forEach(async (line) => {
         const sourceConfig = SOURCE_MAP[line.key];
@@ -329,88 +264,47 @@ async function loadAllZlDownWays() {
         console.error('ZL下载：找不到容器：zl-downloads');
         return;
     }
-    
+
     // 清空容器
     container.innerHTML = '';
-    
+
     // 定义需要加载的ZL线路
-    const zlLines = [
-        { key: 'Z1', name: 'ZL线1' },
-        { key: 'Z3', name: 'ZL线3' },
-        { key: 'Z21', name: 'ZL2线1' },
-        { key: 'Z22', name: 'ZL2线2' }
-    ];
-    
+    const zlLines = Object.entries(SOURCE_MAP)
+        .filter(([key, _]) => key.startsWith('Z'))
+        .map(([key, config]) => ({ key, name: config.name }));
+
     // 为每个线路创建外层折叠面板
     zlLines.forEach(line => {
-        // 创建外层折叠面板容器
-        const outerPanel = document.createElement('div');
-        outerPanel.className = 'border border-gray-200 rounded-md mb-4 overflow-hidden';
-        outerPanel.id = `zl-line-${line.key}-panel`;
+        const sourceConfig = SOURCE_MAP[line.key]; // 获取线路配置
         
-        // 创建标题部分
-        const header = document.createElement('div');
-        header.className = 'flex justify-between items-center p-4 cursor-pointer bg-gray-100';
-        header.id = `zl-line-${line.key}-header`;
-        header.innerHTML = `
-            <h3 class="font-medium">${line.name}</h3>
-            <i class="fas fa-chevron-down transition-transform duration-300" id="zl-line-${line.key}-icon"></i>
-        `;
-        
-        const body = document.createElement('div');
-            body.className = 'max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-content';
-            body.id = `zl-line-${line.key}-body`;
-            body.innerHTML = `
-                <div class="p-4" id="zl-${line.key}" class="space-y-3">
-                    <div class="text-center py-4 text-gray-500">
-                        <p>正在加载${line.name}...</p>
-                    </div>
+        // 构建显示文本
+        let text = `${line.name}`;
+        if (sourceConfig.description) {
+            text += ` (${sourceConfig.description})`;
+        }
+        if (sourceConfig.provider) {
+            text += ` [${sourceConfig.provider}]`;
+        }
+
+        // 创建折叠面板内容
+        const panelContent = `
+            <div class="p-4" id="zl-${line.key}" class="space-y-3">
+                <div class="text-center py-4 text-gray-500">
+                    <p>正在加载${line.name}...</p>
                 </div>
-            `;
-        
-        // 组装外层面板
-        outerPanel.appendChild(header);
-        outerPanel.appendChild(body);
-        
-        // 为外层折叠面板添加折叠功能
-        header.addEventListener('click', () => {
-            const icon = header.querySelector('i');
-            // 切换状态类
-            body.classList.toggle('collapsed');
-            
-            if (body.classList.contains('collapsed')) {
-                // 折叠
-                // 先设置一个具体的maxHeight值以触发动画
-                body.style.maxHeight = body.scrollHeight + 'px';
-                // 触发重排
-                body.offsetHeight;
-                body.style.maxHeight = '0px';
-                body.style.opacity = '0';
-                icon.classList.remove('fa-chevron-up');
-                icon.classList.add('fa-chevron-down');
-            } else {
-                // 展开
-                // 先设置一个具体的maxHeight值以触发动画
-                body.style.maxHeight = body.scrollHeight + 'px';
-                body.style.opacity = '1';
-                icon.classList.remove('fa-chevron-down');
-                icon.classList.add('fa-chevron-up');
-                
-                // 在动画结束后，将maxHeight设置为'none'以适应内容变化
-                const cleanup = () => {
-                    body.style.maxHeight = 'none';
-                    body.removeEventListener('transitionend', cleanup);
-                };
-                body.addEventListener('transitionend', cleanup);
-            }
-        });
-        
-        // 初始化时添加collapsed类，以确保第一次点击能正确工作
-        body.classList.add('collapsed');
-        
-        container.appendChild(outerPanel);
+            </div>
+        `;
+
+        // 使用独立的折叠面板组件
+        const panel = createAnimatedCollapsiblePanel(
+            text,
+            panelContent,
+            `zl-line-${line.key}`
+        );
+
+        container.appendChild(panel);
     });
-    
+
     // 并行加载所有线路，谁先加载完谁先显示
     zlLines.forEach(async (line) => {
         const sourceConfig = SOURCE_MAP[line.key];
@@ -421,4 +315,4 @@ async function loadAllZlDownWays() {
 }
 
 // 导出函数
-export { loadFclDownWay, createCollapsiblePanel, loadAllFclDownWays, loadAllZlDownWays };
+export { loadFclDownWay, loadAllFclDownWays, loadAllZlDownWays };

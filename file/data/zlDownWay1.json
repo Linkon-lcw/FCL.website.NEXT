@@ -1,8 +1,8 @@
 {
-  "latest": "1.4.0.8（此源最新）",
+  "latest": "1.4.0.8",
   "children": [
   {
-    "name": "1.4.0.8（此源最新）",
+    "name": "1.4.0.8",
     "type": "directory",
     "children": [
     {

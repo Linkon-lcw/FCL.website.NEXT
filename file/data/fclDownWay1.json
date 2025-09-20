@@ -1,8 +1,8 @@
 {
-  "latest": "1.2.4.9（此源最新）",
+  "latest": "1.2.4.9",
   "children": [
   {
-    "name": "1.2.4.9（此源最新）",
+    "name": "1.2.4.9",
     "type": "directory",
     "children": [
     {

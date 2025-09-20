@@ -26,12 +26,28 @@ function findNestedDirectory(children, targetName, nestedPath = []) {
     );
 }
 
-/**
+/** 
  * 获取并填充下载线路的最新版本到首页开门见山
  * @param {string} sourceKey - 数据源标识
  */
 async function setupIndexDownLinks(sourceKey) {
     console.log(`开门见山：加载：${sourceKey}`);
+
+    // 获取按钮容器
+    const buttonContainer = document.getElementById('odlm-arch-buttons');
+    if (buttonContainer) {
+        // 为所有按钮添加加载状态
+        const buttons = buttonContainer.querySelectorAll('a');
+        buttons.forEach(button => {
+            button.classList.add('loading');
+            button.href = "javascript:void(0)";
+            // 更新版本号占位符为加载中状态
+            const versionPlaceholders = button.querySelectorAll('#version-placeholder');
+            versionPlaceholders.forEach(span => {
+                span.textContent = '...';
+            });
+        });
+    }
 
     try {
         // 提前获取源配置
@@ -78,7 +94,7 @@ async function setupIndexDownLinks(sourceKey) {
         const createArchButton = (arch, link, isPrimary = false) => {
             const button = document.createElement('a');
             button.className = isPrimary ? 
-                'bg-primary-500 hover:bg-primary-600 text-white py-3 px-4 rounded-md text-center transition duration-300 ease-in-out transform hover:scale-105 block' :
+                'bg-primary-600 hover:bg-primary-700 text-white py-3 px-4 rounded-md text-center transition duration-300 ease-in-out transform hover:scale-105 block' :
                 'bg-primary-100 hover:bg-primary-200 text-primary-800 py-3 px-4 rounded-md text-center transition duration-300 ease-in-out transform hover:scale-105 block';
             button.href = link || 'javascript:void(0)';
             
@@ -98,34 +114,37 @@ async function setupIndexDownLinks(sourceKey) {
             return button;
         };
 
-        // 获取所有可用架构（除了'all'）
-        const availableArchs = Object.keys(archLinks).filter(arch => arch !== 'all');
-        
         // 获取按钮容器
         const buttonContainer = document.getElementById('odlm-arch-buttons');
         if (buttonContainer) {
-            // 清空容器
-            buttonContainer.innerHTML = '';
-            
-            // 为'all'架构创建按钮
-            if (archLinks['all']) {
-                const allButton = createArchButton('all', archLinks['all'], true);
-                buttonContainer.appendChild(allButton);
-            }
-            
-            // 为每个架构创建按钮
-            availableArchs.forEach(arch => {
-                const button = createArchButton(arch, archLinks[arch]);
-                buttonContainer.appendChild(button);
+            // 更新按钮内容和链接
+            const buttons = buttonContainer.querySelectorAll('a');
+            buttons.forEach(button => {
+                const arch = button.getAttribute('data-arch');
+                const link = archLinks[arch];
+                
+                if (link) {
+                    // 更新链接
+                    button.href = link;
+                    button.target = "_blank";
+                    // 移除禁用状态（如果有的话）
+                    button.classList.remove('opacity-50', 'cursor-not-allowed');
+                    // 移除加载状态（如果有的话）
+                    button.classList.remove('loading');
+                } else {
+                    // 如果没有链接，禁用按钮
+                    button.href = "javascript:void(0)";
+                    button.classList.add('opacity-50', 'cursor-not-allowed');
+                    // 移除加载状态（如果有的话）
+                    button.classList.remove('loading');
+                }
+                
+                // 更新版本号
+                const versionPlaceholders = button.querySelectorAll('#version-placeholder');
+                versionPlaceholders.forEach(span => {
+                    span.textContent = latestVersionDir.name;
+                });
             });
-            
-            // 如果没有架构，显示提示信息
-            if (availableArchs.length === 0 && !archLinks['all']) {
-                const noArchText = document.createElement('p');
-                noArchText.className = 'text-red-500 text-center py-4';
-                noArchText.textContent = '此版本无可用下载文件';
-                buttonContainer.appendChild(noArchText);
-            }
         }
 
         const latestInfoEl = document.getElementById('latestInfo');
@@ -142,9 +161,24 @@ async function setupIndexDownLinks(sourceKey) {
         if (diEl) diEl.innerHTML = sysInfo;
 
         testAndroidVersion(8, 'FCL');
-
+        
+        // 移除所有按钮的加载状态
+        if (buttonContainer) {
+            const buttons = buttonContainer.querySelectorAll('a');
+            buttons.forEach(button => {
+                button.classList.remove('loading');
+            });
+        }
     } catch (error) {
         console.error(`开门见山：出错：${error.message}`, error);
+        
+        // 移除所有按钮的加载状态
+        if (buttonContainer) {
+            const buttons = buttonContainer.querySelectorAll('a');
+            buttons.forEach(button => {
+                button.classList.remove('loading');
+            });
+        }
 
         const errorHtml = `
         <div class="text-red-500">
@@ -154,8 +188,8 @@ async function setupIndexDownLinks(sourceKey) {
         </div>
         <br>
         <div class="grid grid-cols-2 gap-4">
-          <a class="bg-primary-500 hover:bg-primary-600 text-white py-2 px-4 rounded-md text-center transition" href="#downloads">转到"下载"TAB</a>
-          <a class="bg-primary-500 hover:bg-primary-600 text-white py-2 px-4 rounded-md text-center transition" href="https://wj.qq.com/s2/22395480/df5b/" target="_blank">向站长反馈</a>
+          <a class="bg-primary-600 hover:bg-primary-700 text-white py-2 px-4 rounded-md text-center transition" href="#downloads">转到"下载"TAB</a>
+          <a class="bg-primary-600 hover:bg-primary-700 text-white py-2 px-4 rounded-md text-center transition" href="https://wj.qq.com/s2/22395480/df5b/" target="_blank">向站长反馈</a>
         </div>
         <br>
         <div class="text-gray-600">
@@ -165,9 +199,14 @@ async function setupIndexDownLinks(sourceKey) {
         </div>
         `;
 
-        const odlm = document.getElementById('odlm');
-        if (odlm) {
-            odlm.innerHTML = errorHtml;
+        // 创建一个临时容器来存放错误信息
+        const tempContainer = document.createElement('div');
+        tempContainer.innerHTML = errorHtml;
+        
+        // 清空按钮容器并添加错误信息
+        if (buttonContainer) {
+            buttonContainer.innerHTML = '';
+            buttonContainer.appendChild(tempContainer);
         }
     }
 }

@@ -1,8 +1,8 @@
 {
-  "latest": "2.0.0_alpha-20250810a（此源最新）",
+  "latest": "2.0.0_alpha-20250810a",
   "children": [
     {
-      "name": "2.0.0_alpha-20250810a（此源最新）",
+      "name": "2.0.0_alpha-20250810a",
       "type": "directory",
       "children": [
         {

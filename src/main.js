@@ -4,12 +4,71 @@ import { showDeviceInfo, sysArch } from './modules/deviceDetection.js';
 import { initAutoLineSelection } from './modules/autoLineSelection.js';
 import { setupIndexDownLinks } from './modules/indexDownLinks.js';
 import { loadAllFclDownWays, loadAllZlDownWays } from './modules/downloads.js';
+import { SOURCE_MAP } from './modules/downloadWays.js';
 
 // 将setupIndexDownLinks函数挂载到window对象上，以便其他模块可以访问
 window.setupIndexDownLinks = setupIndexDownLinks;
 
 // 简单的路由和DOM操作
 document.addEventListener('DOMContentLoaded', () => {
+    // 填充线路选择下拉菜单
+    function populateLineSelection() {
+        const selectElement = document.getElementById('odlmSelect');
+        if (!selectElement) return;
+        
+        // 清空现有选项
+        selectElement.innerHTML = '';
+        
+        // 分组添加选项
+        const fclGroup = document.createElement('optgroup');
+        fclGroup.label = 'FCL 下载线路';
+        const zlGroup = document.createElement('optgroup');
+        zlGroup.label = 'ZL 下载线路';
+        
+        Object.entries(SOURCE_MAP).forEach(([key, config]) => {
+            const option = document.createElement('option');
+            option.value = key;
+            
+            // 构建显示文本
+            let text = `${config.name}`;
+            if (config.description) {
+                text += ` (${config.description})`;
+            }
+            if (config.provider) {
+                text += ` [${config.provider}]`;
+            }
+            
+            option.textContent = text;
+            
+            // 设置默认选中项
+            if (key === 'F2') {
+                option.selected = true;
+            }
+            
+            // 根据key前缀决定放入哪个分组
+            if (key.startsWith('F') || key.startsWith('Z')) {
+                if (key.startsWith('F')) {
+                    fclGroup.appendChild(option);
+                } else {
+                    zlGroup.appendChild(option);
+                }
+            } else {
+                // 如果不符合F或Z前缀，直接添加到select元素
+                selectElement.appendChild(option);
+            }
+        });
+        
+        // 将分组添加到select元素
+        if (fclGroup.children.length > 0) {
+            selectElement.appendChild(fclGroup);
+        }
+        if (zlGroup.children.length > 0) {
+            selectElement.appendChild(zlGroup);
+        }
+    }
+    
+    // 初始化线路选择下拉菜单
+    populateLineSelection();
     // 检查URL中的hash并自动导航到相应部分
     const checkHashAndNavigate = () => {
         const hash = window.location.hash;
