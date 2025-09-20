@@ -127,29 +127,29 @@
                     <div id="odlm-arch-buttons" class="gap-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                         <!-- 架构按钮将通过JavaScript动态生成 -->
                         <!-- 预先创建5个按钮以减少布局偏移 -->
-                        <a class="block flex justify-center items-center bg-primary-600 hover:bg-primary-700 px-4 py-3 rounded-md h-16 md:h-20 lg:h-24 text-white text-center hover:scale-105 transition duration-300 ease-in-out transform"
+                        <a class="block flex justify-center items-center bg-primary-600 hover:bg-primary-700 px-4 py-3 rounded-md h-16 md:h-20 lg:h-20 text-white text-center hover:scale-105 transition duration-300 ease-in-out transform"
                             data-arch="all" href="javascript:void(0)">
                             <i class="mr-2 fas fa-download"></i>
                             <span>下载 <span class="font-semibold" id="version-placeholder">...</span> 版本 (通用版)</span>
                         </a>
-                        <a class="block flex justify-center items-center bg-primary-100 hover:bg-primary-200 px-4 py-3 rounded-md h-16 md:h-20 lg:h-24 text-primary-800 text-center hover:scale-105 transition duration-300 ease-in-out transform"
+                        <a class="block flex justify-center items-center bg-primary-100 hover:bg-primary-200 px-4 py-3 rounded-md h-16 md:h-20 lg:h-20 text-primary-800 text-center hover:scale-105 transition duration-300 ease-in-out transform"
                             data-arch="arm64-v8a" href="javascript:void(0)">
                             <i class="mr-2 fas fa-microchip"></i>
                             <span>下载 <span class="font-semibold" id="version-placeholder">...</span> 版本
                                 (arm64-v8a)</span>
                         </a>
-                        <a class="block flex justify-center items-center bg-primary-100 hover:bg-primary-200 px-4 py-3 rounded-md h-16 md:h-20 lg:h-24 text-primary-800 text-center hover:scale-105 transition duration-300 ease-in-out transform"
+                        <a class="block flex justify-center items-center bg-primary-100 hover:bg-primary-200 px-4 py-3 rounded-md h-16 md:h-20 lg:h-20 text-primary-800 text-center hover:scale-105 transition duration-300 ease-in-out transform"
                             data-arch="armeabi-v7a" href="javascript:void(0)">
                             <i class="mr-2 fas fa-microchip"></i>
                             <span>下载 <span class="font-semibold" id="version-placeholder">...</span> 版本
                                 (armeabi-v7a)</span>
                         </a>
-                        <a class="block flex justify-center items-center bg-primary-100 hover:bg-primary-200 px-4 py-3 rounded-md h-16 md:h-20 lg:h-24 text-primary-800 text-center hover:scale-105 transition duration-300 ease-in-out transform"
+                        <a class="block flex justify-center items-center bg-primary-100 hover:bg-primary-200 px-4 py-3 rounded-md h-16 md:h-20 lg:h-20 text-primary-800 text-center hover:scale-105 transition duration-300 ease-in-out transform"
                             data-arch="x86_64" href="javascript:void(0)">
                             <i class="mr-2 fas fa-microchip"></i>
                             <span>下载 <span class="font-semibold" id="version-placeholder">...</span> 版本 (x86_64)</span>
                         </a>
-                        <a class="block flex justify-center items-center bg-primary-100 hover:bg-primary-200 px-4 py-3 rounded-md h-16 md:h-20 lg:h-24 text-primary-800 text-center hover:scale-105 transition duration-300 ease-in-out transform"
+                        <a class="block flex justify-center items-center bg-primary-100 hover:bg-primary-200 px-4 py-3 rounded-md h-16 md:h-20 lg:h-20 text-primary-800 text-center hover:scale-105 transition duration-300 ease-in-out transform"
                             data-arch="x86" href="javascript:void(0)">
                             <i class="mr-2 fas fa-microchip"></i>
                             <span>下载 <span class="font-semibold" id="version-placeholder">...</span> 版本 (x86)</span>
@@ -230,7 +230,10 @@
             <section id="verification" class="hidden section fade-in">
                 <div class="bg-white shadow-md p-6 rounded-lg">
                     <h2 class="mb-4 font-bold text-primary-700 text-2xl">校验</h2>
-                    <p>校验功能正在开发中...</p>
+                    <div id="verification-content">
+                        <!-- 校验内容将在这里加载 -->
+                        <p>校验功能正在加载中...</p>
+                    </div>
                 </div>
             </section>
 
@@ -274,31 +277,9 @@
             <section id="about" class="hidden section fade-in">
                 <div class="bg-white shadow-md p-6 rounded-lg">
                     <h2 class="mb-4 font-bold text-primary-700 text-2xl">关于</h2>
-                    <div class="max-w-none prose" id="about-content">
+                    <div id="about-content">
                         <!-- 关于页面内容将在这里加载 -->
-                        <h3>贡献者</h3>
-                        <ul>
-                            <li>XiaoluoFoxington</li>
-                            <li>LateDream</li>
-                            <li>柠枺</li>
-                            <li>梦泽</li>
-                            <li>哈哈66623332</li>
-                            <li>咬一口的鱼py</li>
-                            <li>MLFKWMC</li>
-                            <li>Linkong</li>
-                            <li>广告哥</li>
-                            <li>LANt</li>
-                        </ul>
-                        <h3>链接</h3>
-                        <ul>
-                            <li><a href="https://github.com/XiaoluoFoxington/FCL.website.mdui" target="_blank">GitHub
-                                    项目地址</a></li>
-                            <li><a href="https://foldcraftlauncher.cn" target="_blank">主域名</a></li>
-                        </ul>
-                        <h3>版权信息</h3>
-                        <p>洛狐XIAOLUOFOXINGTON 2025</p>
-                        <p><a href="https://creativecommons.org/licenses/by-sa/4.0/legalcode.zh-hans" target="_blank">CC
-                                BY-SA</a></p>
+                        <p>关于页面正在加载中...</p>
                     </div>
                 </div>
             </section>

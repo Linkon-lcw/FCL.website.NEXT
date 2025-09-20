@@ -139,16 +139,7 @@ async function loadFclDownWay(url, containerId, lineName) {
             const icon = panel.querySelector('[id$="-icon"]');
 
             if (header && body && icon) {
-                // 添加一个标志来跟踪动画状态
-                let isAnimating = false;
-                
                 header.addEventListener('click', () => {
-                    // 如果正在动画中，则不处理点击事件
-                    if (body.dataset.isAnimating === 'true') return;
-                    
-                    // 设置动画状态为true
-                    body.dataset.isAnimating = 'true';
-                    
                     // 切换状态类
                     body.classList.toggle('collapsed');
 
@@ -173,7 +164,6 @@ async function loadFclDownWay(url, containerId, lineName) {
 
                         // 动画结束后重置状态
                         const onTransitionEnd = () => {
-                            body.dataset.isAnimating = 'false';
                             body.removeEventListener('transitionend', onTransitionEnd);
                         };
                         body.addEventListener('transitionend', onTransitionEnd);
@@ -182,8 +172,6 @@ async function loadFclDownWay(url, containerId, lineName) {
 
                 // 初始化时添加collapsed类，以确保第一次点击能正确工作
                 body.classList.add('collapsed');
-                // 初始化动画状态
-                body.dataset.isAnimating = 'false';
             }
         });
 

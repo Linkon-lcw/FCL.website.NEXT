@@ -4,6 +4,7 @@ import { showDeviceInfo, sysArch } from './modules/deviceDetection.js';
 import { initAutoLineSelection } from './modules/autoLineSelection.js';
 import { setupIndexDownLinks } from './modules/indexDownLinks.js';
 import { loadAllFclDownWays, loadAllZlDownWays } from './modules/downloads.js';
+import { loadIntroFcl, loadChecksums, loadAbout } from './modules/staticContent.js';
 import { SOURCE_MAP } from './modules/downloadWays.js';
 
 // 将setupIndexDownLinks函数挂载到window对象上，以便其他模块可以访问
@@ -90,10 +91,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 targetElement.classList.remove('hidden');
                 
-                // 如果是下载页面，加载下载线路
-                if (targetId === 'downloads') {
-                    loadAllFclDownWays();
-                    loadAllZlDownWays();
+                // 根据目标页面加载相应内容
+                switch (targetId) {
+                    case 'downloads':
+                        loadAllFclDownWays();
+                        loadAllZlDownWays();
+                        break;
+                    case 'verification':
+                        loadChecksums('verification-content');
+                        break;
+                    case 'about':
+                        loadAbout('about-content');
+                        break;
                 }
                 
                 // 滚动到目标元素，并考虑固定标题栏的高度
@@ -149,10 +158,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 mobileMenu.classList.add('hidden');
             }
             
-            // 如果是下载页面，加载下载线路
-            if (targetId === 'downloads') {
-                loadAllFclDownWays();
-                loadAllZlDownWays();
+            // 根据目标页面加载相应内容
+            switch (targetId) {
+                case 'downloads':
+                    loadAllFclDownWays();
+                    loadAllZlDownWays();
+                    break;
+                case 'verification':
+                    loadChecksums('verification');
+                    break;
+                case 'about':
+                    loadAbout('about-content');
+                    break;
             }
             
             // 更新URL hash

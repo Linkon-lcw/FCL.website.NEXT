@@ -69,12 +69,6 @@ function createAnimatedCollapsiblePanel(title, content, id) {
 
     // 为外层折叠面板添加折叠功能
     header.addEventListener('click', () => {
-        // 如果正在动画中，则不处理点击事件
-        if (body.dataset.isAnimating === 'true') return;
-        
-        // 设置动画状态为true
-        body.dataset.isAnimating = 'true';
-        
         const icon = header.querySelector('i');
         // 切换状态类
         body.classList.toggle('collapsed');
@@ -92,7 +86,6 @@ function createAnimatedCollapsiblePanel(title, content, id) {
             
             // 动画结束后重置状态
             const onTransitionEnd = () => {
-                body.dataset.isAnimating = 'false';
                 body.removeEventListener('transitionend', onTransitionEnd);
             };
             body.addEventListener('transitionend', onTransitionEnd);
@@ -107,7 +100,6 @@ function createAnimatedCollapsiblePanel(title, content, id) {
             // 在动画结束后，将maxHeight设置为'none'以适应内容变化
             const onTransitionEnd = () => {
                 body.style.maxHeight = 'none';
-                body.dataset.isAnimating = 'false';
                 body.removeEventListener('transitionend', onTransitionEnd);
             };
             body.addEventListener('transitionend', onTransitionEnd);
@@ -116,8 +108,6 @@ function createAnimatedCollapsiblePanel(title, content, id) {
 
     // 初始化时添加collapsed类，以确保第一次点击能正确工作
     body.classList.add('collapsed');
-    // 初始化动画状态
-    body.dataset.isAnimating = 'false';
 
     return outerPanel;
 }
