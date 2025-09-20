@@ -7,6 +7,18 @@
     <meta name="keywords" content="fcl, foldcraftlauncher, fcl启动器, fcl官网, 官方原版, 下载, 最新版, fcl渲染器, fcl插件, fclava, pojav ffmpeg plugin, zl, zalithlauncher, zl启动器">
     <meta name="description" content="这里是由FCL玩家社区自行搭建的公益下载站。可以在此页面下载《Fold Craft Launcher》（简称FCL），这里提供了FCL最新版、FCL单架构版、FCL历史版本、FCL渲染器、FCL插件、Java和Pojav FFmpeg Plugin，甚至还有ZL启动器。有直链、官方HG、网盘等多个可靠下载源。此网站没有烦人的广告，没有乱七八糟的套路，玩家能够方便快捷地下载到最新版FCL。">
     <link rel="icon" href="/old/file/picture/FCL_icon.webp">
+    <style>
+        /* 固定标题栏的偏移量 */
+        .section {
+            scroll-margin-top: 112px; /* 64px header + 48px nav */
+        }
+        
+        @media (max-width: 768px) {
+            .section {
+                scroll-margin-top: 160px; /* 移动端标题栏高度不同 */
+            }
+        }
+    </style>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -35,7 +47,7 @@
 <body class="bg-gray-50 text-gray-800">
     <div id="app" class="min-h-screen flex flex-col">
         <!-- Header -->
-        <header class="bg-primary-600 text-white shadow-md">
+        <header class="bg-primary-600 text-white shadow-md fixed w-full z-10">
             <div class="container mx-auto px-4 py-3 flex items-center justify-between">
                 <div class="flex items-center space-x-3">
                     <img src="/old/file/picture/FCL_icon.webp" alt="FCL Icon" class="h-10 w-10">
@@ -56,7 +68,7 @@
         </header>
 
         <!-- Navigation -->
-        <nav id="main-nav" class="bg-primary-500 text-white hidden md:block">
+        <nav id="main-nav" class="bg-primary-500 text-white hidden md:block fixed w-full z-10 mt-16">
             <div class="container mx-auto px-4">
                 <ul class="flex space-x-6 py-3">
                     <li><a href="#home" class="hover:text-primary-100 transition nav-link active"><i class="fas fa-home mr-1"></i>主页</a></li>
@@ -69,7 +81,7 @@
         </nav>
 
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="md:hidden bg-primary-500 text-white hidden">
+        <div id="mobile-menu" class="md:hidden bg-primary-500 text-white hidden fixed w-full z-10 mt-16">
             <ul class="py-2">
                 <li><a href="#home" class="block px-4 py-2 hover:bg-primary-400 transition nav-link active"><i class="fas fa-home mr-2"></i>主页</a></li>
                 <li><a href="#downloads" class="block px-4 py-2 hover:bg-primary-400 transition nav-link"><i class="fas fa-download mr-2"></i>下载</a></li>
@@ -80,7 +92,7 @@
         </div>
 
         <!-- Main Content -->
-        <main class="flex-grow container mx-auto px-4 py-6">
+        <main class="flex-grow container mx-auto px-4 py-6 mt-32">
             <!-- Home Section -->
             <section id="home" class="section fade-in">
                 <div class="bg-white rounded-lg shadow-md p-6 mb-6">

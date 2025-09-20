@@ -37,8 +37,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     loadAllZlDownWays();
                 }
                 
-                // 滚动到目标元素
-                targetElement.scrollIntoView({ behavior: 'smooth' });
+                // 滚动到目标元素，并考虑固定标题栏的高度
+                const headerHeight = document.querySelector('header').offsetHeight;
+                const navHeight = document.getElementById('main-nav').offsetHeight;
+                const offset = headerHeight + navHeight;
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - offset,
+                    behavior: 'smooth'
+                });
             }
         }
     };
@@ -91,6 +98,19 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // 更新URL hash
             window.location.hash = targetId;
+            
+            // 滚动到目标元素，并考虑固定标题栏的高度
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                const headerHeight = document.querySelector('header').offsetHeight;
+                const navHeight = document.getElementById('main-nav').offsetHeight;
+                const offset = headerHeight + navHeight;
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - offset,
+                    behavior: 'smooth'
+                });
+            }
         });
     });
 
