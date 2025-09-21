@@ -1,5 +1,6 @@
 // 公告系统模块
-import { initCollapsiblePanels } from './collapsiblePanel.js';
+import { initCollapsiblePanels } from '../components/ReusableCollapsiblePanel.js';
+import { devModeFetch } from './devMode.js';
 
 /**
  * 打开公告
@@ -8,7 +9,7 @@ import { initCollapsiblePanels } from './collapsiblePanel.js';
 async function openNotice(forceShow = false) {
     try {
         // 获取公告内容
-        const response = await fetch('/src/notice.html');
+        const response = await devModeFetch('/src/pages/notice.html');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -52,12 +53,12 @@ async function openNotice(forceShow = false) {
         // 初始化折叠面板组件
         setTimeout(() => {
             // 清除已存在的监听器标记，确保重新初始化
-            const panelHeaders = dialog.querySelectorAll('.notice-panel-header');
+            const panelHeaders = dialog.querySelectorAll('.collapsible-panel-header');
             panelHeaders.forEach(header => {
                 delete header.dataset.listenerAdded;
             });
             
-            initCollapsiblePanels();
+            initCollapsiblePanels(dialog);
         }, 100);
         
         // 添加性能详情切换功能

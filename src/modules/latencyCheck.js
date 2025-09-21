@@ -1,5 +1,6 @@
 // 线路延迟检测功能
 import { SOURCE_MAP } from './downloadWays.js';
+import { devModeFetch, isDevModeEnabled } from './devMode.js';
 
 /**
  * 检测单个线路的延迟
@@ -7,6 +8,12 @@ import { SOURCE_MAP } from './downloadWays.js';
  * @returns {Promise<number>} 延迟时间(ms)
  */
 async function checkLatency(url) {
+    // 如果开发者模式已启用，直接返回一个较大的延迟值
+    if (isDevModeEnabled()) {
+        console.warn(`开发者模式：跳过延迟检测 - ${url}`);
+        return Infinity;
+    }
+    
     const startTime = performance.now();
     try {
         // 设置超时时间（例如3秒）
@@ -17,7 +24,7 @@ async function checkLatency(url) {
 
         // 对于JSON API，我们发送一个HEAD请求来测量延迟
         // 对于其他类型，可以考虑发送一个简单的GET请求或OPTIONS请求
-        const fetchPromise = fetch(url, { method: 'HEAD', mode: 'no-cors' });
+        const fetchPromise = devModeFetch(url, { method: 'HEAD', mode: 'no-cors' });
         
         // 使用Promise.race来处理超时
         await Promise.race([fetchPromise, timeoutPromise]);

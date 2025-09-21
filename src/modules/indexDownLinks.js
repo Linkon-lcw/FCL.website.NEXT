@@ -1,7 +1,8 @@
 // 开门见山下载链接设置
 
 import { SOURCE_MAP } from './downloadWays.js';
-import { sysArch, sysInfo, testAndroidVersion } from './deviceDetection.js';
+import { sysArch, sysInfo, testAndroidVersion } from './../utils/deviceDetection.js';
+import { devModeFetch, isDevModeEnabled } from './devMode.js';
 
 /**
  * 递归查找嵌套目录（支持多级嵌套）
@@ -59,8 +60,30 @@ async function setupIndexDownLinks(sourceKey) {
 
         // 并行执行网络请求，但设置超时避免阻塞
         const fetchDataWithTimeout = (url, timeout = 5000) => {
+            // 如果开发者模式已启用，直接返回一个模拟数据
+            if (isDevModeEnabled()) {
+                console.warn(`开发者模式：跳过下载链接加载 - ${url}`);
+                return Promise.resolve({
+                    latest: "dev-mode",
+                    children: [
+                        {
+                            type: "directory",
+                            name: "dev-mode",
+                            children: [
+                                {
+                                    type: "file",
+                                    name: "dev-mode-file",
+                                    arch: "all",
+                                    download_link: "javascript:void(0)"
+                                }
+                            ]
+                        }
+                    ]
+                });
+            }
+            
             return Promise.race([
-                fetch(url).then(response => {
+                devModeFetch(url).then(response => {
                     if (!response.ok) throw new Error(`HTTP出错：${response.status}`);
                     return response.json();
                 }),

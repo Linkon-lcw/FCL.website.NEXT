@@ -10,7 +10,7 @@ const SOURCE_MAP = {
     F6: { name: 'FCL线6', path: 'https://bbs.xn--rhqx00c95nv9a.club/mirror.json', markLatest: false, description: '更新快', provider: '广告哥提供' },
     F8: { name: 'FCL线8', path: 'https://api.cxsjmc.cn/api/FCL/filelist.json', markLatest: false, description: '高防御', provider: 'LANt提供' },
     Z1: { name: 'ZL线1', path: './file/data/zlDownWay1.json', markLatest: false, description: '', provider: '站长提供' },
-    Z3: { name: 'ZL线3', path: './file/data/ZlDownWay3.json', markLatest: false, description: '', provider: 'fishcpy提供' },
+    Z3: { name: 'ZL线3', path: './file/data/zlDownWay3.json', markLatest: false, description: '', provider: 'fishcpy提供' },
     Z21: { name: 'ZL2线1', path: './file/data/zl2DownWay1.json', markLatest: false, description: '', provider: '站长提供' },
     Z22: { name: 'ZL2线2', path: 'https://frostlynx.work/external/zl2/file_tree.json', markLatest: false, nestedPath: ['zl2'], description: '', provider: '哈哈66623332提供' }
 };

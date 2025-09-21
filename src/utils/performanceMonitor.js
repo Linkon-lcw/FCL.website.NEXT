@@ -101,7 +101,7 @@ class PerformanceMonitor {
      */
     updateNoticePerformanceData() {
         // 延迟加载notice模块以避免循环依赖
-        import('./notice.js').then(({ updatePerformanceDetails }) => {
+        import('../modules/notice.js').then(({ updatePerformanceDetails }) => {
             const perfData = this.generateReport();
             
             // 准备数据格式

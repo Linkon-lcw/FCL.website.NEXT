@@ -1,7 +1,8 @@
 // 下载模块功能
 
 import { SOURCE_MAP } from './downloadWays.js';
-import { createAnimatedCollapsiblePanel } from './CollapsiblePanel.js';
+import { createCollapsiblePanel } from '../components/ReusableCollapsiblePanel.js';
+import { devModeFetch } from './devMode.js';
 
 /**\n * 加载下载线路\n * @param {string} url - 文件树JSON的URL\n * @param {string} containerId - 容器元素的ID\n * @param {string} lineName - 线路名称（用于日志标识）\n * @returns {Promise<void>} 无返回值\n */
 async function loadFclDownWay(url, containerId, lineName) {
@@ -20,7 +21,7 @@ async function loadFclDownWay(url, containerId, lineName) {
 
     try {
         console.log(`${lineName}：${url}`);
-        const response = await fetch(url);
+        const response = await devModeFetch(url);
         if (!response.ok) {
             throw new Error(`HTTP ${response.status} ${response.statusText}`);
         }
@@ -224,7 +225,7 @@ async function loadAllFclDownWays() {
         `;
 
         // 使用独立的折叠面板组件
-        const panel = createAnimatedCollapsiblePanel(
+        const panel = createCollapsiblePanel(
             text,
             panelContent,
             `fcl-line-${line.key}`
@@ -284,7 +285,7 @@ async function loadAllZlDownWays() {
         `;
 
         // 使用独立的折叠面板组件
-        const panel = createAnimatedCollapsiblePanel(
+        const panel = createCollapsiblePanel(
             text,
             panelContent,
             `zl-line-${line.key}`

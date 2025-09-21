@@ -1,14 +1,15 @@
 // 创建目录结构
 import './modules/downloads.js';
-import { showDeviceInfo, sysArch } from './modules/deviceDetection.js';
+import { showDeviceInfo, sysArch } from './utils/deviceDetection.js';
 import { initAutoLineSelection } from './modules/autoLineSelection.js';
 import { setupIndexDownLinks } from './modules/indexDownLinks.js';
 import { loadAllFclDownWays, loadAllZlDownWays } from './modules/downloads.js';
 import { loadIntroFcl, loadChecksums, loadAbout } from './modules/staticContent.js';
-import { perfMonitor } from './modules/performanceMonitor.js';
+import { perfMonitor } from './utils/performanceMonitor.js';
 import { openNotice } from './modules/notice.js';
-import { initCollapsiblePanels } from './modules/collapsiblePanel.js';
+import { initCollapsiblePanels } from './components/ReusableCollapsiblePanel.js';
 import { SOURCE_MAP } from './modules/downloadWays.js';
+import { initDevMode } from './modules/devMode.js';
 
 // 记录主脚本开始执行时间
 perfMonitor.mark('MainScriptStart');
@@ -20,6 +21,9 @@ window.setupIndexDownLinks = setupIndexDownLinks;
 document.addEventListener('DOMContentLoaded', () => {
     // 记录DOM内容加载完成时间
     perfMonitor.mark('DOMContentReady');
+    
+    // 初始化开发者模式
+    initDevMode();
     
     // 填充线路选择下拉菜单
     function populateLineSelection() {

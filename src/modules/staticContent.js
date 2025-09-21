@@ -1,4 +1,5 @@
 // 静态内容加载模块
+import { devModeFetch } from './devMode.js';
 
 /**
  * 从指定URL获取HTML内容并插入到目标容器中
@@ -14,7 +15,7 @@ async function loadHtmlContent(url, containerId) {
     }
 
     try {
-        const response = await fetch(url);
+        const response = await devModeFetch(url);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -43,7 +44,7 @@ async function loadHtmlContent(url, containerId) {
  * @param {string} containerId - 容器元素的ID
  */
 async function loadIntroFcl(containerId) {
-    await loadHtmlContent('/src/intro.html', containerId);
+    await loadHtmlContent('/src/pages/intro.html', containerId);
 }
 
 /**
@@ -51,7 +52,7 @@ async function loadIntroFcl(containerId) {
  * @param {string} containerId - 容器元素的ID
  */
 async function loadChecksums(containerId) {
-    await loadHtmlContent('/src/check.html', containerId);
+    await loadHtmlContent('/src/pages/check.html', containerId);
 }
 
 /**
@@ -59,7 +60,7 @@ async function loadChecksums(containerId) {
  * @param {string} containerId - 容器元素的ID
  */
 async function loadAbout(containerId) {
-    await loadHtmlContent('/src/about.html', containerId);
+    await loadHtmlContent('/src/pages/about.html', containerId);
 }
 
 // 导出函数
