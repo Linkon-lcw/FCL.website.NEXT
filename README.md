@@ -9,6 +9,7 @@
 *   **设备架构检测**: 自动识别用户设备的 CPU 架构，方便用户下载对应的版本。
 *   **响应式设计**: 适配桌面端和移动端，提供良好的用户体验。
 *   **现代化 UI**: 使用 Tailwind CSS 和 FontAwesome 构建，界面简洁美观。
+*   **可折叠面板**: 使用 ReusableCollapsiblePanel 组件实现，支持动画效果和多种配置选项。
 
 ## 技术栈
 
@@ -67,6 +68,7 @@ FCL.website.NEXT/
 ├── old/                  # 旧版网站代码（供参考）
 ├── src/                  # 源代码目录
 │   ├── components/       # 可复用的 UI 组件
+│   │   └── ReusableCollapsiblePanel.js  # 可折叠面板组件
 │   ├── modules/          # 功能模块（下载、线路检测等）
 │   ├── pages/            # 页面特定的脚本
 │   ├── utils/            # 工具函数
@@ -81,3 +83,23 @@ FCL.website.NEXT/
 ├── QWEN.md              # Qwen Agent 上下文文件
 └── README.md            # 项目说明文件 (本文件)
 ```
+
+## 最近更新
+
+### 2025年9月 - ReusableCollapsiblePanel 组件集成
+
+**修改内容：**
+1. **新增组件**: 创建 `src/components/ReusableCollapsiblePanel.js` 可复用折叠面板组件
+2. **页面更新**: 将 `src/pages/about.html` 和 `src/pages/check.html` 中的面板转换为 ReusableCollapsiblePanel 结构
+3. **功能集成**: 在 `src/main.js` 中导入并初始化折叠面板组件
+
+**技术细节：**
+- 组件支持动画效果（max-height 和 opacity 过渡）
+- 支持多种配置选项（如 allowMultiple 允许多个面板同时展开）
+- 响应式设计，适配移动端和桌面端
+- 支持嵌套面板结构
+
+**测试验证：**
+- 测试页面 `test-collapsible.html` 已验证组件功能正常
+- about.html 页面中的贡献者列表面板工作正常
+- check.html 页面中的文件校验信息面板工作正常

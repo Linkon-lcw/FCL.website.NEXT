@@ -1,25 +1,25 @@
 
-        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+<div class="bg-white shadow-md rounded-lg overflow-hidden">
             <div class="p-6">
                 <h3 class="mb-4 font-bold text-primary-700 text-2xl">文件校验</h3>
                 <p class="mb-6 text-gray-700">
                     为了确保您下载的文件完整且未被篡改，我们提供了文件的校验信息。您可以使用这些信息来验证下载文件的完整性。
                 </p>
                 
-                <div class="border border-gray-200 rounded-lg">
+                <div id="checksum-panels" class="collapsible-panel-container border border-gray-200 rounded-lg">
                     <!-- FCL -->
-                    <div class="border-gray-200 border-b">
-                        <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
+                    <div class="border-gray-200 border-b collapsible-panel">
+                        <div class="collapsible-panel-header flex justify-between items-center bg-gray-50 p-4 cursor-pointer" data-panel-options='{"allowMultiple":false}'>
                             <h4 class="font-medium text-lg">FCL</h4>
                             <i class="transition-transform duration-300 fas fa-chevron-down"></i>
                         </div>
-                        <div class="hidden">
-                            <div class="border-gray-200 border-b">
-                                <div class="flex justify-between items-center p-4 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
+                        <div class="collapsible-panel-body max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out">
+                            <div class="border-gray-200 border-b collapsible-panel">
+                                <div class="collapsible-panel-header flex justify-between items-center p-4 cursor-pointer" data-panel-options='{"allowMultiple":false}'>
                                     <span class="font-medium">1.2.4.9</span>
                                     <i class="transition-transform duration-300 fas fa-chevron-down"></i>
                                 </div>
-                                <div class="hidden bg-gray-50 p-4">
+                                <div class="collapsible-panel-body max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out bg-gray-50 p-4">
                                     <div class="space-y-3">
                                         <div>
                                             <label class="block mb-1 font-medium text-gray-700 text-sm">sha256:all</label>
@@ -64,12 +64,12 @@
                                 </div>
                             </div>
                             
-                            <div class="border-gray-200 border-b">
-                                <div class="flex justify-between items-center p-4 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
+                            <div class="border-gray-200 border-b collapsible-panel">
+                                <div class="collapsible-panel-header flex justify-between items-center p-4 cursor-pointer" data-panel-options='{"allowMultiple":false}'>
                                     <span class="font-medium">1.2.4.8</span>
                                     <i class="transition-transform duration-300 fas fa-chevron-down"></i>
                                 </div>
-                                <div class="hidden bg-gray-50 p-4">
+                                <div class="collapsible-panel-body max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out bg-gray-50 p-4">
                                     <div class="space-y-3">
                                         <div>
                                             <label class="block mb-1 font-medium text-gray-700 text-sm">sha256:all</label>
@@ -122,12 +122,12 @@
                     </div>
                     
                     <!-- MG -->
-                    <div>
-                        <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
+                    <div class="border-gray-200 border-b collapsible-panel">
+                        <div class="collapsible-panel-header flex justify-between items-center bg-gray-50 p-4 cursor-pointer" data-panel-options='{"allowMultiple":false}'>
                             <h4 class="font-medium text-lg">MG v1.3.0</h4>
                             <i class="transition-transform duration-300 fas fa-chevron-down"></i>
                         </div>
-                        <div class="hidden bg-gray-50 p-4">
+                        <div class="collapsible-panel-body max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out bg-gray-50 p-4">
                             <div>
                                 <label class="block mb-1 font-medium text-gray-700 text-sm">sha256</label>
                                 <div class="flex">
