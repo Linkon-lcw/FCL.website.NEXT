@@ -48,10 +48,9 @@ function createCollapsiblePanel(title, content, options = {}) {
     
     // 设置内容
     if (typeof content === 'string') {
-        body.innerHTML = `<div class="p-4">${content}</div>`;
+        body.innerHTML = `<div>${content}</div>`;
     } else if (content instanceof HTMLElement) {
         const wrapper = document.createElement('div');
-        wrapper.className = 'p-4';
         wrapper.appendChild(content);
         body.appendChild(wrapper);
     }
@@ -62,8 +61,10 @@ function createCollapsiblePanel(title, content, options = {}) {
     
     // 如果默认展开，设置初始状态
     if (opts.startExpanded) {
-        body.style.maxHeight = body.scrollHeight + 'px';
+        body.style.maxHeight = 'fit-content';
         body.style.opacity = '1';
+        // 为默认展开的面板添加p-4类
+        body.classList.add('p-4');
         const icon = header.querySelector('i');
         if (icon) {
             icon.classList.remove('fa-chevron-down');
@@ -101,8 +102,9 @@ function initCollapsiblePanels(container = document) {
                 // 阻止事件冒泡
                 e.stopPropagation();
                 
-                // 获取面板选项
-                const panelOptions = JSON.parse(header.dataset.panelOptions || '{}');
+                // 获取面板容器和选项
+                const panelContainer = this.closest('.collapsible-panel');
+                const panelOptions = panelContainer ? JSON.parse(panelContainer.dataset.panelOptions || '{}') : {};
                 
                 // 切换面板展开/收起状态
                 togglePanel(this, panelOptions);
@@ -128,7 +130,7 @@ function togglePanel(header, options = {}) {
         // 如果不允许同时展开多个面板，需要关闭其他面板
         if (!options.allowMultiple) {
             // 获取同一容器内的所有面板
-            const container = header.closest('.collapsible-panel-container') || document;
+            const container = header.closest('.collapsible-panel-container') || header.closest('.collapsible-panel')?.parentElement || document;
             const allHeaders = container.querySelectorAll('.collapsible-panel-header');
             
             allHeaders.forEach(otherHeader => {
@@ -166,9 +168,11 @@ function expandPanel(header) {
     
     if (panelBody) {
         // 展开面板
-        panelBody.style.maxHeight = panelBody.scrollHeight + 'px';
+        panelBody.style.maxHeight = 'fit-content';
         panelBody.style.opacity = '1';
         panelBody.classList.remove('collapsed');
+        // 添加p-4类以提供内边距
+        panelBody.classList.add('p-4');
         
         // 更新图标
         const icon = header.querySelector('i');
@@ -191,6 +195,8 @@ function collapsePanel(header) {
         panelBody.style.maxHeight = '0px';
         panelBody.style.opacity = '0';
         panelBody.classList.add('collapsed');
+        // 移除p-4类以消除内边距
+        panelBody.classList.remove('p-4');
         
         // 更新图标
         const icon = header.querySelector('i');

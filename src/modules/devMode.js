@@ -8,23 +8,12 @@ let isDevMode = false;
  * @param {boolean} [initialState=false] - 初始状态
  */
 function initDevMode(initialState = false) {
-    // 检测是否为localhost访问
-    const isLocalhost = window.location.hostname === 'localhost' || 
-                       window.location.hostname === '127.0.0.1' || 
-                       window.location.hostname === '';
+    isDevMode = initialState;
     
-    // 如果是localhost访问，自动启用开发者模式
-    if (isLocalhost) {
-        isDevMode = true;
-        console.log('检测到localhost访问，自动启用开发者模式');
-    } else {
-        isDevMode = initialState;
-        
-        // 从本地存储中读取开发者模式状态
-        const savedDevMode = localStorage.getItem('devMode');
-        if (savedDevMode !== null) {
-            isDevMode = savedDevMode === 'true';
-        }
+    // 从本地存储中读取开发者模式状态
+    const savedDevMode = localStorage.getItem('devMode');
+    if (savedDevMode !== null) {
+        isDevMode = savedDevMode === 'true';
     }
     
     // 创建开发者模式切换按钮
@@ -47,34 +36,25 @@ function createDevModeToggle() {
         return;
     }
     
+    // 获取header中的按钮容器
+    const headerButtons = document.querySelector('header .flex.items-center.space-x-4');
+    if (!headerButtons) {
+        console.error('找不到header按钮容器');
+        return;
+    }
+    
     // 创建开发者模式切换按钮
     const devModeToggle = document.createElement('button');
     devModeToggle.id = 'dev-mode-toggle';
-    devModeToggle.className = `fixed bottom-4 right-4 z-50 p-2 rounded-full transition ${isDevMode ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-gray-700 hover:bg-gray-800'} text-white shadow-lg`;
+    devModeToggle.className = `hover:bg-primary-500 p-2 rounded-full transition ${isDevMode ? 'bg-yellow-500' : ''}`;
     devModeToggle.setAttribute('aria-label', '切换开发者模式');
     devModeToggle.innerHTML = '<i class="fas fa-code"></i>';
-    devModeToggle.style.fontSize = '0.75rem'; // 使按钮更小
-    devModeToggle.style.width = '2rem'; // 设置固定宽度
-    devModeToggle.style.height = '2rem'; // 设置固定高度
     
     // 添加点击事件
     devModeToggle.addEventListener('click', toggleDevMode);
     
-    // 添加到页面底部
-    document.body.appendChild(devModeToggle);
-    
-    // 如果是localhost访问，添加提示文本
-    const isLocalhost = window.location.hostname === 'localhost' || 
-                       window.location.hostname === '127.0.0.1' || 
-                       window.location.hostname === '';
-    
-    if (isLocalhost && isDevMode) {
-        const devModeLabel = document.createElement('div');
-        devModeLabel.id = 'dev-mode-label';
-        devModeLabel.className = 'fixed bottom-4 right-16 z-50 bg-yellow-500 text-white px-2 py-1 rounded-md text-xs shadow-lg';
-        devModeLabel.textContent = '开发者模式已启用';
-        document.body.appendChild(devModeLabel);
-    }
+    // 添加到header按钮容器
+    headerButtons.appendChild(devModeToggle);
 }
 
 /**
@@ -90,26 +70,10 @@ function toggleDevMode() {
     const devModeToggle = document.getElementById('dev-mode-toggle');
     if (devModeToggle) {
         if (isDevMode) {
-            devModeToggle.classList.remove('bg-gray-700', 'hover:bg-gray-800');
-            devModeToggle.classList.add('bg-yellow-500', 'hover:bg-yellow-600');
+            devModeToggle.classList.add('bg-yellow-500');
         } else {
-            devModeToggle.classList.remove('bg-yellow-500', 'hover:bg-yellow-600');
-            devModeToggle.classList.add('bg-gray-700', 'hover:bg-gray-800');
+            devModeToggle.classList.remove('bg-yellow-500');
         }
-    }
-    
-    // 更新或移除提示文本
-    const devModeLabel = document.getElementById('dev-mode-label');
-    if (isDevMode) {
-        if (!devModeLabel) {
-            const newDevModeLabel = document.createElement('div');
-            newDevModeLabel.id = 'dev-mode-label';
-            newDevModeLabel.className = 'fixed bottom-4 right-16 z-50 bg-yellow-500 text-white px-2 py-1 rounded-md text-xs shadow-lg';
-            newDevModeLabel.textContent = '开发者模式已启用';
-            document.body.appendChild(newDevModeLabel);
-        }
-    } else if (devModeLabel) {
-        devModeLabel.remove();
     }
     
     // 应用或取消开发者模式设置
@@ -142,12 +106,6 @@ function applyDevModeSettings() {
 function removeDevModeSettings() {
     // 移除开发者模式类
     document.body.classList.remove('dev-mode');
-    
-    // 移除提示文本
-    const devModeLabel = document.getElementById('dev-mode-label');
-    if (devModeLabel) {
-        devModeLabel.remove();
-    }
 }
 
 /**
