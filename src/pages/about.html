@@ -1,9 +1,7 @@
 
 <div class="bg-white shadow-md rounded-lg overflow-hidden">
             <div class="p-6">
-                <h2 class="mb-4 font-bold text-primary-700 text-2xl">关于本站</h2>
-                <p class="mb-4 text-gray-700">本站是由FCL玩家社区自行搭建的公益下载站，旨在为玩家提供便捷、可靠的FCL下载服务。</p>
-                <p class="mb-4 text-gray-700">本站没有烦人的广告，没有乱七八糟的套路，玩家能够方便快捷地下载到最新版FCL。</p>
+                <h3 class="mb-4 font-bold text-primary-700 text-2xl">关于我们</h3>
                 <p class="mb-6 text-gray-700">
                     我们只是一群热爱MC，热爱FCL的普通人，自发组织搭建了此站。<mark class="bg-yellow-100">我们不是启动器的开发者</mark>，我们只是搭建了这个网站供玩家下载到最新版FCL而已。此站与Mojang Studios和FCL-Team无任何关系。"Minecraft"是公司Mojang Studios的徽标。
                 </p>
@@ -11,25 +9,19 @@
             
             <div class="border-gray-200 border-t">
                 <div class="p-6">
-                    <div class="collapsible-panel-container">
-                        <div class="mb-4 border border-gray-200 rounded-md overflow-hidden collapsible-panel">
-                            <div class="flex justify-between items-center bg-gray-100 p-4 cursor-pointer collapsible-panel-header">
-                                <h3 class="font-medium">贡献者列表</h3>
-                                <i class="transition-transform duration-300 fas fa-chevron-down"></i>
-                            </div>
-                            <div class="opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
-                                <div class="p-4">
-                                    <div class="space-y-6">
+                    <h3 class="mb-4 font-bold text-primary-700 text-2xl">网站开发贡献者列表（排名不分先后）</h3>
+                    
+                    <div class="space-y-6">
                         <!-- 洛狐 -->
-                        <div class="border border-gray-200 rounded-lg overflow-hidden collapsible-panel" data-panel-options='{"allowMultiple": true}'>
-                            <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer collapsible-panel-header">
+                        <div class="border border-gray-200 rounded-lg overflow-hidden">
+                            <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
                                 <div class="flex items-center">
                                     <img src="https://cdn.mengze.vip/gh/XiaoluoFoxington/FCL.website.mdui/file/avatar/XiaoluoFoxington.webp" alt="洛狐" class="mr-3 rounded-full w-10 h-10">
                                     <span class="font-medium">洛狐 (XiaoluoFoxington)</span>
                                 </div>
                                 <i class="transition-transform duration-300 fas fa-chevron-down"></i>
                             </div>
-                            <div class="md:flex bg-gray-50 opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+                            <div class="hidden md:flex bg-gray-50 p-4">
                                 <div class="pr-4 w-1/3">
                                     <img src="https://cdn.mengze.vip/gh/XiaoluoFoxington/FCL.website.mdui/file/avatar/XiaoluoFoxington.webp" alt="洛狐" class="mb-3 rounded-lg w-full">
                                     <div class="gap-2 grid grid-cols-2">
@@ -55,7 +47,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="md:hidden bg-gray-50 opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+                            <div class="hidden md:hidden bg-gray-50 p-4">
                                 <ul class="space-y-1 text-gray-700 list-disc list-inside">
                                     <li>网站编写</li>
                                     <li>提供FCL下载线路1</li>
@@ -74,15 +66,15 @@
                         </div>
                         
                         <!-- 柠枺 -->
-                        <div class="border border-gray-200 rounded-lg overflow-hidden collapsible-panel" data-panel-options='{"allowMultiple": true}'>
-                            <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer collapsible-panel-header">
+                        <div class="border border-gray-200 rounded-lg overflow-hidden">
+                            <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
                                 <div class="flex items-center">
                                     <img src="https://cdn.mengze.vip/gh/XiaoluoFoxington/FCL.website.mdui/file/avatar/Lemonwood.webp" alt="柠枺" class="mr-3 rounded-full w-10 h-10">
                                     <span class="font-medium">柠枺 (Lemwood)</span>
                                 </div>
                                 <i class="transition-transform duration-300 fas fa-chevron-down"></i>
                             </div>
-                            <div class="md:flex bg-gray-50 opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+                            <div class="hidden md:flex bg-gray-50 p-4">
                                 <div class="pr-4 w-1/3">
                                     <img src="https://cdn.mengze.vip/gh/XiaoluoFoxington/FCL.website.mdui/file/avatar/Lemonwood.webp" alt="柠枺" class="mb-3 rounded-lg w-full">
                                     <div class="gap-2 grid grid-cols-2">
@@ -98,7 +90,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="md:hidden bg-gray-50 opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+                            <div class="hidden md:hidden bg-gray-50 p-4">
                                 <ul class="space-y-1 text-gray-700 list-disc list-inside">
                                     <li>提供域名</li>
                                     <li>提供意见</li>
@@ -108,15 +100,15 @@
                         </div>
                         
                         <!-- 晚梦 -->
-                        <div class="border border-gray-200 rounded-lg overflow-hidden collapsible-panel" data-panel-options='{"allowMultiple": true}'>
-                            <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer collapsible-panel-header">
+                        <div class="border border-gray-200 rounded-lg overflow-hidden">
+                            <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
                                 <div class="flex items-center">
                                     <img src="https://about.latedream.cn/assets/statics/avatar.webp" alt="晚梦" class="mr-3 rounded-full w-10 h-10">
                                     <span class="font-medium">晚梦 (LateDream)</span>
                                 </div>
                                 <i class="transition-transform duration-300 fas fa-chevron-down"></i>
                             </div>
-                            <div class="md:flex bg-gray-50 opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+                            <div class="hidden md:flex bg-gray-50 p-4">
                                 <div class="pr-4 w-1/3">
                                     <img src="https://about.latedream.cn/assets/statics/avatar.webp" alt="晚梦" class="mb-3 rounded-lg w-full">
                                     <div class="gap-2 grid grid-cols-2">
@@ -132,7 +124,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="md:hidden bg-gray-50 opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+                            <div class="hidden md:hidden bg-gray-50 p-4">
                                 <ul class="space-y-1 text-gray-700 list-disc list-inside">
                                     <li>代码贡献</li>
                                     <li>提供意见</li>
@@ -141,15 +133,15 @@
                         </div>
                         
                         <!-- 梦泽 -->
-                        <div class="border border-gray-200 rounded-lg overflow-hidden collapsible-panel" data-panel-options='{"allowMultiple": true}'>
-                            <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer collapsible-panel-header">
+                        <div class="border border-gray-200 rounded-lg overflow-hidden">
+                            <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
                                 <div class="flex items-center">
                                     <img src="https://cdn.mengze.vip/gh/XiaoluoFoxington/FCL.website.mdui/file/avatar/YShenZe.webp" alt="梦泽" class="mr-3 rounded-full w-10 h-10">
                                     <span class="font-medium">梦泽</span>
                                 </div>
                                 <i class="transition-transform duration-300 fas fa-chevron-down"></i>
                             </div>
-                            <div class="md:flex bg-gray-50 opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+                            <div class="hidden md:flex bg-gray-50 p-4">
                                 <div class="pr-4 w-1/3">
                                     <img src="https://cdn.mengze.vip/gh/XiaoluoFoxington/FCL.website.mdui/file/avatar/YShenZe.webp" alt="梦泽" class="mb-3 rounded-lg w-full">
                                     <div class="gap-2 grid grid-cols-1">
@@ -173,7 +165,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="md:hidden bg-gray-50 opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+                            <div class="hidden md:hidden bg-gray-50 p-4">
                                 <ul class="space-y-1 text-gray-700 list-disc list-inside">
                                     <li>提供CDN加速</li>
                                     <li>提供FCL下载线路7</li>
@@ -192,15 +184,15 @@
                         </div>
                         
                         <!-- 哈哈66623332 -->
-                        <div class="border border-gray-200 rounded-lg overflow-hidden collapsible-panel" data-panel-options='{"allowMultiple": true}'>
-                            <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer collapsible-panel-header">
+                        <div class="border border-gray-200 rounded-lg overflow-hidden">
+                            <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
                                 <div class="flex items-center">
                                     <img src="https://frostlynx.work/images/haha.jpg" alt="哈哈66623332" class="mr-3 rounded-full w-10 h-10">
                                     <span class="font-medium">哈哈66623332</span>
                                 </div>
                                 <i class="transition-transform duration-300 fas fa-chevron-down"></i>
                             </div>
-                            <div class="md:flex bg-gray-50 opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+                            <div class="hidden md:flex bg-gray-50 p-4">
                                 <div class="pr-4 w-1/3">
                                     <img src="https://frostlynx.work/images/haha.jpg" alt="哈哈66623332" class="mb-3 rounded-lg w-full">
                                     <div class="gap-2 grid grid-cols-2">
@@ -215,7 +207,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="md:hidden bg-gray-50 opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+                            <div class="hidden md:hidden bg-gray-50 p-4">
                                 <ul class="space-y-1 text-gray-700 list-disc list-inside">
                                     <li>提供FCL下载线路2</li>
                                     <li>提供ZL2下载线路2</li>
@@ -224,15 +216,15 @@
                         </div>
                         
                         <!-- 咬一口的鱼py -->
-                        <div class="border border-gray-200 rounded-lg overflow-hidden collapsible-panel" data-panel-options='{"allowMultiple": true}'>
-                            <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer collapsible-panel-header">
+                        <div class="border border-gray-200 rounded-lg overflow-hidden">
+                            <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
                                 <div class="flex items-center">
                                     <img src="https://www.fis.ink/img/logo.png" alt="咬一口的鱼py" class="mr-3 rounded-full w-10 h-10">
                                     <span class="font-medium">咬一口的鱼py (fishcpy)</span>
                                 </div>
                                 <i class="transition-transform duration-300 fas fa-chevron-down"></i>
                             </div>
-                            <div class="md:flex bg-gray-50 opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+                            <div class="hidden md:flex bg-gray-50 p-4">
                                 <div class="pr-4 w-1/3">
                                     <img src="https://www.fis.ink/img/logo.png" alt="咬一口的鱼py" class="mb-3 rounded-lg w-full">
                                     <div class="gap-2 grid grid-cols-2">
@@ -250,7 +242,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="md:hidden bg-gray-50 opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+                            <div class="hidden md:hidden bg-gray-50 p-4">
                                 <ul class="space-y-1 text-gray-700 list-disc list-inside">
                                     <li>提供FCL下载线路3</li>
                                     <li>提供ZL下载线路3</li>
@@ -261,15 +253,15 @@
                         </div>
                         
                         <!-- MLFKWMC -->
-                        <div class="border border-gray-200 rounded-lg overflow-hidden collapsible-panel" data-panel-options='{"allowMultiple": true}'>
-                            <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer collapsible-panel-header">
+                        <div class="border border-gray-200 rounded-lg overflow-hidden">
+                            <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
                                 <div class="flex items-center">
                                     <img src="https://mcddos.top/logo.jpg" alt="MLFKWMC" class="mr-3 rounded-full w-10 h-10">
                                     <span class="font-medium">MLFKWMC</span>
                                 </div>
                                 <i class="transition-transform duration-300 fas fa-chevron-down"></i>
                             </div>
-                            <div class="md:flex bg-gray-50 opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+                            <div class="hidden md:flex bg-gray-50 p-4">
                                 <div class="pr-4 w-1/3">
                                     <img src="https://mcddos.top/logo.jpg" alt="MLFKWMC" class="mb-3 rounded-lg w-full">
                                     <div class="gap-2 grid grid-cols-2">
@@ -283,7 +275,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="md:hidden bg-gray-50 opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+                            <div class="hidden md:hidden bg-gray-50 p-4">
                                 <ul class="space-y-1 text-gray-700 list-disc list-inside">
                                     <li>提供Vulkan驱动下载线路8</li>
                                 </ul>
@@ -291,15 +283,15 @@
                         </div>
                         
                         <!-- Linkong -->
-                        <div class="border border-gray-200 rounded-lg overflow-hidden collapsible-panel" data-panel-options='{"allowMultiple": true}'>
-                            <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer collapsible-panel-header">
+                        <div class="border border-gray-200 rounded-lg overflow-hidden">
+                            <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
                                 <div class="flex items-center">
                                     <img src="" alt="Linkong" class="mr-3 rounded-full w-10 h-10">
                                     <span class="font-medium">Linkong</span>
                                 </div>
                                 <i class="transition-transform duration-300 fas fa-chevron-down"></i>
                             </div>
-                            <div class="bg-gray-50 opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body md:flex">
+                            <div class="hidden bg-gray-50 p-4">
                                 <ul class="space-y-1 text-gray-700 list-disc list-inside">
                                     <li>提供FCL下载线路5</li>
                                 </ul>
@@ -307,15 +299,15 @@
                         </div>
                         
                         <!-- 广告哥 -->
-                        <div class="border border-gray-200 rounded-lg overflow-hidden collapsible-panel" data-panel-options='{"allowMultiple": true}'>
-                            <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer collapsible-panel-header">
+                        <div class="border border-gray-200 rounded-lg overflow-hidden">
+                            <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
                                 <div class="flex items-center">
                                     <img src="../file/avatar/广告哥.webp" alt="广告哥" class="mr-3 rounded-full w-10 h-10">
                                     <span class="font-medium">广告哥</span>
                                 </div>
                                 <i class="transition-transform duration-300 fas fa-chevron-down"></i>
                             </div>
-                            <div class="md:flex bg-gray-50 opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+                            <div class="hidden md:flex bg-gray-50 p-4">
                                 <div class="pr-4 w-1/3">
                                     <img src="../file/avatar/广告哥.webp" alt="广告哥" class="mb-3 rounded-lg w-full">
                                     <div class="gap-2 grid grid-cols-2">
@@ -329,7 +321,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="md:hidden bg-gray-50 opacity-0 p-4 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+                            <div class="hidden md:hidden bg-gray-50 p-4">
                                 <ul class="space-y-1 text-gray-700 list-disc list-inside">
                                     <li>提供FCL下载线路6</li>
                                 </ul>
@@ -337,14 +329,14 @@
                         </div>
                         
                         <!-- LANt -->
-                        <div class="border border-gray-200 rounded-lg overflow-hidden collapsible-panel" data-panel-options='{"allowMultiple": true}'>
-                            <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer collapsible-panel-header">
+                        <div class="border border-gray-200 rounded-lg overflow-hidden">
+                            <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
                                 <div class="flex items-center">
                                     <span class="font-medium">LANt</span>
                                 </div>
                                 <i class="transition-transform duration-300 fas fa-chevron-down"></i>
                             </div>
-                            <div class="collapsible-panel-body max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out md:flex bg-gray-50">
+                            <div class="hidden bg-gray-50 p-4">
                                 <ul class="space-y-1 text-gray-700 list-disc list-inside">
                                     <li>提供FCL下载线路8</li>
                                 </ul>
@@ -353,83 +345,25 @@
                                 </div>
                             </div>
                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-4 border border-gray-200 rounded-md overflow-hidden collapsible-panel">
-                            <div class="flex justify-between items-center bg-gray-100 p-4 cursor-pointer collapsible-panel-header">
-                                <h3 class="font-medium">网站历史</h3>
-                                <i class="transition-transform duration-300 fas fa-chevron-down"></i>
-                            </div>
-                            <div class="opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
-                                <div class="p-4">
-                                    <div class="mb-4">
-                                        <h4 class="mb-2 font-semibold text-primary-600">2023年</h4>
-                                        <ul class="space-y-1 list-disc list-inside">
-                                            <li>10月 - 网站初步构想</li>
-                                            <li>11月 - 网站开始开发</li>
-                                            <li>12月 - 网站上线测试</li>
-                                        </ul>
-                                    </div>
-                                    <div class="mb-4">
-                                        <h4 class="mb-2 font-semibold text-primary-600">2024年</h4>
-                                        <ul class="space-y-1 list-disc list-inside">
-                                            <li>1月 - 网站正式上线</li>
-                                            <li>3月 - 添加ZL下载支持</li>
-                                            <li>6月 - 网站改版升级</li>
-                                            <li>9月 - 添加更多下载源</li>
-                                        </ul>
-                                    </div>
-                                    <div class="mb-4">
-                                        <h4 class="mb-2 font-semibold text-primary-600">2025年</h4>
-                                        <ul class="space-y-1 list-disc list-inside">
-                                            <li>1月 - 网站再次改版</li>
-                                            <li>6月 - 添加折叠面板组件</li>
-                                            <li>8月 - 优化用户体验</li>
-                                            <li>9月 - 网站完全重构</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-4 border border-gray-200 rounded-md overflow-hidden collapsible-panel">
-                            <div class="flex justify-between items-center bg-gray-100 p-4 cursor-pointer collapsible-panel-header">
-                                <h3 class="font-medium">联系方式</h3>
-                                <i class="transition-transform duration-300 fas fa-chevron-down"></i>
-                            </div>
-                            <div class="opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
-                                <div class="p-4">
-                                    <div class="mb-4">
-                                        <h4 class="mb-2 font-semibold text-primary-600">GitHub</h4>
-                                        <p>网站源码：<a href="https://github.com/XiaoluoFoxington/FCL.website.mdui" target="_blank" class="text-primary-600 hover:underline">FCL.website.mdui</a></p>
-                                    </div>
-                                    <div class="mb-4">
-                                        <h4 class="mb-2 font-semibold text-primary-600">问题反馈</h4>
-                                        <p>如果您在使用本站时遇到问题，欢迎通过以下方式反馈：</p>
-                                        <ul class="space-y-1 list-disc list-inside">
-                                            <li>GitHub Issues：<a href="https://github.com/XiaoluoFoxington/FCL.website.mdui/issues" target="_blank" class="text-primary-600 hover:underline">提交问题</a></li>
-                                            <li>QQ群：<a href="https://qm.qq.com/q/6pPv0v3r" target="_blank" class="text-primary-600 hover:underline">FCL交流群</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="mb-4">
-                                        <h4 class="mb-2 font-semibold text-primary-600">链接</h4>
-                                        <ul class="space-y-2 text-gray-700 list-disc list-inside">
-                                            <li><a href="https://github.com/XiaoluoFoxington/FCL.website.mdui" target="_blank" class="text-primary-600 hover:underline">GitHub 项目地址</a></li>
-                                            <li><a href="https://foldcraftlauncher.cn" target="_blank" class="text-primary-600 hover:underline">主域名</a></li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h4 class="mb-2 font-semibold text-primary-600">版权信息</h4>
-                                        <p class="text-gray-700">洛狐XIAOLUOFOXINGTON 2025</p>
-                                        <p class="mt-2 text-gray-700"><a href="https://creativecommons.org/licenses/by-sa/4.0/legalcode.zh-hans" target="_blank" class="text-primary-600 hover:underline">CC BY-SA</a></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
+                </div>
+            </div>
+            
+            <div class="border-gray-200 border-t">
+                <div class="p-6">
+                    <h3 class="mb-4 font-bold text-primary-700 text-2xl">链接</h3>
+                    <ul class="space-y-2 text-gray-700 list-disc list-inside">
+                        <li><a href="https://github.com/XiaoluoFoxington/FCL.website.mdui" target="_blank" class="text-primary-600 hover:underline">GitHub 项目地址</a></li>
+                        <li><a href="https://foldcraftlauncher.cn" target="_blank" class="text-primary-600 hover:underline">主域名</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-gray-200 border-t">
+                <div class="p-6">
+                    <h3 class="mb-4 font-bold text-primary-700 text-2xl">版权信息</h3>
+                    <p class="text-gray-700">洛狐XIAOLUOFOXINGTON 2025</p>
+                    <p class="mt-2 text-gray-700"><a href="https://creativecommons.org/licenses/by-sa/4.0/legalcode.zh-hans" target="_blank" class="text-primary-600 hover:underline">CC BY-SA</a></p>
                 </div>
             </div>
         </div>

@@ -96,7 +96,7 @@ async function loadFclDownWay(url, containerId, lineName) {
 
             // 创建版本面板的标题
             contentHtml += `
-                <div class="border border-gray-200 rounded-md overflow-hidden" id="${versionId}-panel">
+                <div class="border border-gray-200 rounded-md overflow-hidden mb-3" id="${versionId}-panel">
                     <div class="flex justify-between items-center p-3 cursor-pointer bg-gray-50" id="${versionId}-header">
                         <h5 class="font-medium">${version}</h5>
                         <i class="fas fa-chevron-down transition-transform duration-300" id="${versionId}-icon"></i>
@@ -147,7 +147,7 @@ async function loadFclDownWay(url, containerId, lineName) {
                     if (body.classList.contains('collapsed')) {
                         // 折叠
                         // 先设置一个具体的maxHeight值以触发动画
-                        body.style.maxHeight = 'fit-content';
+                        body.style.maxHeight = body.scrollHeight + 'px';
                         // 触发重排
                         body.offsetHeight;
                         body.style.maxHeight = '0px';
@@ -158,7 +158,7 @@ async function loadFclDownWay(url, containerId, lineName) {
                         // 展开
                         // 获取内容的实际高度（包括padding）
                         const contentHeight = body.scrollHeight;
-                        body.style.maxHeight = 'fit-content';
+                        body.style.maxHeight = contentHeight + 'px';
                         body.style.opacity = '1';
                         icon.classList.remove('fa-chevron-down');
                         icon.classList.add('fa-chevron-up');
@@ -217,7 +217,7 @@ async function loadAllFclDownWays() {
 
         // 创建折叠面板内容
         const panelContent = `
-            <div id="fcl-${line.key}" class="space-y-3">
+            <div class="p-4" id="fcl-${line.key}" class="space-y-3">
                 <div class="text-center py-4 text-gray-500">
                     <p>正在加载${line.name}...</p>
                 </div>
@@ -277,7 +277,7 @@ async function loadAllZlDownWays() {
 
         // 创建折叠面板内容
         const panelContent = `
-            <div id="zl-${line.key}" class="space-y-3">
+            <div class="p-4" id="zl-${line.key}" class="space-y-3">
                 <div class="text-center py-4 text-gray-500">
                     <p>正在加载${line.name}...</p>
                 </div>
