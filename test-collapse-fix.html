@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>折叠菜单修复测试</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .collapsible-content {
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        
+        /* 测试用样式 */
+        .test-content {
+            padding: 1rem;
+            background: #f3f4f6;
+        }
+        
+        .dynamic-content {
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: #e5e7eb;
+            border-radius: 0.25rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-2xl mx-auto">
+        <h1 class="text-2xl font-bold mb-6">折叠菜单修复测试</h1>
+        
+        <!-- 测试面板 1: 基础功能 -->
+        <div class="border border-gray-200 rounded-md overflow-hidden mb-4" id="test-panel-1">
+            <div class="flex justify-between items-center p-3 cursor-pointer bg-gray-50" id="test-header-1">
+                <h5 class="font-medium">基础折叠面板</h5>
+                <i class="fas fa-chevron-down transition-transform duration-300" id="test-icon-1"></i>
+            </div>
+            <div class="max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-content" id="test-body-1" style="max-height: 0px;">
+                <div class="test-content">
+                    <p>这是基础内容</p>
+                    <button onclick="addDynamicContent(1)" class="mt-2 px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600">
+                        添加动态内容
+                    </button>
+                    <div id="dynamic-area-1"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 测试面板 2: 大量内容 -->
+        <div class="border border-gray-200 rounded-md overflow-hidden mb-4" id="test-panel-2">
+            <div class="flex justify-between items-center p-3 cursor-pointer bg-gray-50" id="test-header-2">
+                <h5 class="font-medium">大量内容测试</h5>
+                <i class="fas fa-chevron-down transition-transform duration-300" id="test-icon-2"></i>
+            </div>
+            <div class="max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-content" id="test-body-2" style="max-height: 0px;">
+                <div class="test-content">
+                    <p>这里有很多内容来测试max-height限制</p>
+                    <div id="large-content-area-2">
+                        <!-- 动态生成大量内容 -->
+                    </div>
+                    <button onclick="addLargeContent(2)" class="mt-2 px-3 py-1 bg-green-500 text-white rounded text-sm hover:bg-green-600">
+                        添加更多内容
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 状态显示 -->
+        <div class="mt-6 p-4 bg-white rounded-lg shadow">
+            <h3 class="font-bold mb-2">状态信息</h3>
+            <div id="status-info" class="text-sm space-y-1"></div>
+        </div>
+    </div>
+
+    <script>
+        // 使用修复后的折叠机制
+        function initCollapsibleFix() {
+            const panels = document.querySelectorAll('[id^="test-panel-"]');
+            
+            panels.forEach(panel => {
+                const header = panel.querySelector('[id^="test-header-"]');
+                const body = panel.querySelector('[id^="test-body-"]');
+                const icon = panel.querySelector('[id^="test-icon-"]');
+                
+                if (header && body && icon) {
+                    // 使用修复后的折叠机制
+                    const toggleCollapse = () => {
+                        const isCollapsed = body.classList.contains('collapsed') || body.style.maxHeight === '0px';
+                        
+                        if (isCollapsed) {
+                            // 展开面板
+                            body.classList.remove('collapsed');
+                            body.style.maxHeight = 'none'; // 临时移除max-height以获取真实高度
+                            const scrollHeight = body.scrollHeight;
+                            body.style.maxHeight = '0px'; // 重置为折叠状态
+                            
+                            // 强制重排
+                            body.offsetHeight;
+                            
+                            // 设置实际高度并添加动画
+                            body.style.maxHeight = Math.min(scrollHeight + 50, 2000) + 'px'; // 增加50px缓冲区，限制最大2000px
+                            body.style.opacity = '1';
+                            
+                            // 更新图标
+                            icon.classList.remove('fa-chevron-down');
+                            icon.classList.add('fa-chevron-up');
+                            
+                            // 动画完成后重置为auto，以便内容变化时自动调整
+                            const onExpandEnd = () => {
+                                body.style.maxHeight = 'none';
+                                body.removeEventListener('transitionend', onExpandEnd);
+                                updateStatus();
+                            };
+                            body.addEventListener('transitionend', onExpandEnd);
+                            
+                        } else {
+                            // 折叠面板
+                            body.classList.add('collapsed');
+                            
+                            // 获取当前高度以创建平滑动画
+                            const currentHeight = body.scrollHeight;
+                            body.style.maxHeight = currentHeight + 'px';
+                            
+                            // 强制重排
+                            body.offsetHeight;
+                            
+                            // 动画到折叠状态
+                            body.style.maxHeight = '0px';
+                            body.style.opacity = '0';
+                            
+                            // 更新图标
+                            icon.classList.remove('fa-chevron-up');
+                            icon.classList.add('fa-chevron-down');
+                            
+                            updateStatus();
+                        }
+                    };
+
+                    header.addEventListener('click', toggleCollapse);
+
+                    // 初始化状态 - 默认折叠
+                    body.classList.add('collapsed');
+                    body.style.maxHeight = '0px';
+                    body.style.opacity = '0';
+                    
+                    // 添加resize监听器，当内容变化时更新高度
+                    const resizeObserver = new ResizeObserver(() => {
+                        if (!body.classList.contains('collapsed') && body.style.maxHeight !== '0px') {
+                            // 如果面板是展开状态，更新高度
+                            body.style.maxHeight = 'none';
+                            const newHeight = body.scrollHeight;
+                            body.style.maxHeight = Math.min(newHeight + 50, 2000) + 'px';
+                            updateStatus();
+                        }
+                    });
+                    
+                    // 观察内容变化
+                    resizeObserver.observe(body);
+                    
+                    // 清理函数（可选，如果需要动态移除面板）
+                    panel._cleanup = () => {
+                        resizeObserver.disconnect();
+                    };
+                }
+            });
+            
+            updateStatus();
+        }
+        
+        function updateStatus() {
+            const statusInfo = document.getElementById('status-info');
+            const panels = document.querySelectorAll('[id^="test-panel-"]');
+            
+            let statusHtml = '';
+            panels.forEach((panel, index) => {
+                const body = panel.querySelector('[id^="test-body-"]');
+                const isCollapsed = body.classList.contains('collapsed') || body.style.maxHeight === '0px';
+                const currentHeight = body.scrollHeight;
+                const maxHeight = body.style.maxHeight;
+                
+                statusHtml += `
+                    <div><strong>面板 ${index + 1}:</strong> 
+                        状态: ${isCollapsed ? '折叠' : '展开'} | 
+                        scrollHeight: ${currentHeight}px | 
+                        maxHeight: ${maxHeight || 'none'} | 
+                        opacity: ${body.style.opacity || '1'}
+                    </div>
+                `;
+            });
+            
+            statusInfo.innerHTML = statusHtml;
+        }
+        
+        function addDynamicContent(panelNum) {
+            const area = document.getElementById(`dynamic-area-${panelNum}`);
+            const newContent = document.createElement('div');
+            newContent.className = 'dynamic-content';
+            newContent.innerHTML = `
+                <p>动态添加的内容 - ${new Date().toLocaleTimeString()}</p>
+                <p>这段内容会自动调整面板高度</p>
+            `;
+            area.appendChild(newContent);
+        }
+        
+        function addLargeContent(panelNum) {
+            const area = document.getElementById(`large-content-area-${panelNum}`);
+            for (let i = 0; i < 10; i++) {
+                const content = document.createElement('div');
+                content.className = 'dynamic-content';
+                content.innerHTML = `
+                    <p>大量内容块 ${i + 1} - 用于测试max-height限制</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                `;
+                area.appendChild(content);
+            }
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initCollapsibleFix();
+            
+            // 预填充一些内容
+            addLargeContent(2);
+        });
+    </script>
+</body>
+</html>

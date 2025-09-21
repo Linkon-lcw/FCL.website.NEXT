@@ -10,21 +10,33 @@ FCL (Furnace Craft Launcher) 下载站 - 为 Fold Craft Launcher (FCL) 和 Zalit
 
 ## 待办事项
 
-### 高优先级任务
-- [x] 阅读README.md文件，了解项目详细信息 ✅
-- [x] 分析现有功能模块 ✅
-- [ ] 检查并整理现有代码结构
-- [ ] 优化现有功能模块
+### 历史任务
 
-### 中优先级任务
-- [ ] 完善页面组件
-- [ ] 添加新的功能模块
-- [ ] 优化用户体验
+2025/9/22 [x] 安装Playwright测试框架 ✅
+- [x] 安装Playwright依赖
+- [x] 配置Playwright环境
+- [x] 验证安装是否成功
+
+2025/9/22 [x] 2025/9/22 修复下载页折叠菜单max-height不会更新的问题 ✅
+- [x] 查看ReusableCollapsiblePanel组件的实现
+- [x] 查看下载页面的HTML结构
+- [x] 修改download.js
+
+
 
 ### 低优先级任务
 - [ ] 代码重构和优化
 - [ ] 添加测试用例
 - [ ] 文档完善
+- [ ] 完善页面组件
+- [ ] 添加新的功能模块
+- [ ] 优化用户体验
+
+### 下一步建议
+- [ ] 考虑将下载页的折叠逻辑迁移到 ReusableCollapsiblePanel 组件
+- [ ] 添加更多自动化测试用例
+- [ ] 优化移动端折叠面板的用户体验
+- [ ] 考虑添加面板状态的本地存储功能
 
 ## 最近完成的任务
 - [x] 初始化todo.md文件
@@ -43,6 +55,10 @@ FCL (Furnace Craft Launcher) 下载站 - 为 Fold Craft Launcher (FCL) 和 Zalit
   - **设备建议** (`deviceSuggestions.js`): 设备架构检测和Minecraft相关建议
   - **性能监控** (`performanceMonitor.js`): 性能指标收集和分析
   - **可复用组件** (`ReusableCollapsiblePanel.js`): 通用折叠面板组件
+- **问题修复**: 修复下载页折叠菜单max-height不会更新的问题
+  - 问题原因: 使用硬编码的scrollHeight，内容动态变化时max-height未更新
+  - 解决方案: 实现更robust的折叠机制，使用ResizeObserver监听内容变化
+  - 改进点: 增加50px缓冲区，限制最大高度2000px，动画完成后重置为auto
 
 ---
 

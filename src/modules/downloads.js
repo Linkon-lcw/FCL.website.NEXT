@@ -15,7 +15,7 @@ async function loadFclDownWay(url, containerId, lineName) {
     // 检查SOURCE_MAP[lineName]是否存在
     if (!SOURCE_MAP[lineName]) {
         console.error(`${lineName}：未在SOURCE_MAP中找到配置`);
-        container.innerHTML = `<div class="text-red-500 p-4">${lineName}：配置错误</div>`;
+        container.innerHTML = `<div class="text-red-500">${lineName}：配置错误</div>`;
         return;
     }
 
@@ -72,7 +72,7 @@ async function loadFclDownWay(url, containerId, lineName) {
 
         if (versionDirs.length === 0) {
             console.warn(`${lineName}：找到版本数：${versionDirs.length}`);
-            container.innerHTML = `<div class="text-red-500 p-4">${lineName}：警告：没有找到版本数据</div>`;
+            container.innerHTML = `<div class="text-red-500">${lineName}：警告：没有找到版本数据</div>`;
             return;
         } else {
             console.log(`${lineName}：找到版本数：${versionDirs.length}`);
@@ -140,39 +140,80 @@ async function loadFclDownWay(url, containerId, lineName) {
             const icon = panel.querySelector('[id$="-icon"]');
 
             if (header && body && icon) {
-                header.addEventListener('click', () => {
-                    // 切换状态类
-                    body.classList.toggle('collapsed');
-
-                    if (body.classList.contains('collapsed')) {
-                        // 折叠
-                        // 先设置一个具体的maxHeight值以触发动画
-                        body.style.maxHeight = body.scrollHeight + 'px';
-                        // 触发重排
+                // 使用更robust的折叠机制
+                const toggleCollapse = () => {
+                    const isCollapsed = body.classList.contains('collapsed') || body.style.maxHeight === '0px';
+                    
+                    if (isCollapsed) {
+                        // 展开面板 - 使用足够大的值确保内容完全显示
+                        body.classList.remove('collapsed');
+                        body.style.maxHeight = 'none'; // 临时移除max-height以获取真实高度
+                        const scrollHeight = body.scrollHeight;
+                        body.style.maxHeight = '0px'; // 重置为折叠状态
+                        
+                        // 强制重排
                         body.offsetHeight;
-                        body.style.maxHeight = '0px';
-                        body.style.opacity = '0';
-                        icon.classList.remove('fa-chevron-up');
-                        icon.classList.add('fa-chevron-down');
-                    } else {
-                        // 展开
-                        // 获取内容的实际高度（包括padding）
-                        const contentHeight = body.scrollHeight;
-                        body.style.maxHeight = contentHeight + 'px';
+                        
+                        // 设置实际高度并添加动画
+                        body.style.maxHeight = Math.min(scrollHeight + 50, 2000) + 'px'; // 增加50px缓冲区，限制最大2000px
                         body.style.opacity = '1';
+                        
+                        // 更新图标
                         icon.classList.remove('fa-chevron-down');
                         icon.classList.add('fa-chevron-up');
-
-                        // 动画结束后重置状态
-                        const onTransitionEnd = () => {
-                            body.removeEventListener('transitionend', onTransitionEnd);
+                        
+                        // 动画完成后重置为auto，以便内容变化时自动调整
+                        const onExpandEnd = () => {
+                            body.style.maxHeight = 'none';
+                            body.removeEventListener('transitionend', onExpandEnd);
                         };
-                        body.addEventListener('transitionend', onTransitionEnd);
+                        body.addEventListener('transitionend', onExpandEnd);
+                        
+                    } else {
+                        // 折叠面板
+                        body.classList.add('collapsed');
+                        
+                        // 获取当前高度以创建平滑动画
+                        const currentHeight = body.scrollHeight;
+                        body.style.maxHeight = currentHeight + 'px';
+                        
+                        // 强制重排
+                        body.offsetHeight;
+                        
+                        // 动画到折叠状态
+                        body.style.maxHeight = '0px';
+                        body.style.opacity = '0';
+                        
+                        // 更新图标
+                        icon.classList.remove('fa-chevron-up');
+                        icon.classList.add('fa-chevron-down');
+                    }
+                };
+
+                header.addEventListener('click', toggleCollapse);
+
+                // 初始化状态 - 默认折叠
+                body.classList.add('collapsed');
+                body.style.maxHeight = '0px';
+                body.style.opacity = '0';
+                
+                // 添加resize监听器，当内容变化时更新高度
+                const resizeObserver = new ResizeObserver(() => {
+                    if (!body.classList.contains('collapsed') && body.style.maxHeight !== '0px') {
+                        // 如果面板是展开状态，更新高度
+                        body.style.maxHeight = 'none';
+                        const newHeight = body.scrollHeight;
+                        body.style.maxHeight = Math.min(newHeight + 50, 2000) + 'px';
                     }
                 });
-
-                // 初始化时添加collapsed类，以确保第一次点击能正确工作
-                body.classList.add('collapsed');
+                
+                // 观察内容变化
+                resizeObserver.observe(body);
+                
+                // 清理函数（可选，如果需要动态移除面板）
+                panel._cleanup = () => {
+                    resizeObserver.disconnect();
+                };
             }
         });
 
