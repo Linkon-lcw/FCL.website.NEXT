@@ -5,9 +5,10 @@
 
 /**
  * 显示设备信息
+ * @param {string} containerId - 可选的容器元素ID
  * @returns {string} 设备信息HTML
  */
-function showDeviceInfo() {
+function showDeviceInfo(containerId) {
     const userAgent = navigator.userAgent || '';
     let system = 'Unknown';
     let systemVersion = 'Unknown';
@@ -36,11 +37,21 @@ function showDeviceInfo() {
         system = 'Linux';
     }
 
-    return `<div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+    const deviceInfoHTML = `<div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
         <h3 class="font-semibold text-gray-800 mb-2">设备信息</h3>
         <p class="text-gray-700">系统：<code class="bg-gray-100 px-1 rounded">${system} ${systemVersion}</code></p>
         <p class="text-gray-700">架构：<code class="bg-gray-100 px-1 rounded">${sysArch || 'Unknown'}</code></p>
     </div>`;
+
+    // 如果提供了容器ID，则直接更新容器内容
+    if (containerId) {
+        const container = document.getElementById(containerId);
+        if (container) {
+            container.innerHTML = deviceInfoHTML;
+        }
+    }
+
+    return deviceInfoHTML;
 }
 
 // 全局变量用于存储设备信息
@@ -93,11 +104,22 @@ function testAndroidVersion(version, lineName) {
  * @param {string} containerId - 要填充建议的容器元素ID
  */
 async function showDeviceSuggestions(containerId) {
+    // 等待容器元素加载完成
     let container = null;
+    let attempts = 0;
+    const maxAttempts = 50; // 最多等待5秒（50 * 100ms）
+    
     if (containerId) {
-        container = document.getElementById(containerId);
+        while (!container && attempts < maxAttempts) {
+            container = document.getElementById(containerId);
+            if (!container) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+                attempts++;
+            }
+        }
+        
         if (!container) {
-            console.warn('设备建议：出错：没有容器：' + containerId);
+            console.warn('设备建议：超时未找到容器：' + containerId);
             return;
         }
     }

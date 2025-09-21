@@ -1,0 +1,81 @@
+<!-- src/modules/home.html -->
+<section id="home" class="bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 section fade-in">
+    <div class="bg-white dark:bg-gray-600 shadow-md mb-6 p-6 rounded-lg">
+        <h2 class="mb-4 font-bold text-primary-700 text-2xl">开门见山</h2>
+        <div class="mb-4">
+            <label for="odlmSelect" class="block mb-1 font-medium text-gray-700 text-sm">选择下载线路:</label>
+            <select id="odlmSelect"
+                class="p-2 border border-gray-300 focus:border-primary-500 rounded-md focus:ring-primary-500 w-full">
+                <!-- 选项将通过JavaScript动态生成 -->
+            </select>
+        </div>
+        <div id="odlm-arch-buttons" class="gap-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            <!-- 架构按钮将通过JavaScript动态生成 -->
+            <!-- 预先创建5个按钮以减少布局偏移 -->
+            <a class="block flex justify-center items-center bg-primary-600 hover:bg-primary-700 px-4 py-3 rounded-md h-16 md:h-20 lg:h-20 text-white text-center hover:scale-105 transition duration-300 ease-in-out transform"
+                data-arch="all" href="javascript:void(0)">
+                <i class="mr-2 fas fa-download"></i>
+                <span>下载 <span class="font-semibold" id="version-placeholder">...</span> 版本 (通用版)</span>
+            </a>
+            <a class="block flex justify-center items-center bg-primary-100 hover:bg-primary-200 px-4 py-3 rounded-md h-16 md:h-20 lg:h-20 text-primary-800 text-center hover:scale-105 transition duration-300 ease-in-out transform"
+                data-arch="arm64-v8a" href="javascript:void(0)">
+                <i class="mr-2 fas fa-microchip"></i>
+                <span>下载 <span class="font-semibold" id="version-placeholder">...</span> 版本
+                    (arm64-v8a)</span>
+            </a>
+            <a class="block flex justify-center items-center bg-primary-100 hover:bg-primary-200 px-4 py-3 rounded-md h-16 md:h-20 lg:h-20 text-primary-800 text-center hover:scale-105 transition duration-300 ease-in-out transform"
+                data-arch="armeabi-v7a" href="javascript:void(0)">
+                <i class="mr-2 fas fa-microchip"></i>
+                <span>下载 <span class="font-semibold" id="version-placeholder">...</span> 版本
+                    (armeabi-v7a)</span>
+            </a>
+            <a class="block flex justify-center items-center bg-primary-100 hover:bg-primary-200 px-4 py-3 rounded-md h-16 md:h-20 lg:h-20 text-primary-800 text-center hover:scale-105 transition duration-300 ease-in-out transform"
+                data-arch="x86_64" href="javascript:void(0)">
+                <i class="mr-2 fas fa-microchip"></i>
+                <span>下载 <span class="font-semibold" id="version-placeholder">...</span> 版本 (x86_64)</span>
+            </a>
+            <a class="block flex justify-center items-center bg-primary-100 hover:bg-primary-200 px-4 py-3 rounded-md h-16 md:h-20 lg:h-20 text-primary-800 text-center hover:scale-105 transition duration-300 ease-in-out transform"
+                data-arch="x86" href="javascript:void(0)">
+                <i class="mr-2 fas fa-microchip"></i>
+                <span>下载 <span class="font-semibold" id="version-placeholder">...</span> 版本 (x86)</span>
+            </a>
+        </div>
+        <div id="deviceInfo" class="mt-4 min-h-[24px] text-gray-600 text-sm"></div>
+        <div id="deviceSuggestions" class="mt-4"></div>
+    </div>
+
+    <div class="bg-white dark:bg-gray-600 shadow-md mb-6 p-6 rounded-lg">
+        <h2 class="mb-4 font-bold text-primary-700 text-2xl">🎉 FCL 下载站 🎉</h2>
+        <p class="mb-4">欢迎来到这个<mark>由玩家社区搭建的</mark>非官方 FCL 下载站！</p>
+        <p class="mb-4">在这里，你可以下载到：</p>
+        <ul class="mb-4 list-disc list-inside">
+            <li>FCL 最新多架构版</li>
+            <li>FCL 最新单架构版</li>
+            <li>FCL 所有历史版本</li>
+            <li>Zalith Launcher 最新多架构版</li>
+            <li>Zalith Launcher 最新单架构版</li>
+            <li>FCL 渲染器插件</li>
+            <li>FCL Vulkan 驱动插件</li>
+            <li>Java</li>
+            <li>Pojav FFmpeg Plugin</li>
+        </ul>
+        <p>尽情享受吧！</p>
+    </div>
+
+    <div class="bg-white dark:bg-gray-600 shadow-md p-6 rounded-lg">
+        <h2 class="mb-4 font-bold text-primary-700 text-2xl">介绍 FCL</h2>
+        <div id="introFcl" class="max-w-none prose">
+            <!-- FCL介绍内容将在这里加载 -->
+            <p>FCL (Fold Craft Launcher) 是一个为移动设备设计的 Minecraft 启动器，让你可以在手机或平板上畅玩 Minecraft Java 版。</p>
+            <p>它具有以下特点：</p>
+            <ul>
+                <li><strong>移动端优化:</strong> 专为触屏设备设计，操作流畅。</li>
+                <li><strong>多架构支持:</strong> 支持多种 CPU 架构，兼容性好。</li>
+                <li><strong>社区驱动:</strong> 由活跃的社区开发和维护。</li>
+                <li><strong>开源:</strong> 代码公开，安全可靠。</li>
+            </ul>
+            <p>更多信息请访问 <a href="https://github.com/FCL-Team/FoldCraftLauncher" target="_blank"
+                    class="text-primary-600 hover:underline">FCL GitHub 仓库</a>。</p>
+        </div>
+    </div>
+</section>

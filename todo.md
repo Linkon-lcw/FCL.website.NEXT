@@ -67,11 +67,32 @@ FCL (Furnace Craft Launcher) 下载站 - 为 Fold Craft Launcher (FCL) 和 Zalit
 - [ ] 考虑将下载页的折叠逻辑迁移到 ReusableCollapsiblePanel 组件
 - [ ] 添加更多自动化测试用例
 - [ ] 优化移动端折叠面板的用户体验
+- [ ] 进一步优化模块化结构，考虑实现懒加载机制
 
 ## 最近完成的任务
 - [x] 初始化todo.md文件
 
 ## 操作记录
+
+### 2025年9月 - index.html模块化重构
+- **重构目标**: 将单体index.html文件拆分为模块化结构，提高代码可维护性
+- **拆分内容**: 
+  - 将页面拆分为header、navigation、footer等独立模块
+  - 创建对应的HTML文件（header.html、navigation.html、footer.html）
+  - 分离页面内容到专门的模块文件（home.html、downloads.html等）
+- **技术实现**:
+  - 使用JavaScript动态加载各个模块
+  - 实现模块间的依赖管理和加载顺序
+  - 保持原有功能和样式的一致性
+- **问题解决**:
+  - 修复模块化加载导致的DOM元素访问时序问题
+  - 确保所有功能在模块化后正常工作
+  - 优化加载性能和用户体验
+- **优势提升**:
+  - 代码可维护性显著提高，各模块可独立开发和维护
+  - 支持并行开发，不同开发者可同时处理不同模块
+  - 便于性能优化和按需加载
+  - 页面结构更清晰，便于理解和扩展
 
 ### 2025年9月 - Playwright测试框架集成
 - **安装配置**: 成功安装Playwright测试框架，配置多浏览器测试环境
@@ -115,6 +136,7 @@ FCL (Furnace Craft Launcher) 下载站 - 为 Fold Craft Launcher (FCL) 和 Zalit
 - ReusableCollapsiblePanel组件开发
 - 下载页折叠菜单动态高度修复
 - Playwright测试框架集成
+- index.html模块化重构（header、navigation、footer等模块分离）
 
 🔄 **进行中**: 
 - 测试用例优化（移动端菜单测试稳定性）

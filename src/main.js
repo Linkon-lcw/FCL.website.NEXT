@@ -265,11 +265,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 初始化设备检测
-    showDeviceInfo('deviceInfo');
-
-    // 初始化设备建议功能
-    showDeviceSuggestions('deviceSuggestions');
+    // 初始化设备检测和建议功能
+    // 由于模块化加载，我们需要确保DOM元素已加载完成
+    setTimeout(() => {
+        const deviceInfoElement = document.getElementById('deviceInfo');
+        if (deviceInfoElement) {
+            deviceInfoElement.innerHTML = showDeviceInfo();
+        }
+        
+        showDeviceSuggestions('deviceSuggestions');
+    }, 100); // 延迟执行以确保模块加载完成
 
     // 初始化智能线路选择
     initAutoLineSelection();

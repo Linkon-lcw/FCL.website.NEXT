@@ -72,264 +72,70 @@
 
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
     <div id="app" class="flex flex-col bg-white dark:bg-gray-800 min-h-screen">
-        <!-- Header -->
-        <header class="z-10 fixed bg-primary-600 dark:bg-gray-700 shadow-md w-full text-white">
-            <div class="flex justify-between items-center mx-auto px-4 py-3 container">
-                <div class="flex items-center space-x-3">
-                    <img src="./file/picture/FCL_icon.webp" alt="FCL Icon" width="40" height="40" class="w-10 h-10">
-                    <h1 class="font-bold text-xl">FCL下载站</h1>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <button id="theme-toggle" class="hover:bg-primary-500 p-2 rounded-full transition"
-                        aria-label="切换主题">
-                        <i class="fas fa-moon"></i>
-                    </button>
-                    <a href="https://github.com/XiaoluoFoxington/FCL.website.mdui" target="_blank"
-                        class="hover:bg-primary-500 p-2 rounded-full transition" aria-label="访问 GitHub 仓库">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <button id="menu-toggle" class="md:hidden hover:bg-primary-500 p-2 rounded-full transition"
-                        aria-label="切换菜单">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                </div>
-            </div>
-        </header>
+        <!-- Header will be loaded here -->
+        <div id="header-module"></div>
 
-        <!-- Navigation -->
-        <nav id="main-nav" class="hidden md:block z-10 fixed bg-primary-500 dark:bg-gray-600 mt-16 w-full text-white">
-            <div class="mx-auto px-4 container">
-                <ul class="flex space-x-6 py-3">
-                    <li><a href="#home" class="hover:text-primary-100 transition nav-link active"><i
-                                class="mr-1 fas fa-home"></i>主页</a></li>
-                    <li><a href="#downloads" class="hover:text-primary-100 transition nav-link"><i
-                                class="mr-1 fas fa-download"></i>下载</a></li>
-                    <li><a href="#verification" class="hover:text-primary-100 transition nav-link"><i
-                                class="mr-1 fas fa-check-circle"></i>校验</a></li>
-                    <li><a href="#sponsors" class="hover:text-primary-100 transition nav-link"><i
-                                class="mr-1 fas fa-gift"></i>赞助</a></li>
-                    <li><a href="#about" class="hover:text-primary-100 transition nav-link"><i
-                                class="mr-1 fas fa-info-circle"></i>关于</a></li>
-
-                </ul>
-            </div>
-        </nav>
-
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden z-10 fixed bg-primary-500 dark:bg-gray-600 mt-16 w-full text-white">
-            <ul class="py-2">
-                <li><a href="#home" class="block hover:bg-primary-400 px-4 py-2 transition nav-link active"><i
-                            class="mr-2 fas fa-home"></i>主页</a></li>
-                <li><a href="#downloads" class="block hover:bg-primary-400 px-4 py-2 transition nav-link"><i
-                            class="mr-2 fas fa-download"></i>下载</a></li>
-                <li><a href="#verification" class="block hover:bg-primary-400 px-4 py-2 transition nav-link"><i
-                            class="mr-2 fas fa-check-circle"></i>校验</a></li>
-                <li><a href="#sponsors" class="block hover:bg-primary-400 px-4 py-2 transition nav-link"><i
-                            class="mr-2 fas fa-gift"></i>赞助</a></li>
-                <li><a href="#about" class="block hover:bg-primary-400 px-4 py-2 transition nav-link"><i
-                            class="mr-2 fas fa-info-circle"></i>关于</a></li>
-
-            </ul>
-        </div>
+        <!-- Navigation will be loaded here -->
+        <div id="navigation-module"></div>
 
         <!-- Main Content -->
         <main class="flex-grow mx-auto mt-32 px-4 py-6 container">
-            <!-- Home Section -->
-            <section id="home" class="bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 section fade-in">
-                <div class="bg-white dark:bg-gray-600 shadow-md mb-6 p-6 rounded-lg">
-                    <h2 class="mb-4 font-bold text-primary-700 text-2xl">开门见山</h2>
-                    <div class="mb-4">
-                        <label for="odlmSelect" class="block mb-1 font-medium text-gray-700 text-sm">选择下载线路:</label>
-                        <select id="odlmSelect"
-                            class="p-2 border border-gray-300 focus:border-primary-500 rounded-md focus:ring-primary-500 w-full">
-                            <!-- 选项将通过JavaScript动态生成 -->
-                        </select>
-                    </div>
-                    <div id="odlm-arch-buttons" class="gap-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                        <!-- 架构按钮将通过JavaScript动态生成 -->
-                        <!-- 预先创建5个按钮以减少布局偏移 -->
-                        <a class="block flex justify-center items-center bg-primary-600 hover:bg-primary-700 px-4 py-3 rounded-md h-16 md:h-20 lg:h-20 text-white text-center hover:scale-105 transition duration-300 ease-in-out transform"
-                            data-arch="all" href="javascript:void(0)">
-                            <i class="mr-2 fas fa-download"></i>
-                            <span>下载 <span class="font-semibold" id="version-placeholder">...</span> 版本 (通用版)</span>
-                        </a>
-                        <a class="block flex justify-center items-center bg-primary-100 hover:bg-primary-200 px-4 py-3 rounded-md h-16 md:h-20 lg:h-20 text-primary-800 text-center hover:scale-105 transition duration-300 ease-in-out transform"
-                            data-arch="arm64-v8a" href="javascript:void(0)">
-                            <i class="mr-2 fas fa-microchip"></i>
-                            <span>下载 <span class="font-semibold" id="version-placeholder">...</span> 版本
-                                (arm64-v8a)</span>
-                        </a>
-                        <a class="block flex justify-center items-center bg-primary-100 hover:bg-primary-200 px-4 py-3 rounded-md h-16 md:h-20 lg:h-20 text-primary-800 text-center hover:scale-105 transition duration-300 ease-in-out transform"
-                            data-arch="armeabi-v7a" href="javascript:void(0)">
-                            <i class="mr-2 fas fa-microchip"></i>
-                            <span>下载 <span class="font-semibold" id="version-placeholder">...</span> 版本
-                                (armeabi-v7a)</span>
-                        </a>
-                        <a class="block flex justify-center items-center bg-primary-100 hover:bg-primary-200 px-4 py-3 rounded-md h-16 md:h-20 lg:h-20 text-primary-800 text-center hover:scale-105 transition duration-300 ease-in-out transform"
-                            data-arch="x86_64" href="javascript:void(0)">
-                            <i class="mr-2 fas fa-microchip"></i>
-                            <span>下载 <span class="font-semibold" id="version-placeholder">...</span> 版本 (x86_64)</span>
-                        </a>
-                        <a class="block flex justify-center items-center bg-primary-100 hover:bg-primary-200 px-4 py-3 rounded-md h-16 md:h-20 lg:h-20 text-primary-800 text-center hover:scale-105 transition duration-300 ease-in-out transform"
-                            data-arch="x86" href="javascript:void(0)">
-                            <i class="mr-2 fas fa-microchip"></i>
-                            <span>下载 <span class="font-semibold" id="version-placeholder">...</span> 版本 (x86)</span>
-                        </a>
-                    </div>
-                    <div id="deviceInfo" class="mt-4 min-h-[24px] text-gray-600 text-sm"></div>
-                    <div id="deviceSuggestions" class="mt-4"></div>
-                </div>
+            <!-- Home Section will be loaded here -->
+            <div id="home-module"></div>
 
-                <div class="bg-white dark:bg-gray-600 shadow-md mb-6 p-6 rounded-lg">
-                    <h2 class="mb-4 font-bold text-primary-700 text-2xl">🎉 FCL 下载站 🎉</h2>
-                    <p class="mb-4">欢迎来到这个<mark>由玩家社区搭建的</mark>非官方 FCL 下载站！</p>
-                    <p class="mb-4">在这里，你可以下载到：</p>
-                    <ul class="mb-4 list-disc list-inside">
-                        <li>FCL 最新多架构版</li>
-                        <li>FCL 最新单架构版</li>
-                        <li>FCL 所有历史版本</li>
-                        <li>Zalith Launcher 最新多架构版</li>
-                        <li>Zalith Launcher 最新单架构版</li>
-                        <li>FCL 渲染器插件</li>
-                        <li>FCL Vulkan 驱动插件</li>
-                        <li>Java</li>
-                        <li>Pojav FFmpeg Plugin</li>
-                    </ul>
-                    <p>尽情享受吧！</p>
-                </div>
+            <!-- Downloads Section will be loaded here -->
+            <div id="downloads-module"></div>
 
-                <div class="bg-white dark:bg-gray-600 shadow-md p-6 rounded-lg">
-                    <h2 class="mb-4 font-bold text-primary-700 text-2xl">介绍 FCL</h2>
-                    <div id="introFcl" class="max-w-none prose">
-                        <!-- FCL介绍内容将在这里加载 -->
-                        <p>FCL (Fold Craft Launcher) 是一个为移动设备设计的 Minecraft 启动器，让你可以在手机或平板上畅玩 Minecraft Java 版。</p>
-                        <p>它具有以下特点：</p>
-                        <ul>
-                            <li><strong>移动端优化:</strong> 专为触屏设备设计，操作流畅。</li>
-                            <li><strong>多架构支持:</strong> 支持多种 CPU 架构，兼容性好。</li>
-                            <li><strong>社区驱动:</strong> 由活跃的社区开发和维护。</li>
-                            <li><strong>开源:</strong> 代码公开，安全可靠。</li>
-                        </ul>
-                        <p>更多信息请访问 <a href="https://github.com/FCL-Team/FoldCraftLauncher" target="_blank"
-                                class="text-primary-600 hover:underline">FCL GitHub 仓库</a>。</p>
-                    </div>
-                </div>
-            </section>
+            <!-- Verification Section will be loaded here -->
+            <div id="verification-module"></div>
 
-            <!-- Downloads Section -->
-            <section id="downloads" class="hidden bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 section fade-in">
-                <div class="bg-white dark:bg-gray-600 shadow-md p-6 rounded-lg">
-                    <h2 class="mb-4 font-bold text-primary-700 text-2xl">下载</h2>
-                    <div class="gap-6 grid grid-cols-1 md:grid-cols-2">
-                        <!-- FCL Downloads -->
-                        <div>
-                            <h3 class="mb-3 font-semibold text-primary-600 text-xl">FCL 下载</h3>
-                            <div class="space-y-4" id="fcl-downloads">
-                                <!-- FCL下载线路将在这里动态加载 -->
-                                <!-- 占位符，实际内容将通过JavaScript动态生成 -->
-                                <div class="py-4 text-gray-500 text-center" id="fcl-downloads-placeholder">
-                                    <p>正在加载FCL下载线路...</p>
-                                </div>
-                            </div>
-                        </div>
+            <!-- Sponsors Section will be loaded here -->
+            <div id="sponsors-module"></div>
 
-                        <!-- ZL Downloads -->
-                        <div>
-                            <h3 class="mb-3 font-semibold text-primary-600 text-xl">ZL 下载</h3>
-                            <div class="space-y-4" id="zl-downloads">
-                                <!-- ZL下载线路将在这里动态加载 -->
-                                <!-- 占位符，实际内容将通过JavaScript动态生成 -->
-                                <div class="py-4 text-gray-500 text-center" id="zl-downloads-placeholder">
-                                    <p>正在加载ZL下载线路...</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Verification Section -->
-            <section id="verification" class="hidden bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 section fade-in">
-                <div class="bg-white dark:bg-gray-600 shadow-md p-6 rounded-lg">
-                    <h2 class="mb-4 font-bold text-primary-700 text-2xl">校验</h2>
-                    <div id="verification-content">
-                        <!-- 校验内容将在这里加载 -->
-                        <p>校验功能正在加载中...</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Sponsors Section -->
-            <section id="sponsors" class="hidden bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 section fade-in">
-                <div class="bg-white dark:bg-gray-600 shadow-md mb-6 p-6 rounded-lg">
-                    <h2 class="mb-4 font-bold text-primary-700 text-2xl">微信赞赏码</h2>
-                    <p class="mb-4">下载流量高昂，我们一直坚守使此站保持公益性质。如果您觉得此站对您有帮助，可考虑在下方赞助我。赞助后您可以在<a
-                            href="https://wj.qq.com/s2/20865225/25ca/" target="_blank"
-                            class="text-primary-600 hover:underline">此处</a>填写您的赞助信息，我们看到后会显示在此页面。</p>
-                    <p class="mb-4">背后的软件开发者也不容易，<a href="https://afdian.com/@tungs" target="_blank"
-                            class="text-primary-600 hover:underline">赞助FCL开发者</a>，<a href="https://afdian.com/a/MovTery"
-                            target="_blank" class="text-primary-600 hover:underline">赞助ZL开发者</a>，<a
-                            href="https://www.buymeacoffee.com/Swung0x48" target="_blank"
-                            class="text-primary-600 hover:underline">赞助MG渲染器开发者</a>。</p>
-                    <p class="mb-4 text-red-600"><mark>赞助是纯自愿的，请结合您的经济状况实力再考虑是否要赞助！赞助后无法退款！这里赞助的是此下载站！</mark></p>
-                    <img src="./file/picture/微信赞赏码.png" alt="微信赞赏码" width="320" height="320"
-                        class="mx-auto border border-gray-300 max-w-xs" loading="lazy">
-                </div>
-
-                <div class="bg-white dark:bg-gray-600 shadow-md p-6 rounded-lg">
-                    <h2 class="mb-4 font-bold text-primary-700 text-2xl">赞助列表（时间排序，最新在前）</h2>
-                    <p class="mb-4">更新时间：2025年8月29日19时17分。</p>
-                    <div id="sponsorList" class="space-y-3">
-                        <!-- 赞助列表将在这里加载 -->
-                        <div class="pb-3 border-gray-200 border-b">
-                            <p class="font-medium">赞助者A</p>
-                            <p class="text-gray-600 text-sm">赞助金额: ¥50.00</p>
-                            <p class="text-gray-600 text-sm">留言: 感谢你们的努力！</p>
-                        </div>
-                        <div class="pb-3 border-gray-200 border-b">
-                            <p class="font-medium">赞助者B</p>
-                            <p class="text-gray-600 text-sm">赞助金额: ¥20.00</p>
-                            <p class="text-gray-600 text-sm">留言: 无</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- About Section -->
-            <section id="about" class="hidden bg-white dark:bg-gray-700 section fade-in">
-                <div class="bg-white dark:bg-gray-600 shadow-md p-6 rounded-lg">
-                    <h2 class="mb-4 font-bold text-primary-700 text-2xl">关于</h2>
-                    <div id="about-content">
-                        <!-- 关于页面内容将在这里加载 -->
-                        <p>关于页面正在加载中...</p>
-                    </div>
-                </div>
-            </section>
+            <!-- About Section will be loaded here -->
+            <div id="about-module"></div>
         </main>
 
-        <!-- Footer -->
-        <footer class="bg-primary-800 dark:bg-gray-900 py-6 text-white">
-            <div class="mx-auto px-4 container">
-                <div class="flex md:flex-row flex-col justify-between items-center">
-                    <div class="mb-4 md:mb-0">
-                        <p>&copy; 2025 FCL下载站. All rights reserved.</p>
-                    </div>
-                    <div class="flex space-x-4">
-                        <a href="https://github.com/XiaoluoFoxington/FCL.website.mdui" target="_blank"
-                            class="hover:text-primary-200 transition">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <a href="https://wj.qq.com/s2/22395480/df5b/" target="_blank"
-                            class="hover:text-primary-200 transition">
-                            <i class="fas fa-bug"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </footer>
+        <!-- Footer will be loaded here -->
+        <div id="footer-module"></div>
     </div>
 
     <script src="./src/main.js" type="module"></script>
+    <script type="module">
+        // Module loader
+        async function loadModule(modulePath, elementId) {
+            try {
+                const response = await fetch(modulePath);
+                if (!response.ok) {
+                    throw new Error(`Failed to load module: ${modulePath}`);
+                }
+                const moduleContent = await response.text();
+                document.getElementById(elementId).innerHTML = moduleContent;
+            } catch (error) {
+                console.error("Error loading module:", error);
+                document.getElementById(elementId).innerHTML = `<p>加载模块失败: ${modulePath}</p>`;
+            }
+        }
+
+        // Load all modules
+        document.addEventListener("DOMContentLoaded", async () => {
+            // Load header, navigation, and footer modules
+            await Promise.all([
+                loadModule('./src/modules/header.html', 'header-module'),
+                loadModule('./src/modules/navigation.html', 'navigation-module'),
+                loadModule('./src/modules/footer.html', 'footer-module')
+            ]);
+
+            // Load content modules
+            await Promise.all([
+                loadModule('./src/modules/home.html', 'home-module'),
+                loadModule('./src/modules/downloads.html', 'downloads-module'),
+                loadModule('./src/modules/verification.html', 'verification-module'),
+                loadModule('./src/modules/sponsors.html', 'sponsors-module'),
+                loadModule('./src/modules/about.html', 'about-module')
+            ]);
+        });
+    </script>
 </body>
 
 </html>
