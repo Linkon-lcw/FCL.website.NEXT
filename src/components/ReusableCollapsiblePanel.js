@@ -84,11 +84,7 @@ function createCollapsiblePanel(title, content, options = {}) {
     return outerPanel;
 }
 
-/**
- * 初始化折叠面板组件
- * 为所有带有collapsible-panel-header类的元素添加折叠功能
- * @param {string|HTMLElement} [container=document] - 容器元素或选择器，默认为整个文档
- */
+/**\n * 初始化折叠面板组件\n * 为所有带有collapsible-panel-header类的元素添加折叠功能\n * @param {string|HTMLElement} [container=document] - 容器元素或选择器，默认为整个文档\n */
 function initCollapsiblePanels(container = document) {
     // 获取容器元素
     const targetContainer = typeof container === 'string' 
@@ -109,6 +105,8 @@ function initCollapsiblePanels(container = document) {
         const throttledClickHandler = throttle(function(e) {
             // 阻止事件冒泡
             e.stopPropagation();
+            // 保存事件对象供togglePanel使用
+            header.event = e;
             
             // 获取面板容器和选项
             const panelContainer = this.closest('.collapsible-panel');
@@ -142,22 +140,29 @@ function throttle(func, limit) {
     }
 }
 
-/**
- * 切换面板展开/收起状态
- * @param {HTMLElement} header - 面板头部元素
- * @param {Object} [options] - 面板选项
- * @param {boolean} [options.allowMultiple=false] - 是否允许多个面板同时展开
- */
+/**\n * 切换面板展开/收起状态\n * @param {HTMLElement} header - 面板头部元素\n * @param {Object} [options] - 面板选项\n * @param {boolean} [options.allowMultiple=false] - 是否允许多个面板同时展开\n */
 function togglePanel(header, options = {}) {
+    // 阻止事件冒泡，防止影响父级面板
+    if (header.event && typeof header.event.stopPropagation === 'function') {
+        header.event.stopPropagation();
+    }
+    
     // 获取对应的面板主体元素
     const panelBody = header.nextElementSibling;
     
     if (panelBody) {
         // 如果不允许同时展开多个面板，需要关闭其他面板
         if (!options.allowMultiple) {
-            // 获取同一容器内的所有面板
-            const container = header.closest('.collapsible-panel-container') || header.closest('.collapsible-panel')?.parentElement || document;
-            const allHeaders = container.querySelectorAll('.collapsible-panel-header');
+            // 获取同一容器内的所有面板（但不包括嵌套的面板）
+            const container = header.closest('.collapsible-panel-container') || 
+                             (header.closest('.collapsible-panel') ? header.closest('.collapsible-panel').parentElement : document);
+            
+            // 只选择直接子面板，不包括嵌套在其他面板中的面板
+            const allHeaders = Array.from(container.querySelectorAll('.collapsible-panel-header')).filter(h => {
+                // 检查这个header是否是container的直接子面板，而不是嵌套在其他面板中的
+                const panel = h.closest('.collapsible-panel');
+                return panel && panel.parentElement === container;
+            });
             
             allHeaders.forEach(otherHeader => {
                 if (otherHeader !== header) {
