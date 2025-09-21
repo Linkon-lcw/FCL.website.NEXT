@@ -1,7 +1,7 @@
 // 开门见山下载链接设置
 
 import { SOURCE_MAP } from './downloadWays.js';
-import { sysArch, sysInfo, testAndroidVersion } from './../utils/deviceDetection.js';
+import { sysArch, sysInfo, testAndroidVersion } from './deviceSuggestions.js';
 import { devModeFetch, isDevModeEnabled } from './devMode.js';
 
 /**

@@ -70,10 +70,10 @@
     </noscript>
 </head>
 
-<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100">
-    <div id="app" class="flex flex-col min-h-screen bg-white dark:bg-gray-800">
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
+    <div id="app" class="flex flex-col bg-white dark:bg-gray-800 min-h-screen">
         <!-- Header -->
-        <header class="z-10 fixed bg-primary-600 shadow-md w-full text-white dark:bg-gray-700">
+        <header class="z-10 fixed bg-primary-600 dark:bg-gray-700 shadow-md w-full text-white">
             <div class="flex justify-between items-center mx-auto px-4 py-3 container">
                 <div class="flex items-center space-x-3">
                     <img src="./file/picture/FCL_icon.webp" alt="FCL Icon" width="40" height="40" class="w-10 h-10">
@@ -97,7 +97,7 @@
         </header>
 
         <!-- Navigation -->
-        <nav id="main-nav" class="hidden md:block z-10 fixed bg-primary-500 mt-16 w-full text-white dark:bg-gray-600">
+        <nav id="main-nav" class="hidden md:block z-10 fixed bg-primary-500 dark:bg-gray-600 mt-16 w-full text-white">
             <div class="mx-auto px-4 container">
                 <ul class="flex space-x-6 py-3">
                     <li><a href="#home" class="hover:text-primary-100 transition nav-link active"><i
@@ -116,7 +116,7 @@
         </nav>
 
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden z-10 fixed bg-primary-500 mt-16 w-full text-white dark:bg-gray-600">
+        <div id="mobile-menu" class="hidden md:hidden z-10 fixed bg-primary-500 dark:bg-gray-600 mt-16 w-full text-white">
             <ul class="py-2">
                 <li><a href="#home" class="block hover:bg-primary-400 px-4 py-2 transition nav-link active"><i
                             class="mr-2 fas fa-home"></i>主页</a></li>
@@ -135,8 +135,8 @@
         <!-- Main Content -->
         <main class="flex-grow mx-auto mt-32 px-4 py-6 container">
             <!-- Home Section -->
-            <section id="home" class="section fade-in bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100">
-                <div class="bg-white shadow-md mb-6 p-6 rounded-lg dark:bg-gray-600">
+            <section id="home" class="bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 section fade-in">
+                <div class="bg-white dark:bg-gray-600 shadow-md mb-6 p-6 rounded-lg">
                     <h2 class="mb-4 font-bold text-primary-700 text-2xl">开门见山</h2>
                     <div class="mb-4">
                         <label for="odlmSelect" class="block mb-1 font-medium text-gray-700 text-sm">选择下载线路:</label>
@@ -177,9 +177,10 @@
                         </a>
                     </div>
                     <div id="deviceInfo" class="mt-4 min-h-[24px] text-gray-600 text-sm"></div>
+                    <div id="deviceSuggestions" class="mt-4"></div>
                 </div>
 
-                <div class="bg-white shadow-md mb-6 p-6 rounded-lg dark:bg-gray-600">
+                <div class="bg-white dark:bg-gray-600 shadow-md mb-6 p-6 rounded-lg">
                     <h2 class="mb-4 font-bold text-primary-700 text-2xl">🎉 FCL 下载站 🎉</h2>
                     <p class="mb-4">欢迎来到这个<mark>由玩家社区搭建的</mark>非官方 FCL 下载站！</p>
                     <p class="mb-4">在这里，你可以下载到：</p>
@@ -197,7 +198,7 @@
                     <p>尽情享受吧！</p>
                 </div>
 
-                <div class="bg-white shadow-md p-6 rounded-lg dark:bg-gray-600">
+                <div class="bg-white dark:bg-gray-600 shadow-md p-6 rounded-lg">
                     <h2 class="mb-4 font-bold text-primary-700 text-2xl">介绍 FCL</h2>
                     <div id="introFcl" class="max-w-none prose">
                         <!-- FCL介绍内容将在这里加载 -->
@@ -216,8 +217,8 @@
             </section>
 
             <!-- Downloads Section -->
-            <section id="downloads" class="hidden section fade-in bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100">
-                <div class="bg-white shadow-md p-6 rounded-lg dark:bg-gray-600">
+            <section id="downloads" class="hidden bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 section fade-in">
+                <div class="bg-white dark:bg-gray-600 shadow-md p-6 rounded-lg">
                     <h2 class="mb-4 font-bold text-primary-700 text-2xl">下载</h2>
                     <div class="gap-6 grid grid-cols-1 md:grid-cols-2">
                         <!-- FCL Downloads -->
@@ -248,8 +249,8 @@
             </section>
 
             <!-- Verification Section -->
-            <section id="verification" class="hidden section fade-in bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100">
-                <div class="bg-white shadow-md p-6 rounded-lg dark:bg-gray-600">
+            <section id="verification" class="hidden bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 section fade-in">
+                <div class="bg-white dark:bg-gray-600 shadow-md p-6 rounded-lg">
                     <h2 class="mb-4 font-bold text-primary-700 text-2xl">校验</h2>
                     <div id="verification-content">
                         <!-- 校验内容将在这里加载 -->
@@ -259,8 +260,8 @@
             </section>
 
             <!-- Sponsors Section -->
-            <section id="sponsors" class="hidden section fade-in bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100">
-                <div class="bg-white shadow-md mb-6 p-6 rounded-lg dark:bg-gray-600">
+            <section id="sponsors" class="hidden bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 section fade-in">
+                <div class="bg-white dark:bg-gray-600 shadow-md mb-6 p-6 rounded-lg">
                     <h2 class="mb-4 font-bold text-primary-700 text-2xl">微信赞赏码</h2>
                     <p class="mb-4">下载流量高昂，我们一直坚守使此站保持公益性质。如果您觉得此站对您有帮助，可考虑在下方赞助我。赞助后您可以在<a
                             href="https://wj.qq.com/s2/20865225/25ca/" target="_blank"
@@ -275,7 +276,7 @@
                         class="mx-auto border border-gray-300 max-w-xs" loading="lazy">
                 </div>
 
-                <div class="bg-white shadow-md p-6 rounded-lg dark:bg-gray-600">
+                <div class="bg-white dark:bg-gray-600 shadow-md p-6 rounded-lg">
                     <h2 class="mb-4 font-bold text-primary-700 text-2xl">赞助列表（时间排序，最新在前）</h2>
                     <p class="mb-4">更新时间：2025年8月29日19时17分。</p>
                     <div id="sponsorList" class="space-y-3">
@@ -295,8 +296,8 @@
             </section>
 
             <!-- About Section -->
-            <section id="about" class="hidden section fade-in bg-white dark:bg-gray-700">
-                <div class="bg-white shadow-md p-6 rounded-lg dark:bg-gray-600">
+            <section id="about" class="hidden bg-white dark:bg-gray-700 section fade-in">
+                <div class="bg-white dark:bg-gray-600 shadow-md p-6 rounded-lg">
                     <h2 class="mb-4 font-bold text-primary-700 text-2xl">关于</h2>
                     <div id="about-content">
                         <!-- 关于页面内容将在这里加载 -->
@@ -307,7 +308,7 @@
         </main>
 
         <!-- Footer -->
-        <footer class="bg-primary-800 py-6 text-white dark:bg-gray-900">
+        <footer class="bg-primary-800 dark:bg-gray-900 py-6 text-white">
             <div class="mx-auto px-4 container">
                 <div class="flex md:flex-row flex-col justify-between items-center">
                     <div class="mb-4 md:mb-0">

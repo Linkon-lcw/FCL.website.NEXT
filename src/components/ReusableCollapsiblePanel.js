@@ -62,13 +62,18 @@ function createCollapsiblePanel(title, content, options = {}) {
     
     // 如果默认展开，设置初始状态
     if (opts.startExpanded) {
-        body.style.maxHeight = body.scrollHeight + 'px';
-        body.style.opacity = '1';
-        const icon = header.querySelector('i');
-        if (icon) {
-            icon.classList.remove('fa-chevron-down');
-            icon.classList.add('fa-chevron-up');
-        }
+        // 延迟计算高度，确保DOM完全渲染
+        setTimeout(() => {
+            const scrollHeight = body.scrollHeight;
+            // 使用一个足够大的值，但保留动画过渡
+            body.style.maxHeight = Math.min(scrollHeight + 100, 2000) + 'px';
+            body.style.opacity = '1';
+            const icon = header.querySelector('i');
+            if (icon) {
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            }
+        }, 100);
     }
     
     return outerPanel;
@@ -170,8 +175,10 @@ function expandPanel(header) {
     const panelBody = header.nextElementSibling;
     
     if (panelBody) {
-        // 展开面板
-        panelBody.style.maxHeight = panelBody.scrollHeight + 'px';
+        // 展开面板 - 使用足够大的值确保内容完全显示，同时保持动画
+        const scrollHeight = panelBody.scrollHeight;
+        // 使用一个足够大的值，但保留动画过渡
+        panelBody.style.maxHeight = Math.min(scrollHeight + 100, 2000) + 'px'; // 限制最大高度为2000px
         panelBody.style.opacity = '1';
         panelBody.classList.remove('collapsed');
         
@@ -180,6 +187,16 @@ function expandPanel(header) {
         if (icon) {
             icon.classList.remove('fa-chevron-down');
             icon.classList.add('fa-chevron-up');
+        }
+        
+        // 如果父面板也是折叠面板，需要重新计算父面板的高度
+        const parentPanel = header.closest('.collapsible-panel-body');
+        if (parentPanel && parentPanel.style.maxHeight && parentPanel.style.maxHeight !== '0px') {
+            // 延迟重新计算父面板高度，确保动画完成
+            setTimeout(() => {
+                const parentScrollHeight = parentPanel.scrollHeight;
+                parentPanel.style.maxHeight = Math.min(parentScrollHeight + 100, 2000) + 'px';
+            }, 350);
         }
     }
 }

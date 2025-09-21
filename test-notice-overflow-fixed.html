@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修复后的历史公告overflow测试</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./dist/output.css">
+    <style>
+        /* 模拟公告对话框样式 */
+        .notice-dialog {
+            max-width: 42rem;
+            width: 100%;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .notice-content {
+            overflow-y: auto;
+            flex-grow: 1;
+            padding: 1rem;
+            max-height: calc(90vh - 8rem);
+        }
+        
+        /* 可折叠面板样式 - 修复版本 */
+        .collapsible-panel-body {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .collapsible-panel-body.expanded {
+            max-height: none !important; /* 修复：移除高度限制 */
+            opacity: 1;
+        }
+        
+        /* 嵌套面板样式 */
+        .nested-panel {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .nested-panel-body {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .nested-panel-body.expanded {
+            max-height: none !important; /* 修复：移除高度限制 */
+            opacity: 1;
+        }
+        
+        /* 修复后的内容包装器 */
+        .content-wrapper {
+            padding: 1rem;
+            /* 确保内容不会溢出 */
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        /* 长内容测试 */
+        .long-content {
+            max-height: 300px; /* 限制单个公告的最大高度 */
+            overflow-y: auto;  /* 如果内容太长，显示滚动条 */
+            padding: 0.5rem;
+            border: 1px solid #f3f4f6;
+            border-radius: 0.375rem;
+            background-color: #f9fafb;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="mx-auto max-w-4xl">
+        <h1 class="text-2xl font-bold mb-6">修复后的历史公告overflow测试</h1>
+        
+        <!-- 模拟公告对话框 -->
+        <div class="notice-dialog bg-white rounded-lg shadow-xl mx-auto">
+            <div class="p-4 bg-gray-50 border-b">
+                <h3 class="text-lg font-bold">公告 (修复版本)</h3>
+            </div>
+            
+            <div class="notice-content" id="notice-content">
+                <!-- 历史公告部分 -->
+                <div class="border border-gray-200 rounded-lg">
+                    <!-- 主历史公告面板 -->
+                    <div class="border-b border-gray-200">
+                        <div class="collapsible-panel-header flex justify-between items-center bg-gray-50 p-4 cursor-pointer">
+                            <span class="font-medium">历史公告</span>
+                            <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                        </div>
+                        <div class="collapsible-panel-body">
+                            <div class="p-4 border border-gray-200 rounded-lg">
+                                
+                                <!-- 2025年8月更新 -->
+                                <div class="nested-panel">
+                                    <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer nested-header">
+                                        <span class="font-medium">2025年8月更新</span>
+                                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                                    </div>
+                                    <div class="nested-panel-body">
+                                        <div class="content-wrapper">
+                                            <div class="long-content">
+                                                <p><strong>范围：</strong>2025年8月25日到29日。</p>
+                                                <p><strong>新增内容：</strong></p>
+                                                <ul class="list-disc list-inside ml-4">
+                                                    <li>接入了由梦泽提供的线路7，此线路下载速度快</li>
+                                                    <li>目前此线路提供了Zalith Launcher 2、Pojav Launcher、Pojav Launcher (iOS)、HMCL-PE、MCinaBox、渲染器、驱动和JRE</li>
+                                                    <li>添加了FCL专用联机工具的下载</li>
+                                                    <li>优化了代码逻辑与加载机制</li>
+                                                    <li>优化了界面和样式</li>
+                                                </ul>
+                                                <p><strong>技术改进：</strong></p>
+                                                <ul class="list-disc list-inside ml-4">
+                                                    <li>修复了历史公告的overflow问题</li>
+                                                    <li>改进了可折叠面板的动画效果</li>
+                                                    <li>优化了嵌套面板的展开逻辑</li>
+                                                    <li>确保长内容能够正确显示滚动条</li>
+                                                </ul>
+                                                <p><strong>性能优化：</strong></p>
+                                                <ul class="list-disc list-inside ml-4">
+                                                    <li>减少了DOM操作的频率</li>
+                                                    <li>优化了CSS选择器的性能</li>
+                                                    <li>改进了事件处理机制</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 欢迎访问FCL下载站 -->
+                                <div class="nested-panel">
+                                    <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer nested-header">
+                                        <span class="font-medium">欢迎访问FCL下载站！</span>
+                                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                                    </div>
+                                    <div class="nested-panel-body">
+                                        <div class="content-wrapper">
+                                            <div class="long-content">
+                                                <p>您可以在这里下载FCL、ZL、ZL2、PL、PL_iOS、渲染器、驱动、Java、Pojav FFmpeg Plugin和联机工具！</p>
+                                                <p>如果您觉得此站对您有帮助，不妨赞助一下站长！您的赞助帮助我们更有动力地运营下去！</p>
+                                                <p>不会用启动器？遇到了问题？可<a href="#" class="text-primary-600 hover:underline">加入QQ交流群（非官方）</a>。</p>
+                                                <p>如果您会看日志并且愿意帮助其他玩家，可<a href="#" class="text-primary-600 hover:underline">加入QQ日志分析群（非官方）</a></p>
+                                                <p>对下载站有建议？发现BUG？请<a href="#" class="text-primary-600 hover:underline">填写反馈问卷</a>。</p>
+                                                <p><strong>下载说明：</strong></p>
+                                                <ul class="list-disc list-inside ml-4">
+                                                    <li>请根据您的设备架构选择合适的版本</li>
+                                                    <li>下载前请确认网络连接稳定</li>
+                                                    <li>安装前请备份重要数据</li>
+                                                    <li>如有问题请及时反馈</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- PojavLauncher停更 -->
+                                <div class="nested-panel">
+                                    <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer nested-header">
+                                        <span class="font-medium">PojavLauncher停更</span>
+                                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                                    </div>
+                                    <div class="nested-panel-body">
+                                        <div class="content-wrapper">
+                                            <div class="long-content">
+                                                <p><strong>重要通知：</strong>PojavLauncher的用户请注意！</p>
+                                                <p>PojavLauncher开发团队于2025年5月17日宣布项目停止更新，GH代码仓库归档。这意味以后不会再有新功能开发和安全更新。</p>
+                                                <p><strong>替代方案：</strong></p>
+                                                <ul class="list-disc list-inside ml-4">
+                                                    <li>大家可转向FCL启动器作为替代方案</li>
+                                                    <li>或使用ZL启动器</li>
+                                                    <li>密切关注Pojav团队全新成立的<a href="#" class="text-primary-600 hover:underline">AngelAuraMC组织</a></li>
+                                                    <li>关注新推出的<a href="#" class="text-primary-600 hover:underline">Amethyst启动器项目</a></li>
+                                                </ul>
+                                                <p><strong>迁移建议：</strong></p>
+                                                <ul class="list-disc list-inside ml-4">
+                                                    <li>备份您的游戏存档和配置文件</li>
+                                                    <li>逐步适应新的启动器界面</li>
+                                                    <li>关注社区的最新动态</li>
+                                                    <li>参与新项目的测试和反馈</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 bg-gray-50 border-t flex justify-end">
+                <button class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded">确认</button>
+            </div>
+        </div>
+        
+        <div class="mt-8 p-4 bg-green-50 border border-green-200 rounded-lg">
+            <h3 class="font-bold text-green-800 mb-2">修复说明：</h3>
+            <ul class="list-disc list-inside text-sm text-green-700">
+                <li><strong>修复了max-height限制：</strong>使用 <code>max-height: none !important</code> 移除了高度限制</li>
+                <li><strong>添加了内容包装器：</strong>使用 <code>.content-wrapper</code> 确保内容不会溢出</li>
+                <li><strong>长内容处理：</strong>对特别长的内容添加了滚动条和最大高度限制</li>
+                <li><strong>优化了嵌套逻辑：</strong>改进了父面板高度重新计算的机制</li>
+                <li><strong>改进了动画效果：</strong>确保展开动画更加流畅</li>
+            </ul>
+        </div>
+        
+        <div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <h3 class="font-bold text-blue-800 mb-2">测试要点：</h3>
+            <ul class="list-disc list-inside text-sm text-blue-700">
+                <li>点击"历史公告"查看主面板展开/收起</li>
+                <li>点击各个子公告查看嵌套面板展开/收起</li>
+                <li>检查长内容是否正确显示滚动条</li>
+                <li>确认没有内容被截断或隐藏</li>
+                <li>测试多层嵌套的展开效果</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // 主历史公告面板切换
+        document.querySelector('.collapsible-panel-header').addEventListener('click', function() {
+            const body = document.querySelector('.collapsible-panel-body');
+            const icon = this.querySelector('i');
+            
+            if (body.classList.contains('expanded')) {
+                // 收起
+                body.classList.remove('expanded');
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            } else {
+                // 展开
+                body.classList.add('expanded');
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            }
+        });
+        
+        // 嵌套面板切换
+        document.querySelectorAll('.nested-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const body = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                
+                if (body.classList.contains('expanded')) {
+                    // 收起
+                    body.classList.remove('expanded');
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                } else {
+                    // 展开
+                    body.classList.add('expanded');
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

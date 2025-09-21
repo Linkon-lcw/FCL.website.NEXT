@@ -1,6 +1,7 @@
 // 创建目录结构
 import './modules/downloads.js';
-import { showDeviceInfo, sysArch } from './utils/deviceDetection.js';
+import { showDeviceInfo, sysArch } from './modules/deviceSuggestions.js';
+import { showDeviceSuggestions } from './modules/deviceSuggestions.js';
 import { initAutoLineSelection } from './modules/autoLineSelection.js';
 import { setupIndexDownLinks } from './modules/indexDownLinks.js';
 import { loadAllFclDownWays, loadAllZlDownWays } from './modules/downloads.js';
@@ -266,6 +267,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 初始化设备检测
     showDeviceInfo('deviceInfo');
+
+    // 初始化设备建议功能
+    showDeviceSuggestions('deviceSuggestions');
 
     // 初始化智能线路选择
     initAutoLineSelection();

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试历史公告overflow问题</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./dist/output.css">
+    <style>
+        /* 模拟公告对话框样式 */
+        .notice-dialog {
+            max-width: 42rem;
+            width: 100%;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .notice-content {
+            overflow-y: auto;
+            flex-grow: 1;
+            padding: 1rem;
+            max-height: calc(90vh - 8rem);
+        }
+        
+        /* 可折叠面板样式 */
+        .collapsible-panel-body {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .collapsible-panel-body.expanded {
+            max-height: 1000px;
+            opacity: 1;
+        }
+        
+        /* 嵌套面板样式 */
+        .nested-panel {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .nested-panel-body {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .nested-panel-body.expanded {
+            max-height: 500px;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="mx-auto max-w-4xl">
+        <h1 class="text-2xl font-bold mb-6">测试历史公告overflow问题</h1>
+        
+        <!-- 模拟公告对话框 -->
+        <div class="notice-dialog bg-white rounded-lg shadow-xl mx-auto">
+            <div class="p-4 bg-gray-50 border-b">
+                <h3 class="text-lg font-bold">公告</h3>
+            </div>
+            
+            <div class="notice-content" id="notice-content">
+                <!-- 历史公告部分 -->
+                <div class="border border-gray-200 rounded-lg">
+                    <!-- 主历史公告面板 -->
+                    <div class="border-b border-gray-200">
+                        <div class="collapsible-panel-header flex justify-between items-center bg-gray-50 p-4 cursor-pointer">
+                            <span class="font-medium">历史公告</span>
+                            <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                        </div>
+                        <div class="collapsible-panel-body">
+                            <div class="p-4 border border-gray-200 rounded-lg">
+                                
+                                <!-- 2025年8月更新 -->
+                                <div class="nested-panel">
+                                    <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer nested-header">
+                                        <span class="font-medium">2025年8月更新</span>
+                                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                                    </div>
+                                    <div class="nested-panel-body">
+                                        <div class="p-4">
+                                            <p>范围：2025年8月25日到29日。</p>
+                                            <p>接入了由梦泽提供的线路7，此线路下载速度快。目前此线路提供了Zalith Launcher 2、Pojav Launcher、Pojav Launcher (iOS)、HMCL-PE、MCinaBox、渲染器、驱动和JRE。</p>
+                                            <p>添加了FCL专用联机工具的下载。</p>
+                                            <p>优化了代码逻辑与加载机制。</p>
+                                            <p>优化了界面和样式。</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 欢迎访问FCL下载站 -->
+                                <div class="nested-panel">
+                                    <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer nested-header">
+                                        <span class="font-medium">欢迎访问FCL下载站！</span>
+                                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                                    </div>
+                                    <div class="nested-panel-body">
+                                        <div class="p-4">
+                                            <p>您可以在这里下载FCL、ZL、ZL2、PL、PL_iOS、渲染器、驱动、Java、Pojav FFmpeg Plugin和联机工具！</p>
+                                            <p>如果您觉得此站对您有帮助，不妨赞助一下站长！您的赞助帮助我们更有动力地运营下去！</p>
+                                            <p>不会用启动器？遇到了问题？可<a href="#" class="text-primary-600 hover:underline">加入QQ交流群（非官方）</a>。</p>
+                                            <p>如果您会看日志并且愿意帮助其他玩家，可<a href="#" class="text-primary-600 hover:underline">加入QQ日志分析群（非官方）</a></p>
+                                            <p>对下载站有建议？发现BUG？请<a href="#" class="text-primary-600 hover:underline">填写反馈问卷</a>。</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- PojavLauncher停更 -->
+                                <div class="nested-panel">
+                                    <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer nested-header">
+                                        <span class="font-medium">PojavLauncher停更</span>
+                                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                                    </div>
+                                    <div class="nested-panel-body">
+                                        <div class="p-4">
+                                            <p>PojavLauncher的用户请注意！PojavLauncher开发团队于2025年5月17日宣布项目停止更新，GH代码仓库归档。这意味以后不会再有新功能开发和安全更新。大家可转向FCL启动器、ZL启动器作为替代方案，或密切关注Pojav团队全新成立的<a href="#" class="text-primary-600 hover:underline">AngelAuraMC组织</a>推出的<a href="#" class="text-primary-600 hover:underline">Amethyst启动器项目</a>。</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 bg-gray-50 border-t flex justify-end">
+                <button class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded">确认</button>
+            </div>
+        </div>
+        
+        <div class="mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <h3 class="font-bold text-yellow-800 mb-2">测试说明：</h3>
+            <ul class="list-disc list-inside text-sm text-yellow-700">
+                <li>点击"历史公告"查看主面板展开/收起</li>
+                <li>点击各个子公告查看嵌套面板展开/收起</li>
+                <li>检查是否有内容溢出或显示不全的问题</li>
+                <li>注意观察overflow属性和max-height的变化</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // 主历史公告面板切换
+        document.querySelector('.collapsible-panel-header').addEventListener('click', function() {
+            const body = document.querySelector('.collapsible-panel-body');
+            const icon = this.querySelector('i');
+            
+            if (body.classList.contains('expanded')) {
+                // 收起
+                body.classList.remove('expanded');
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            } else {
+                // 展开
+                body.classList.add('expanded');
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            }
+        });
+        
+        // 嵌套面板切换
+        document.querySelectorAll('.nested-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const body = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                
+                if (body.classList.contains('expanded')) {
+                    // 收起
+                    body.classList.remove('expanded');
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                } else {
+                    // 展开
+                    body.classList.add('expanded');
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

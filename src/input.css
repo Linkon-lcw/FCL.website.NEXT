@@ -78,3 +78,9 @@
 #dev-mode-label {
     @apply right-16 bottom-4 z-40 fixed px-2 py-1 rounded-full text-white text-xs glass-effect;
 }
+
+/* 折叠面板动画 */
+.collapsible-panel-body {
+    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    overflow: hidden;
+}
