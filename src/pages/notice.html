@@ -4,44 +4,41 @@
     
     <div class="border border-gray-200 rounded-lg">
       <!-- 新公告 -->
-      <div class="border-b border-gray-200">
-        <div class="flex justify-between items-center p-4 cursor-pointer bg-gray-50 collapsible-panel-header">
-          <div class="flex items-center">
-            <i class="fas fa-bullhorn text-primary-600 mr-2"></i>
-            <span class="font-medium">新内容！</span>
-          </div>
-          <i class="fas fa-chevron-down transition-transform duration-300"></i>
+      <div class="border-gray-200 border-b">
+        <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer collapsible-panel-header">
+          <span class="font-medium">新内容！</span>
+          <i class="transition-transform duration-300 fas fa-chevron-down"></i>
         </div>
-        <div class="hidden collapsible-panel-body">
-          <div class="prose max-w-none p-4">
+        <div class="opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+          <div class="p-4 max-w-none prose">
             <p>新增了线路8 [高防御][LANt提供]，此线路源：<a href="https://api.cxsjmc.cn/api/FCL/filelist.json" target="_blank" class="text-primary-600 hover:underline break-all">https://api.cxsjmc.cn/api/FCL/filelist.json</a></p>
             <p>优化了系统适配代码，针对不同操作系统提供更精准的下载建议</p>
             
-            <div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-              <h4 class="font-bold text-blue-800 mb-2">🚀 全面重构：性能与体验双重提升</h4>
+            <div class="bg-blue-50 mt-4 p-4 border border-blue-200 rounded-lg">
+              <h4 class="mb-2 font-bold text-blue-800">🚀 全面重构：性能与体验双重提升</h4>
               <p>我们对网站进行了全面重构，从底层架构到用户界面都进行了深度优化，实现了显著的性能提升：</p>
               
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3 text-center">
-                <div class="bg-white border border-gray-200 rounded-lg p-4">
-                  <div class="text-3xl font-bold text-green-600">89%</div>
+              <div class="gap-4 grid grid-cols-1 md:grid-cols-3 mt-3 text-center">
+                <div class="bg-white p-4 border border-gray-200 rounded-lg">
+                  <div class="font-bold text-green-600 text-3xl">89%</div>
                   <div class="text-gray-600">加载速度提升</div>
                 </div>
                 
-                <div class="bg-white border border-gray-200 rounded-lg p-4">
-                  <div class="text-3xl font-bold text-green-600">70%</div>
+                <div class="bg-white p-4 border border-gray-200 rounded-lg">
+                  <div class="font-bold text-green-600 text-3xl">70%</div>
                   <div class="text-gray-600">资源加载降低</div>
                 </div>
                 
-                <div class="bg-white border border-gray-200 rounded-lg p-4">
-                  <div class="text-3xl font-bold text-green-600">45%</div>
+                <div class="bg-white p-4 border border-gray-200 rounded-lg">
+                  <div class="font-bold text-green-600 text-3xl">45%</div>
                   <div class="text-gray-600">内存使用优化</div>
                 </div>
               </div>
               
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
-                <div class="border border-gray-200 rounded-lg p-3">
-                  <h5 class="font-semibold text-primary-600 mb-2"><i class="fas fa-tachometer-alt mr-2"></i>核心优化</h5>
-                  <ul class="list-disc list-inside text-sm space-y-1">
+              <div class="gap-4 grid grid-cols-1 md:grid-cols-2 mt-3">
+                <div class="p-3 border border-gray-200 rounded-lg">
+                  <h5 class="mb-2 font-semibold text-primary-600"><i class="mr-2 fas fa-tachometer-alt"></i>核心优化</h5>
+                  <ul class="space-y-1 text-sm list-disc list-inside">
                     <li>模块化架构重构</li>
                     <li>资源按需加载</li>
                     <li>智能缓存策略</li>
@@ -50,9 +47,9 @@
                   </ul>
                 </div>
                 
-                <div class="border border-gray-200 rounded-lg p-3">
-                  <h5 class="font-semibold text-primary-600 mb-2"><i class="fas fa-user mr-2"></i>体验升级</h5>
-                  <ul class="list-disc list-inside text-sm space-y-1">
+                <div class="p-3 border border-gray-200 rounded-lg">
+                  <h5 class="mb-2 font-semibold text-primary-600"><i class="mr-2 fas fa-user"></i>体验升级</h5>
+                  <ul class="space-y-1 text-sm list-disc list-inside">
                     <li>响应式设计优化</li>
                     <li>交互动效增强</li>
                     <li>加载状态提示</li>
@@ -62,40 +59,40 @@
                 </div>
               </div>
               
-              <blockquote class="mt-3 p-3 bg-yellow-50 border-l-4 border-yellow-400">
+              <blockquote class="bg-yellow-50 mt-3 p-3 border-yellow-400 border-l-4">
                 <p>通过全面重构，我们不仅提升了页面加载速度，更为未来的功能扩展和性能优化奠定了坚实的基础。现在您可以在"页面加载性能"面板中实时查看详细的性能指标。</p>
               </blockquote>
               
               <p class="mt-3">我们始终致力于为用户提供更流畅、更高效的下载体验。此次重构是我们在性能优化道路上迈出的重要一步。</p>
             </div>
             
-            <div class="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
-              <h4 class="font-bold text-green-800 mb-2">🌟 用户体验全面升级</h4>
+            <div class="bg-green-50 mt-4 p-4 border border-green-200 rounded-lg">
+              <h4 class="mb-2 font-bold text-green-800">🌟 用户体验全面升级</h4>
               <p>为了进一步提升用户体验，我们引入了多项智能加载机制：</p>
               
-              <div class="grid grid-cols-1 gap-3 mt-3">
-                <div class="border border-gray-200 rounded-lg p-3">
-                  <h5 class="font-semibold text-primary-600 mb-1"><i class="fas fa-hourglass-half mr-2"></i>智能加载策略</h5>
+              <div class="gap-3 grid grid-cols-1 mt-3">
+                <div class="p-3 border border-gray-200 rounded-lg">
+                  <h5 class="mb-1 font-semibold text-primary-600"><i class="mr-2 fas fa-hourglass-half"></i>智能加载策略</h5>
                   <p class="text-sm">采用智能加载策略，优先加载核心内容，非关键内容延迟加载，提升页面初始响应速度。</p>
                 </div>
                 
-                <div class="border border-gray-200 rounded-lg p-3">
-                  <h5 class="font-semibold text-primary-600 mb-1"><i class="fas fa-eye mr-2"></i>可见性优化</h5>
+                <div class="p-3 border border-gray-200 rounded-lg">
+                  <h5 class="mb-1 font-semibold text-primary-600"><i class="mr-2 fas fa-eye"></i>可见性优化</h5>
                   <p class="text-sm">基于内容可见性智能加载，仅当用户需要查看时才加载相关内容，节省流量和时间。</p>
                 </div>
                 
-                <div class="border border-gray-200 rounded-lg p-3">
-                  <h5 class="font-semibold text-primary-600 mb-1"><i class="fas fa-sync mr-2"></i>后台预加载</h5>
+                <div class="p-3 border border-gray-200 rounded-lg">
+                  <h5 class="mb-1 font-semibold text-primary-600"><i class="mr-2 fas fa-sync"></i>后台预加载</h5>
                   <p class="text-sm">页面加载完成后，系统在后台逐步预加载所有下载线路和页面内容，进一步提升访问速度。</p>
                 </div>
                 
-                <div class="border border-gray-200 rounded-lg p-3">
-                  <h5 class="font-semibold text-primary-600 mb-1"><i class="fas fa-database mr-2"></i>智能缓存机制</h5>
+                <div class="p-3 border border-gray-200 rounded-lg">
+                  <h5 class="mb-1 font-semibold text-primary-600"><i class="mr-2 fas fa-database"></i>智能缓存机制</h5>
                   <p class="text-sm">引入智能缓存机制，预加载的内容会缓存5分钟。打开页面时优先使用缓存内容，提升响应速度。</p>
                 </div>
               </div>
               
-              <blockquote class="mt-3 p-3 bg-yellow-50 border-l-4 border-yellow-400">
+              <blockquote class="bg-yellow-50 mt-3 p-3 border-yellow-400 border-l-4">
                 <p>这些改进使页面加载更加流畅，即使在网络较慢的情况下也能提供良好的用户体验。</p>
               </blockquote>
               
@@ -106,47 +103,44 @@
       </div>
       
       <!-- 性能监控 -->
-      <div class="border-b border-gray-200">
-        <div class="flex justify-between items-center p-4 cursor-pointer bg-gray-50 collapsible-panel-header">
-          <div class="flex items-center">
-            <i class="fas fa-chart-line text-primary-600 mr-2"></i>
-            <span class="font-medium">页面加载性能</span>
-          </div>
-          <i class="fas fa-chevron-down transition-transform duration-300"></i>
+      <div class="border-gray-200 border-b">
+        <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer collapsible-panel-header">
+          <span class="font-medium">页面加载性能</span>
+          <i class="transition-transform duration-300 fas fa-chevron-down"></i>
         </div>
-        <div class="hidden collapsible-panel-body">
-          <div class="prose max-w-none p-4">
+        <div class="opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+          <div class="p-4 max-w-none prose">
             <p>本次页面加载用时: <span id="loadTimeDisplay" class="font-mono font-bold">加载中...</span></p>
             <div id="moduleLoadTimes" class="mt-3" style="display: none;">
               <p class="font-medium">各模块加载时间:</p>
-              <ul id="moduleLoadTimesList" class="mt-2 space-y-1"></ul>
+              <ul id="moduleLoadTimesList" class="space-y-1 mt-2"></ul>
             </div>
             
             <!-- 性能详情 -->
-            <div id="performance-details" class="mt-4 p-4 bg-gray-50 rounded-lg hidden">
-              <h4 class="font-bold text-gray-800 mb-3">详细性能指标</h4>
+            <div id="performance-details" class="hidden bg-gray-50 mt-4 p-4 rounded-lg">
+              <h4 class="mb-3 font-bold text-gray-800">详细性能指标</h4>
               
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-white p-3 rounded border border-gray-200">
-                  <h5 class="font-semibold text-primary-600 mb-2">网络性能</h5>
-                  <ul id="network-performance" class="text-sm space-y-1"></ul>
+              <div class="gap-4 grid grid-cols-1 md:grid-cols-2">
+                <div class="bg-white p-3 border border-gray-200 rounded">
+                  <h5 class="mb-2 font-semibold text-primary-600">网络性能</h5>
+                  <ul id="network-performance" class="space-y-1 text-sm"></ul>
                 </div>
                 
-                <div class="bg-white p-3 rounded border border-gray-200">
-                  <h5 class="font-semibold text-primary-600 mb-2">页面渲染</h5>
-                  <ul id="render-performance" class="text-sm space-y-1"></ul>
+                <div class="bg-white p-3 border border-gray-200 rounded">
+                  <h5 class="mb-2 font-semibold text-primary-600">页面渲染</h5>
+                  <ul id="render-performance" class="space-y-1 text-sm"></ul>
                 </div>
               </div>
               
-              <div class="mt-4 bg-white p-3 rounded border border-gray-200">
-                <h5 class="font-semibold text-primary-600 mb-2">资源加载详情</h5>
+              <div class="bg-white mt-4 p-3 border border-gray-200 rounded">
+                <h5 class="mb-2 font-semibold text-primary-600">资源加载详情</h5>
                 <div class="overflow-x-auto">
                   <table class="min-w-full text-sm">
                     <thead>
                       <tr class="border-b">
-                        <th class="text-left py-2">资源</th>
-                        <th class="text-left py-2">大小</th>
-                        <th class="text-left py-2">耗时</th>
+                        <th class="py-2 text-left">资源</th>
+                        <th class="py-2 text-left">大小</th>
+                        <th class="py-2 text-left">耗时</th>
                       </tr>
                     </thead>
                     <tbody id="resource-details">
@@ -155,14 +149,14 @@
                 </div>
               </div>
               
-              <div class="mt-4 bg-white p-3 rounded border border-gray-200">
-                <h5 class="font-semibold text-primary-600 mb-2">内存使用</h5>
-                <ul id="memory-usage" class="text-sm space-y-1"></ul>
+              <div class="bg-white mt-4 p-3 border border-gray-200 rounded">
+                <h5 class="mb-2 font-semibold text-primary-600">内存使用</h5>
+                <ul id="memory-usage" class="space-y-1 text-sm"></ul>
               </div>
             </div>
             
             <div class="mt-4 text-center">
-              <button id="toggle-performance-details" class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded text-sm">
+              <button id="toggle-performance-details" class="bg-primary-600 hover:bg-primary-700 px-4 py-2 rounded text-white text-sm">
                 显示详细性能信息
               </button>
             </div>
@@ -172,22 +166,19 @@
       
       <!-- 旧公告 -->
       <div>
-        <div class="flex justify-between items-center p-4 cursor-pointer bg-gray-50 collapsible-panel-header">
-          <div class="flex items-center">
-            <i class="fas fa-history text-primary-600 mr-2"></i>
-            <span class="font-medium">历史公告</span>
-          </div>
-          <i class="fas fa-chevron-down transition-transform duration-300"></i>
+        <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer collapsible-panel-header">
+          <span class="font-medium">历史公告</span>
+          <i class="transition-transform duration-300 fas fa-chevron-down"></i>
         </div>
-        <div class="hidden collapsible-panel-body">
-          <div class="border border-gray-200 rounded-lg p-4">
-            <div class="border-b border-gray-200">
-              <div class="flex justify-between items-center p-4 cursor-pointer bg-gray-50 collapsible-panel-header">
+        <div class="opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+          <div class="p-4 border border-gray-200 rounded-lg">
+            <div class="border-gray-200 border-b">
+              <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer collapsible-panel-header">
                 <span class="font-medium">2025年8月更新</span>
-                <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                <i class="transition-transform duration-300 fas fa-chevron-down"></i>
               </div>
-              <div class="hidden collapsible-panel-body">
-                <div class="prose max-w-none p-4">
+              <div class="opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+                <div class="p-4 max-w-none prose">
                   <p>范围：2025年8月25日到29日。</p>
                   <p>接入了由梦泽提供的线路7，此线路下载速度快。目前此线路提供了Zalith Launcher 2、Pojav Launcher、Pojav Launcher (iOS)、HMCL-PE、MCinaBox、渲染器、驱动和JRE。</p>
                   <p>添加了FCL专用联机工具的下载。</p>
@@ -197,13 +188,13 @@
               </div>
             </div>
             
-            <div class="border-b border-gray-200">
-              <div class="flex justify-between items-center p-4 cursor-pointer bg-gray-50 notice-panel-header">
+            <div class="border-gray-200 border-b">
+              <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer collapsible-panel-header">
                 <span class="font-medium">欢迎访问FCL下载站！</span>
-                <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                <i class="transition-transform duration-300 fas fa-chevron-down"></i>
               </div>
-              <div class="hidden notice-panel-body">
-                <div class="prose max-w-none p-4">
+              <div class="opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+                <div class="p-4 max-w-none prose">
                   <p>您可以在这里下载FCL、ZL、ZL2、PL、PL_iOS、渲染器、驱动、Java、Pojav FFmpeg Plugin和联机工具！</p>
                   <p>如果您觉得此站对您有帮助，不妨赞助一下站长！您的赞助帮助我们更有动力地运营下去！</p>
                   <p>不会用启动器？遇到了问题？可<a href="https://qm.qq.com/q/k2I8XLdnlC" target="_blank" class="text-primary-600 hover:underline">加入QQ交流群（非官方）</a>。</p>
@@ -213,25 +204,25 @@
               </div>
             </div>
             
-            <div class="border-b border-gray-200">
-              <div class="flex justify-between items-center p-4 cursor-pointer bg-gray-50 notice-panel-header">
+            <div class="border-gray-200 border-b">
+              <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer collapsible-panel-header">
                 <span class="font-medium">PojavLauncher停更</span>
-                <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                <i class="transition-transform duration-300 fas fa-chevron-down"></i>
               </div>
-              <div class="hidden notice-panel-body">
-                <div class="prose max-w-none p-4">
+              <div class="opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+                <div class="p-4 max-w-none prose">
                   <p>PojavLauncher的用户请注意！PojavLauncher开发团队于2025年5月17日宣布项目停止更新，GH代码仓库归档。这意味以后不会再有新功能开发和安全更新。大家可转向FCL启动器、ZL启动器作为替代方案，或密切关注Pojav团队全新成立的<a href="https://github.com/AngelAuraMC" target="_blank" class="text-primary-600 hover:underline">AngelAuraMC组织</a>推出的<a href="https://github.com/AngelAuraMC/Amethyst-Android" target="_blank" class="text-primary-600 hover:underline">Amethyst启动器项目</a>。</p>
                 </div>
               </div>
             </div>
             
-            <div class="border-b border-gray-200">
-              <div class="flex justify-between items-center p-4 cursor-pointer bg-gray-50 notice-panel-header">
+            <div class="border-gray-200 border-b">
+              <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer collapsible-panel-header">
                 <span class="font-medium">下载站现状</span>
-                <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                <i class="transition-transform duration-300 fas fa-chevron-down"></i>
               </div>
-              <div class="hidden notice-panel-body">
-                <div class="prose max-w-none p-4">
+              <div class="opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+                <div class="p-4 max-w-none prose">
                   <p>你想要听他讲的吗？</p>
                   <p>这里没有。</p>
                 </div>
@@ -239,12 +230,12 @@
             </div>
             
             <div>
-              <div class="flex justify-between items-center p-4 cursor-pointer bg-gray-50 notice-panel-header">
+              <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer collapsible-panel-header">
                 <span class="font-medium">NEXT样式说明</span>
-                <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                <i class="transition-transform duration-300 fas fa-chevron-down"></i>
               </div>
-              <div class="hidden notice-panel-body">
-                <div class="prose max-w-none p-4">
+              <div class="opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+                <div class="p-4 max-w-none prose">
                   <p>我懒得看，所以这一部分砍了</p>
                   <p>用什么设计全靠个人喜好，维护难度才是重点</p>
                 </div>

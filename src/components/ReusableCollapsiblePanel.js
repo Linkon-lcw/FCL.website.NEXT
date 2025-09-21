@@ -127,11 +127,16 @@ function togglePanel(header, options = {}) {
     if (panelBody) {
         // 如果不允许同时展开多个面板，需要关闭其他面板
         if (!options.allowMultiple) {
-            // 获取同一容器内的所有面板
+            // 获取同一容器内的所有面板，但排除嵌套面板
             const container = header.closest('.collapsible-panel-container') || document;
-            const allHeaders = container.querySelectorAll('.collapsible-panel-header');
             
-            allHeaders.forEach(otherHeader => {
+            // 获取当前面板的直接父容器
+            const currentPanelParent = header.parentElement.parentElement;
+            
+            // 只关闭与当前面板同一父容器下的其他面板
+            const siblingHeaders = currentPanelParent.querySelectorAll(':scope > .border-b > .collapsible-panel-header, :scope > .collapsible-panel-header');
+            
+            siblingHeaders.forEach(otherHeader => {
                 if (otherHeader !== header) {
                     const otherBody = otherHeader.nextElementSibling;
                     if (otherBody && 

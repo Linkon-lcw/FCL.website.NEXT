@@ -158,9 +158,26 @@ document.addEventListener('DOMContentLoaded', () => {
     // 主题切换
     const themeToggle = document.getElementById('theme-toggle');
     if (themeToggle) {
+        // 检查本地存储中的主题偏好
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>'; // 白天图标
+        } else {
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>'; // 夜晚图标
+        }
+
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('dark');
-            // 这里可以添加更复杂的主题切换逻辑
+            
+            // 更新本地存储中的主题偏好
+            if (document.body.classList.contains('dark')) {
+                localStorage.setItem('theme', 'dark');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>'; // 白天图标
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>'; // 夜晚图标
+            }
         });
     }
 

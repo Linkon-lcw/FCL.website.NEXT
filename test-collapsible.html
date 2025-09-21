@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试折叠面板 - 修复版本</title>
+    <link rel="stylesheet" href="dist/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="mx-auto max-w-4xl">
+        <h1 class="mb-6 font-bold text-3xl text-center">折叠面板功能测试 - 修复版本</h1>
+        
+        <div class="bg-yellow-50 mb-6 p-4 border border-yellow-200 rounded-lg">
+            <h2 class="mb-2 font-bold text-yellow-800">测试说明：</h2>
+            <ul class="space-y-1 text-yellow-700 text-sm">
+                <li>✅ 修复了图标位置问题（左侧图标已移除，仅保留右侧折叠图标）</li>
+                <li>✅ 修复了点击无反应问题（移除了hidden类，使用正确的max-height动画）</li>
+                <li>✅ 测试点击功能是否正常</li>
+                <li>✅ 测试图标切换是否正确</li>
+            </ul>
+        </div>
+        
+        <!-- 模拟公告页面结构 -->
+        <div id="notice-container" class="bg-white shadow-md rounded-lg collapsible-panel-container">
+            <!-- 新内容 -->
+            <div class="border-gray-200 border-b">
+                <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer collapsible-panel-header">
+                    <span class="font-medium">新内容！</span>
+                    <i class="transition-transform duration-300 fas fa-chevron-down"></i>
+                </div>
+                <div class="opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+                    <div class="p-4 max-w-none prose">
+                        <p>新增了线路8 [高防御][LANt提供]，此线路源：<a href="https://api.cxsjmc.cn/api/FCL/filelist.json" target="_blank" class="text-primary-600 hover:underline break-all">https://api.cxsjmc.cn/api/FCL/filelist.json</a></p>
+                        <p>优化了系统适配代码，针对不同操作系统提供更精准的下载建议</p>
+                        <div class="bg-blue-50 mt-4 p-4 border border-blue-200 rounded-lg">
+                            <h4 class="mb-2 font-bold text-blue-800">🚀 全面重构：性能与体验双重提升</h4>
+                            <p>我们对网站进行了全面重构，从底层架构到用户界面都进行了深度优化。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 性能监控 -->
+            <div class="border-gray-200 border-b">
+                <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer collapsible-panel-header">
+                    <span class="font-medium">页面加载性能</span>
+                    <i class="transition-transform duration-300 fas fa-chevron-down"></i>
+                </div>
+                <div class="opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+                    <div class="p-4 max-w-none prose">
+                        <p>本次页面加载用时: <span class="font-mono font-bold">123ms</span></p>
+                        <div class="mt-3">
+                            <p class="font-medium">各模块加载时间:</p>
+                            <ul class="space-y-1 mt-2">
+                                <li>核心模块: 45ms</li>
+                                <li>UI组件: 32ms</li>
+                                <li>数据加载: 46ms</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 历史公告 -->
+            <div>
+                <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer collapsible-panel-header">
+                    <span class="font-medium">历史公告</span>
+                    <i class="transition-transform duration-300 fas fa-chevron-down"></i>
+                </div>
+                <div class="opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+                    <div class="p-4 border border-gray-200 rounded-lg">
+                        <div class="border-gray-200 border-b">
+                            <div class="flex justify-between items-center bg-gray-50 p-4 cursor-pointer collapsible-panel-header">
+                                <span class="font-medium">2025年8月更新</span>
+                                <i class="transition-transform duration-300 fas fa-chevron-down"></i>
+                            </div>
+                            <div class="opacity-0 max-h-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-panel-body">
+                                <div class="p-4 max-w-none prose">
+                                    <p>范围：2025年8月25日到29日。</p>
+                                    <p>接入了由梦泽提供的线路7，此线路下载速度快。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 测试结果区域 -->
+        <div class="bg-white shadow-md mt-8 p-6 rounded-lg">
+            <h3 class="mb-4 font-bold text-xl">手动测试步骤：</h3>
+            <ol class="space-y-2 text-sm list-decimal list-inside">
+                <li>点击上方任意折叠面板标题</li>
+                <li>观察内容区域是否平滑展开/收起</li>
+                <li>观察右侧图标是否正确旋转（向下→向上）</li>
+                <li>测试多个面板的交互</li>
+                <li>测试嵌套面板（历史公告下的子面板）</li>
+            </ol>
+            
+            <div class="bg-green-50 mt-6 p-4 border border-green-200 rounded-lg">
+                <h4 class="mb-2 font-bold text-green-800">预期结果：</h4>
+                <ul class="space-y-1 text-green-700 text-sm">
+                    <li>✅ 点击标题时内容区域应该平滑展开/收起</li>
+                    <li>✅ 右侧图标应该正确旋转（展开时向上，收起时向下）</li>
+                    <li>✅ 左侧不应该有额外的图标</li>
+                    <li>✅ 动画效果应该流畅</li>
+                    <li>✅ 嵌套面板也应该正常工作</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initCollapsiblePanels } from './src/components/ReusableCollapsiblePanel.js';
+        
+        // 初始化折叠面板
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('页面加载完成，正在初始化折叠面板...');
+            initCollapsiblePanels('#notice-container');
+            console.log('折叠面板初始化完成');
+            
+            // 添加事件监听器来监控点击
+            document.querySelectorAll('.collapsible-panel-header').forEach((header, index) => {
+                header.addEventListener('click', () => {
+                    console.log(`面板 ${index + 1} 被点击`);
+                    const icon = header.querySelector('i');
+                    const body = header.nextElementSibling;
+                    console.log('图标类名:', icon.className);
+                    console.log('内容样式:', body.style.maxHeight, body.style.opacity);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

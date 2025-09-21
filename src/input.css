@@ -3,17 +3,7 @@
 @tailwind utilities;
 
 /* 自定义折叠面板样式 */
-.notice-panel-header {
-    @apply cursor-pointer;
-}
-
-.notice-panel-header:hover {
-    @apply bg-gray-100;
-}
-
-.notice-panel-body {
-    @apply transition-all duration-300 ease-in-out;
-}
+/* 旧的notice面板样式已移除，使用ReusableCollapsiblePanel组件替代 */
 
 /* 淡入动画 */
 .fade-in {

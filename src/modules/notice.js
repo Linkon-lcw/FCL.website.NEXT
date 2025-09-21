@@ -27,7 +27,7 @@ async function openNotice(forceShow = false) {
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
-                <div class="overflow-y-auto flex-grow p-4" id="notice-content">
+                <div class="overflow-y-auto flex-grow p-4 max-h-[calc(90vh-8rem)]" id="notice-content">
                     ${noticeContent}
                 </div>
                 <div class="flex justify-end p-4 border-t border-gray-200 border-opacity-20">
