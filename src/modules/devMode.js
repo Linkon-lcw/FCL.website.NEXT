@@ -156,7 +156,7 @@ function removeDevModeSettings() {
 function showDevModeNotification() {
     // 创建通知元素
     const notification = document.createElement('div');
-    notification.className = 'fixed top-20 right-4 bg-yellow-500 text-white px-4 py-2 rounded-md shadow-lg z-50 transition-opacity duration-300';
+    notification.className = 'fixed top-20 right-4 glass-effect px-4 py-2 rounded-md z-50 transition-opacity duration-300';
     notification.textContent = '开发者模式已启用 - 外部请求已被阻止';
     
     // 添加到页面

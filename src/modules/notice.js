@@ -20,8 +20,8 @@ async function openNotice(forceShow = false) {
         const dialog = document.createElement('div');
         dialog.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50';
         dialog.innerHTML = `
-            <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
-                <div class="flex justify-between items-center p-4 border-b border-gray-200">
+            <div class="glass-effect rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col ">
+                <div class="flex justify-between items-center p-4 ">
                     <h3 class="text-lg font-bold text-primary-700">公告</h3>
                     <button id="close-notice" class="text-gray-500 hover:text-gray-700">
                         <i class="fas fa-times"></i>
@@ -30,7 +30,7 @@ async function openNotice(forceShow = false) {
                 <div class="overflow-y-auto flex-grow p-4" id="notice-content">
                     ${noticeContent}
                 </div>
-                <div class="flex justify-end p-4 border-t border-gray-200">
+                <div class="flex justify-end p-4 border-t border-gray-200 border-opacity-20">
                     <button id="close-notice-btn" class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded">
                         确认
                     </button>
