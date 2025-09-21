@@ -1,5 +1,6 @@
 // 静态内容加载模块
 import { devModeFetch } from './devMode.js';
+import { initCollapsiblePanels } from '../components/ReusableCollapsiblePanel.js';
 
 /**
  * 从指定URL获取HTML内容并插入到目标容器中
@@ -33,6 +34,11 @@ async function loadHtmlContent(url, containerId) {
         } else {
             container.innerHTML = htmlContent;
         }
+        
+        // 在内容加载完成后重新初始化折叠面板
+        setTimeout(() => {
+            initCollapsiblePanels();
+        }, 50);
     } catch (error) {
         console.error(`加载内容失败 (${url}):`, error);
         container.innerHTML = `<p class="text-red-500">加载内容失败: ${error.message}</p>`;

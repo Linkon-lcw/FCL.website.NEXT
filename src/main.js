@@ -115,16 +115,28 @@ document.addEventListener('DOMContentLoaded', () => {
                         perfMonitor.mark('StartLoadDownloads');
                         loadAllFclDownWays();
                         loadAllZlDownWays();
+                        // 在内容加载完成后重新初始化折叠面板
+                        setTimeout(() => {
+                            initCollapsiblePanels();
+                        }, 100);
                         perfMonitor.mark('EndLoadDownloads');
                         break;
                     case 'verification':
                         perfMonitor.mark('StartLoadVerification');
                         loadChecksums('verification-content');
+                        // 在内容加载完成后重新初始化折叠面板
+                        setTimeout(() => {
+                            initCollapsiblePanels();
+                        }, 100);
                         perfMonitor.mark('EndLoadVerification');
                         break;
                     case 'about':
                         perfMonitor.mark('StartLoadAbout');
                         loadAbout('about-content');
+                        // 在内容加载完成后重新初始化折叠面板
+                        setTimeout(() => {
+                            initCollapsiblePanels();
+                        }, 100);
                         perfMonitor.mark('EndLoadAbout');
                         break;
                 }
@@ -190,16 +202,28 @@ document.addEventListener('DOMContentLoaded', () => {
                     perfMonitor.mark('StartLoadDownloadsOnClick');
                     loadAllFclDownWays();
                     loadAllZlDownWays();
+                    // 在内容加载完成后重新初始化折叠面板
+                    setTimeout(() => {
+                        initCollapsiblePanels();
+                    }, 100);
                     perfMonitor.mark('EndLoadDownloadsOnClick');
                     break;
                 case 'verification':
                     perfMonitor.mark('StartLoadVerificationOnClick');
                     loadChecksums('verification');
+                    // 在内容加载完成后重新初始化折叠面板
+                    setTimeout(() => {
+                        initCollapsiblePanels();
+                    }, 100);
                     perfMonitor.mark('EndLoadVerificationOnClick');
                     break;
                 case 'about':
                     perfMonitor.mark('StartLoadAboutOnClick');
                     loadAbout('about-content');
+                    // 在内容加载完成后重新初始化折叠面板
+                    setTimeout(() => {
+                        initCollapsiblePanels();
+                    }, 100);
                     perfMonitor.mark('EndLoadAboutOnClick');
                     break;
             }
