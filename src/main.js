@@ -3,41 +3,13 @@ import './modules/downloads.js';
 import { showDeviceInfo, sysArch } from './utils/deviceDetection.js';
 import { initAutoLineSelection } from './modules/autoLineSelection.js';
 import { setupIndexDownLinks } from './modules/indexDownLinks.js';
-import { initDownloads } from './modules/downloads.js';
+import { loadAllFclDownWays, loadAllZlDownWays } from './modules/downloads.js';
 import { loadIntroFcl, loadChecksums, loadAbout } from './modules/staticContent.js';
 import { perfMonitor } from './utils/performanceMonitor.js';
 import { openNotice } from './modules/notice.js';
 import { initCollapsiblePanels } from './components/ReusableCollapsiblePanel.js';
-import { DOWNLOAD_CATEGORIES } from './modules/downloadWays.js';
+import { SOURCE_MAP } from './modules/downloadWays.js';
 import { initDevMode } from './modules/devMode.js';
-
-/**
- * 从嵌套的下载分类结构中提取所有下载源配置
- * @returns {Object} 包含所有下载源配置的对象
- */
-function getAllSourceConfigs() {
-    const allSources = {};
-    
-    // 递归收集所有下载源
-    function collectSources(category) {
-        if (category.sources) {
-            Object.assign(allSources, category.sources);
-        }
-        
-        if (category.children) {
-            for (const childKey of Object.keys(category.children)) {
-                collectSources(category.children[childKey]);
-            }
-        }
-    }
-    
-    // 从所有顶级分类中收集
-    for (const categoryKey of Object.keys(DOWNLOAD_CATEGORIES)) {
-        collectSources(DOWNLOAD_CATEGORIES[categoryKey]);
-    }
-    
-    return allSources;
-}
 
 // 记录主脚本开始执行时间
 perfMonitor.mark('MainScriptStart');
@@ -68,8 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const zlGroup = document.createElement('optgroup');
         zlGroup.label = 'ZL 下载线路';
         
-        const allSources = getAllSourceConfigs();
-        Object.entries(allSources).forEach(([key, config]) => {
+        Object.entries(SOURCE_MAP).forEach(([key, config]) => {
             const option = document.createElement('option');
             option.value = key;
             
@@ -142,7 +113,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 switch (targetId) {
                     case 'downloads':
                         perfMonitor.mark('StartLoadDownloads');
-                        initDownloads();
+                        loadAllFclDownWays();
+                        loadAllZlDownWays();
                         // 在内容加载完成后重新初始化折叠面板
                         setTimeout(() => {
                             initCollapsiblePanels();
@@ -228,7 +200,8 @@ document.addEventListener('DOMContentLoaded', () => {
             switch (targetId) {
                 case 'downloads':
                     perfMonitor.mark('StartLoadDownloadsOnClick');
-                    initDownloads();
+                    loadAllFclDownWays();
+                    loadAllZlDownWays();
                     // 在内容加载完成后重新初始化折叠面板
                     setTimeout(() => {
                         initCollapsiblePanels();

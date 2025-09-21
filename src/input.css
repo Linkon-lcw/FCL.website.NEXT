@@ -3,25 +3,6 @@
 @tailwind utilities;
 
 /* 自定义折叠面板样式 */
-.collapsible-panel-body.collapsed {
-  max-height: 0px !important;
-  opacity: 0 !important;
-  overflow: hidden;
-  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
-}
-
-.collapsible-panel-body.expanded {
-  max-height: fit-content !important;
-  opacity: 1 !important;
-  overflow: hidden;
-  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
-}
-
-.collapsible-panel-body {
-  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
-}
-
-/* 自定义折叠面板样式 */
 .notice-panel-header {
     @apply cursor-pointer;
 }

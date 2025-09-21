@@ -200,12 +200,28 @@
             <section id="downloads" class="hidden section fade-in">
                 <div class="bg-white shadow-md p-6 rounded-lg">
                     <h2 class="mb-4 font-bold text-primary-700 text-2xl">下载</h2>
-                    <div class="space-y-6">
-                        <!-- 统一下载容器 -->
-                        <div id="downloads-container">
-                            <!-- 多级嵌套下载分类将在这里动态加载 -->
-                            <div class="py-8 text-gray-500 text-center">
-                                <p>正在加载下载分类...</p>
+                    <div class="gap-6 grid grid-cols-1 md:grid-cols-2">
+                        <!-- FCL Downloads -->
+                        <div>
+                            <h3 class="mb-3 font-semibold text-primary-600 text-xl">FCL 下载</h3>
+                            <div class="space-y-4" id="fcl-downloads">
+                                <!-- FCL下载线路将在这里动态加载 -->
+                                <!-- 占位符，实际内容将通过JavaScript动态生成 -->
+                                <div class="py-4 text-gray-500 text-center" id="fcl-downloads-placeholder">
+                                    <p>正在加载FCL下载线路...</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ZL Downloads -->
+                        <div>
+                            <h3 class="mb-3 font-semibold text-primary-600 text-xl">ZL 下载</h3>
+                            <div class="space-y-4" id="zl-downloads">
+                                <!-- ZL下载线路将在这里动态加载 -->
+                                <!-- 占位符，实际内容将通过JavaScript动态生成 -->
+                                <div class="py-4 text-gray-500 text-center" id="zl-downloads-placeholder">
+                                    <p>正在加载ZL下载线路...</p>
+                                </div>
                             </div>
                         </div>
                     </div>

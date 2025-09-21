@@ -1,39 +1,8 @@
 // 开门见山下载链接设置
 
-import { DOWNLOAD_CATEGORIES } from './downloadWays.js';
+import { SOURCE_MAP } from './downloadWays.js';
 import { sysArch, sysInfo, testAndroidVersion } from './../utils/deviceDetection.js';
 import { devModeFetch, isDevModeEnabled } from './devMode.js';
-
-/**
- * 从嵌套的下载分类结构中查找下载源配置
- * @param {string} sourceKey - 下载源标识
- * @returns {Object|null} 下载源配置对象，如果找不到则返回null
- */
-function findSourceConfig(sourceKey) {
-    // 递归搜索函数
-    function searchInCategory(category) {
-        if (category.sources && category.sources[sourceKey]) {
-            return category.sources[sourceKey];
-        }
-        
-        if (category.children) {
-            for (const childKey of Object.keys(category.children)) {
-                const result = searchInCategory(category.children[childKey]);
-                if (result) return result;
-            }
-        }
-        
-        return null;
-    }
-    
-    // 在所有顶级分类中搜索
-    for (const categoryKey of Object.keys(DOWNLOAD_CATEGORIES)) {
-        const result = searchInCategory(DOWNLOAD_CATEGORIES[categoryKey]);
-        if (result) return result;
-    }
-    
-    return null;
-}
 
 /**
  * 递归查找嵌套目录（支持多级嵌套）
@@ -83,7 +52,7 @@ async function setupIndexDownLinks(sourceKey) {
 
     try {
         // 提前获取源配置
-        const sourceConfig = findSourceConfig(sourceKey);
+        const sourceConfig = SOURCE_MAP[sourceKey];
         if (!sourceConfig) throw new Error(`无效数据源标识："${sourceKey}"`);
 
         const jsonUrl = sourceConfig.path;

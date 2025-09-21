@@ -1,6 +1,6 @@
 // 智能线路选择逻辑
 
-import { DOWNLOAD_CATEGORIES } from './downloadWays.js';
+import { SOURCE_MAP } from './downloadWays.js';
 import { checkAllLatenciesStream } from './latencyCheck.js';
 
 let currentFastestLine = null;
