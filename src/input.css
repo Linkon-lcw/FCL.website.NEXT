@@ -56,6 +56,14 @@
     backdrop-filter: blur(5px);
 }
 
+/* 深色模式玻璃效果 */
+@media (prefers-color-scheme: dark) {
+    .glass-effect {
+        background: linear-gradient(0deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05)), linear-gradient(0deg, rgba(128, 128, 128, 0.1), rgba(128, 128, 128, 0.1)), rgba(30, 30, 30, 0.3);
+        border-image: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 15.97%, rgba(255, 255, 255, 0) 43.75%) 1;
+    }
+}
+
 /* 公告按钮样式 */
 #notice-btn {
     @apply bottom-4 left-4 z-40 fixed flex items-center px-3 py-2 rounded-full text-white transition glass-effect;
