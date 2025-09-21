@@ -63,7 +63,7 @@
     box-sizing: border-box;
     border-image: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.6) 15.97%, rgba(255, 255, 255, 0) 43.75%) 1;
     box-shadow: inset 0px 3px 3px rgba(255, 255, 255, 0.5), 0px 2px 10px 5px rgba(0, 0, 0, 0.1), inset 0px 0px 10px rgba(255, 255, 255, 0.5), inset 0px 0px 20px rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(30px);
+    backdrop-filter: blur(5px);
 }
 
 /* 公告按钮样式 */
