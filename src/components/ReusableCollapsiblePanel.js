@@ -18,7 +18,7 @@ function createCollapsiblePanel(title, content, options = {}) {
     const defaults = {
         id: `collapsible-panel-${Date.now()}`,
         headerClass: 'flex justify-between items-center p-4 cursor-pointer bg-gray-100',
-        bodyClass: 'max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out',
+        bodyClass: 'max-h-0 opacity-0 overflow-hidden',
         startExpanded: false,
         allowMultiple: false
     };
@@ -36,10 +36,18 @@ function createCollapsiblePanel(title, content, options = {}) {
     header.className = `collapsible-panel-header ${opts.headerClass}`;
     header.id = `${opts.id}-header`;
     
-    header.innerHTML = `
-        <h3 class="font-medium">${title}</h3>
-        <i class="fas fa-chevron-down transition-transform duration-300"></i>
-    `;
+    // 创建标题文本元素
+    const titleElement = document.createElement('h3');
+    titleElement.className = 'font-medium';
+    titleElement.textContent = title;
+    
+    // 创建图标元素
+    const iconElement = document.createElement('i');
+    iconElement.className = 'fas fa-chevron-down';
+    
+    // 组装标题部分
+    header.appendChild(titleElement);
+    header.appendChild(iconElement);
     
     // 创建主体部分
     const body = document.createElement('div');
@@ -48,7 +56,9 @@ function createCollapsiblePanel(title, content, options = {}) {
     
     // 设置内容
     if (typeof content === 'string') {
-        body.innerHTML = `<div>${content}</div>`;
+        const contentWrapper = document.createElement('div');
+        contentWrapper.innerHTML = content;
+        body.appendChild(contentWrapper);
     } else if (content instanceof HTMLElement) {
         const wrapper = document.createElement('div');
         wrapper.appendChild(content);
@@ -61,15 +71,14 @@ function createCollapsiblePanel(title, content, options = {}) {
     
     // 如果默认展开，设置初始状态
     if (opts.startExpanded) {
-        body.style.maxHeight = 'fit-content';
-        body.style.opacity = '1';
-        // 为默认展开的面板添加p-4类
+        body.classList.remove('collapsed');
+        body.classList.add('expanded');
+        // 添加p-4类以提供内边距
         body.classList.add('p-4');
-        const icon = header.querySelector('i');
-        if (icon) {
-            icon.classList.remove('fa-chevron-down');
-            icon.classList.add('fa-chevron-up');
-        }
+        iconElement.classList.remove('fa-chevron-down');
+        iconElement.classList.add('fa-chevron-up');
+    } else {
+        body.classList.add('collapsed');
     }
     
     return outerPanel;
@@ -96,24 +105,41 @@ function initCollapsiblePanels(container = document) {
     
     // 为每个头部元素添加点击事件监听器
     panelHeaders.forEach(header => {
+        // 使用节流函数限制点击事件的触发频率
+        const throttledClickHandler = throttle(function(e) {
+            // 阻止事件冒泡
+            e.stopPropagation();
+            
+            // 获取面板容器和选项
+            const panelContainer = this.closest('.collapsible-panel');
+            const panelOptions = panelContainer ? JSON.parse(panelContainer.dataset.panelOptions || '{}') : {};
+            
+            // 切换面板展开/收起状态
+            togglePanel(this, panelOptions);
+        }, 200); // 200ms节流间隔
+        
         // 确保每个面板只添加一次事件监听器
         if (!header.dataset.listenerAdded) {
-            header.addEventListener('click', function(e) {
-                // 阻止事件冒泡
-                e.stopPropagation();
-                
-                // 获取面板容器和选项
-                const panelContainer = this.closest('.collapsible-panel');
-                const panelOptions = panelContainer ? JSON.parse(panelContainer.dataset.panelOptions || '{}') : {};
-                
-                // 切换面板展开/收起状态
-                togglePanel(this, panelOptions);
-            });
+            header.addEventListener('click', throttledClickHandler);
             
             // 标记已添加监听器
             header.dataset.listenerAdded = 'true';
         }
     });
+}
+
+// 节流函数
+function throttle(func, limit) {
+    let inThrottle;
+    return function() {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    }
 }
 
 /**
@@ -136,9 +162,7 @@ function togglePanel(header, options = {}) {
             allHeaders.forEach(otherHeader => {
                 if (otherHeader !== header) {
                     const otherBody = otherHeader.nextElementSibling;
-                    if (otherBody && 
-                        (otherBody.style.maxHeight !== '0px' && otherBody.style.maxHeight) ||
-                        (!otherBody.style.maxHeight && !otherBody.classList.contains('collapsed'))) {
+                    if (otherBody && otherBody.classList.contains('expanded')) {
                         // 收起其他面板
                         collapsePanel(otherHeader);
                     }
@@ -147,9 +171,7 @@ function togglePanel(header, options = {}) {
         }
         
         // 切换当前面板状态
-        if (panelBody.classList.contains('collapsed') || 
-            panelBody.style.maxHeight === '0px' || 
-            !panelBody.style.maxHeight) {
+        if (panelBody.classList.contains('collapsed') || !panelBody.classList.contains('expanded')) {
             // 展开面板
             expandPanel(header);
         } else {
@@ -167,10 +189,13 @@ function expandPanel(header) {
     const panelBody = header.nextElementSibling;
     
     if (panelBody) {
-        // 展开面板
-        panelBody.style.maxHeight = 'fit-content';
-        panelBody.style.opacity = '1';
+        // 移除可能存在的内联样式，让CSS类控制动画
+        panelBody.style.maxHeight = '';
+        panelBody.style.opacity = '';
+        
+        // 使用CSS类控制展开状态
         panelBody.classList.remove('collapsed');
+        panelBody.classList.add('expanded');
         // 添加p-4类以提供内边距
         panelBody.classList.add('p-4');
         
@@ -191,9 +216,8 @@ function collapsePanel(header) {
     const panelBody = header.nextElementSibling;
     
     if (panelBody) {
-        // 收起面板
-        panelBody.style.maxHeight = '0px';
-        panelBody.style.opacity = '0';
+        // 使用CSS类控制收起状态
+        panelBody.classList.remove('expanded');
         panelBody.classList.add('collapsed');
         // 移除p-4类以消除内边距
         panelBody.classList.remove('p-4');

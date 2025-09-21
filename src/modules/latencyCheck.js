@@ -1,6 +1,34 @@
 // 线路延迟检测功能
-import { SOURCE_MAP } from './downloadWays.js';
+import { DOWNLOAD_CATEGORIES } from './downloadWays.js';
 import { devModeFetch, isDevModeEnabled } from './devMode.js';
+
+/**
+ * 从嵌套的下载分类结构中提取所有下载源配置
+ * @returns {Object} 包含所有下载源配置的对象
+ */
+function getAllSourceConfigs() {
+    const allSources = {};
+    
+    // 递归收集所有下载源
+    function collectSources(category) {
+        if (category.sources) {
+            Object.assign(allSources, category.sources);
+        }
+        
+        if (category.children) {
+            for (const childKey of Object.keys(category.children)) {
+                collectSources(category.children[childKey]);
+            }
+        }
+    }
+    
+    // 从所有顶级分类中收集
+    for (const categoryKey of Object.keys(DOWNLOAD_CATEGORIES)) {
+        collectSources(DOWNLOAD_CATEGORIES[categoryKey]);
+    }
+    
+    return allSources;
+}
 
 /**
  * 检测单个线路的延迟
@@ -45,9 +73,12 @@ async function checkLatency(url) {
  * @param {string} prefix - 只检测指定前缀的线路
  */
 async function checkAllLatenciesStream(onResult, onComplete, prefix = '') {
+    // 获取所有下载源配置
+    const allSources = getAllSourceConfigs();
+    
     // 过滤出指定前缀的线路
     const filteredSourceMap = {};
-    for (const [key, config] of Object.entries(SOURCE_MAP)) {
+    for (const [key, config] of Object.entries(allSources)) {
         if (key.startsWith(prefix)) {
             filteredSourceMap[key] = config;
         }
@@ -69,9 +100,12 @@ async function checkAllLatenciesStream(onResult, onComplete, prefix = '') {
  * @returns {Promise<Object>} 包含所有线路延迟的对象
  */
 async function checkAllLatencies(prefix = '') {
+    // 获取所有下载源配置
+    const allSources = getAllSourceConfigs();
+    
     // 过滤出指定前缀的线路
     const filteredSourceMap = {};
-    for (const [key, config] of Object.entries(SOURCE_MAP)) {
+    for (const [key, config] of Object.entries(allSources)) {
         if (key.startsWith(prefix)) {
             filteredSourceMap[key] = config;
         }
