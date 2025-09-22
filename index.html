@@ -121,18 +121,18 @@
         document.addEventListener("DOMContentLoaded", async () => {
             // Load header, navigation, and footer modules
             await Promise.all([
-                loadModule('./src/modules/header.html', 'header-module'),
-                loadModule('./src/modules/navigation.html', 'navigation-module'),
-                loadModule('./src/modules/footer.html', 'footer-module')
+                loadModule('./src/modules/html/header.html', 'header-module'),
+                loadModule('./src/modules/html/navigation.html', 'navigation-module'),
+                loadModule('./src/modules/html/footer.html', 'footer-module')
             ]);
 
             // Load content modules
             await Promise.all([
-                loadModule('./src/modules/home.html', 'home-module'),
-                loadModule('./src/modules/downloads.html', 'downloads-module'),
-                loadModule('./src/modules/verification.html', 'verification-module'),
-                loadModule('./src/modules/sponsors.html', 'sponsors-module'),
-                loadModule('./src/modules/about.html', 'about-module')
+                loadModule('./src/modules/html/home.html', 'home-module'),
+                loadModule('./src/modules/html/downloads.html', 'downloads-module'),
+                loadModule('./src/modules/html/verification.html', 'verification-module'),
+                loadModule('./src/modules/html/sponsors.html', 'sponsors-module'),
+                loadModule('./src/modules/html/about.html', 'about-module')
             ]);
         });
     </script>

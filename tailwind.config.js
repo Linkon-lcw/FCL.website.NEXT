@@ -4,6 +4,10 @@ module.exports = {
   darkMode: 'class', // 启用基于 class 的暗色模式
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['MiSans VF','HarmonyOS Sans','OPPO Sans','Segoe UI','Microsoft YaHei','Roboto', 'sans-serif'],
+        serif: ['Roboto Slab', 'serif'],
+      },
       colors: {
         primary: {
           50: '#e0f2f1',

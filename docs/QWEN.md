@@ -96,27 +96,69 @@
 FCL.website.NEXT/
 ├── dist/                 # 构建后的静态资源目录
 │   └── output.css        # Tailwind CSS 构建产物
+├── docs/                 # 文档目录
+│   ├── PLAYWRIGHT_GUIDE.md   # Playwright 使用指南
+│   ├── 网页设计指南.md        # 设计规范文档
+│   └── QWEN.md              # Qwen Agent 上下文文件
 ├── file/                 # 静态资源文件（图片、数据文件等）
+│   ├── avatar/           # 用户头像图片
+│   ├── data/             # JSON数据文件
+│   ├── font/             # 字体文件
+│   ├── picture/          # 页面图片资源
+│   └── sound/            # 音频文件
 ├── old/                  # 旧版网站代码（供参考）
 ├── src/                  # 源代码目录
 │   ├── components/       # 可复用的 UI 组件
-│   │   └── ReusableCollapsiblePanel.js  # 可折叠面板组件
+│   │   ├── ReusableCollapsiblePanel.js  # 可折叠面板组件
+│   │   └── ReusableCollapsiblePanel.md  # 组件使用说明
 │   ├── modules/          # 功能模块（下载、线路检测等）
+│   │   ├── autoLineSelection.js         # 智能线路选择逻辑
+│   │   ├── deviceSuggestions.js         # 设备检测和建议
+│   │   ├── downloadWays.js              # 下载线路数据源映射表
+│   │   ├── downloads.js                 # 下载模块功能
+│   │   ├── indexDownLinks.js            # 开门见山下载链接设置
+│   │   ├── latencyCheck.js              # 线路延迟检测功能
+│   │   ├── staticContent.js             # 静态内容加载模块
+│   │   ├── devMode.js                   # 开发者模式管理模块
+│   │   ├── notice.js                    # 公告系统模块
+│   │   ├── CollapsiblePanel.js          # 旧版折叠面板组件（待移除）
+│   │   └── html/                        # HTML模块文件
+│   │       ├── header.html              # 页面头部区域
+│   │       ├── navigation.html          # 导航菜单
+│   │       ├── home.html                # 主页内容
+│   │       ├── downloads.html           # 下载页面内容
+│   │       ├── verification.html        # 校验页面内容
+│   │       ├── sponsors.html            # 赞助页面内容
+│   │       └── about.html               # 关于页面内容
 │   ├── pages/            # 页面特定的脚本
+│   │   ├── about.html                   # 关于页面内容（详细）
+│   │   ├── check.html                   # 校验页面内容（详细）
+│   │   ├── intro.html                   # FCL介绍页面内容
+│   │   ├── notice.html                  # 公告页面内容
+│   │   └── performance.html             # 性能监控报告页面
 │   ├── utils/            # 工具函数
+│   │   └── performanceMonitor.js        # 性能监控模块
 │   ├── input.css         # Tailwind CSS 指令入口
 │   └── main.js           # JavaScript 入口文件
+├── tests/                # 测试文件目录
+│   ├── manual/           # 手动测试页面
+│   │   ├── test-collapse-fix.html       # 下载页折叠菜单动态高度修复测试
+│   │   ├── test-collapsible.html        # 可折叠面板组件测试
+│   │   ├── test-notice-overflow-fixed.html  # 公告溢出问题修复测试
+│   │   └── test-notice-overflow.html    # 公告溢出问题测试
+│   ├── core.spec.js      # 核心功能测试
+│   └── homepage.spec.js  # 主页功能测试
+├── .github/              # GitHub相关配置
+│   └── workflows/        # GitHub Actions工作流
+├── .vscode/              # VS Code配置
+│   └── launch.json       # 调试配置
+├── playwright-report/    # Playwright测试报告
+├── test-results/         # 测试结果
 ├── index.html            # 主页
 ├── package.json          # 项目配置和依赖
 ├── postcss.config.js     # PostCSS 配置
-├── playwright.config.js    # Playwright 测试配置
-├── tests/                  # 测试文件目录
-│   ├── core.spec.js       # 核心功能测试
-│   └── homepage.spec.js   # 主页功能测试
-├── PLAYWRIGHT_GUIDE.md   # Playwright 使用指南
-├── 网页设计指南.md        # 设计规范文档
+├── playwright.config.js  # Playwright 测试配置
 ├── todo.md               # 项目任务列表
-├── QWEN.md              # Qwen Agent 上下文文件
 └── README.md            # 项目说明文件 (本文件)
 ```
 
