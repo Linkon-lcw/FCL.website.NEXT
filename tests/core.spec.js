@@ -51,42 +51,39 @@ test.describe('FCL Website Core Tests', () => {
     await expect(deviceInfo).toBeVisible();
   });
 
-  test('mobile menu toggle works on mobile viewport', async ({ page }) => {
+  test('mobile navigation displays icons only on mobile viewport', async ({ page }) => {
     // Navigate to home page
     await page.goto('http://localhost:5500/');
     
     // Wait for page to load completely
     await page.waitForLoadState('networkidle');
     
-    // Check if mobile menu button is visible on mobile
+    // Check if navigation is visible
+    const mainNav = page.locator('#main-nav');
+    await expect(mainNav).toBeVisible();
+    
+    // Check if mobile menu button is NOT visible (should be removed)
     const mobileMenuButton = page.locator('#menu-toggle');
-    await expect(mobileMenuButton).toBeVisible();
+    await expect(mobileMenuButton).not.toBeVisible();
     
-    // Test mobile menu toggle - check initial state
+    // Check if mobile menu is NOT present (should be removed)
     const mobileMenu = page.locator('#mobile-menu');
+    await expect(mobileMenu).not.toBeVisible();
     
-    // Check if the element has the 'hidden' class specifically
-    const initialClasses = await mobileMenu.getAttribute('class');
-    expect(initialClasses).toContain('hidden');
+    // Check if navigation links are present and clickable
+    const navLinks = page.locator('#main-nav .nav-link');
+    const linkCount = await navLinks.count();
+    expect(linkCount).toBeGreaterThan(0);
     
-    // Open mobile menu
-    await mobileMenuButton.click();
+    // Test navigation functionality - click on downloads link
+    const downloadsLink = page.locator('#main-nav .nav-link[href="#downloads"]');
+    await downloadsLink.click();
     
-    // Wait for animation and state change
-    await page.waitForTimeout(300);
+    // Wait for navigation
+    await page.waitForTimeout(500);
     
-    // Check if the 'hidden' class is removed
-    const openClasses = await mobileMenu.getAttribute('class');
-    expect(openClasses).not.toContain('hidden');
-    
-    // Close mobile menu
-    await mobileMenuButton.click();
-    
-    // Wait for animation and state change
-    await page.waitForTimeout(300);
-    
-    // Check if the 'hidden' class is added back
-    const closeClasses = await mobileMenu.getAttribute('class');
-    expect(closeClasses).toContain('hidden');
+    // Check if downloads section is visible
+    const downloadsSection = page.locator('#downloads');
+    await expect(downloadsSection).toBeVisible();
 });
 });
