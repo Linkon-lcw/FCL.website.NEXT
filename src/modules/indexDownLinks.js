@@ -83,6 +83,7 @@ async function setupIndexDownLinks(sourceKey) {
             }
             
             return Promise.race([
+                // 使用新的开发者模式的fetch包装器，它会自动处理外部请求拦截
                 devModeFetch(url).then(response => {
                     if (!response.ok) throw new Error(`HTTP出错：${response.status}`);
                     return response.json();
@@ -183,7 +184,17 @@ async function setupIndexDownLinks(sourceKey) {
         const diEl = document.getElementById('deviceInfo');
         if (diEl) diEl.innerHTML = sysInfo;
 
-        testAndroidVersion(8, 'FCL');
+        // 延迟执行安卓版本检测，确保showDeviceSuggestions已完成并设置好androidVer变量
+        console.log('设置安卓版本检测定时器...');
+        setTimeout(() => {
+            console.log('准备执行安卓版本检测...');
+            try {
+                testAndroidVersion(8, 'FCL');
+                console.log('安卓版本检测执行完成');
+            } catch (error) {
+                console.error('安卓版本检测执行失败:', error);
+            }
+        }, 500); // 延迟500ms确保设备检测完成
         
         // 移除所有按钮的加载状态
         if (buttonContainer) {

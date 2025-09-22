@@ -1,6 +1,7 @@
 // 公告系统模块
 import { initCollapsiblePanels } from '../components/ReusableCollapsiblePanel.js';
 import { devModeFetch } from './devMode.js';
+import { showErrorToast } from '../utils/toast.js';
 
 /**
  * 打开公告
@@ -80,7 +81,7 @@ async function openNotice(forceShow = false) {
         
     } catch (error) {
         console.error('公告：加载出错：', error);
-        alert('公告加载失败: ' + error.message);
+        showErrorToast('公告加载失败: ' + error.message);
     }
 }
 

@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 记录DOM内容加载完成时间
     perfMonitor.mark('DOMContentReady');
     
-    // 初始化开发者模式
+    // 初始化开发者模式（已升级为增强版本）
     initDevMode();
     
     // 填充线路选择下拉菜单
@@ -84,9 +84,11 @@ document.addEventListener('DOMContentLoaded', () => {
         perfMonitor.mark('EndPopulateLineSelection');
     }
     
-    // 初始化线路选择下拉菜单
-    populateLineSelection();
-    perfMonitor.mark('LineSelectionPopulated');
+    // 初始化线路选择下拉菜单 - 延迟执行以确保home.html模块加载完成
+    setTimeout(() => {
+        populateLineSelection();
+        perfMonitor.mark('LineSelectionPopulated');
+    }, 500); // 延迟500ms确保模块加载完成
     
     // 检查URL中的hash并自动导航到相应部分
     const checkHashAndNavigate = () => {
@@ -260,13 +262,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 初始化设备检测和建议功能
     // 由于模块化加载，我们需要确保DOM元素已加载完成
-    setTimeout(() => {
+    setTimeout(async () => {
         const deviceInfoElement = document.getElementById('deviceInfo');
         if (deviceInfoElement) {
             deviceInfoElement.innerHTML = showDeviceInfo();
         }
         
-        showDeviceSuggestions('deviceSuggestions');
+        // 确保showDeviceSuggestions先执行完成，设置好androidVer变量
+        await showDeviceSuggestions('deviceSuggestions');
     }, 100); // 延迟执行以确保模块加载完成
 
     // 初始化智能线路选择
@@ -278,6 +281,28 @@ document.addEventListener('DOMContentLoaded', () => {
         odlmSelect.addEventListener('change', (e) => {
             window.setupIndexDownLinks(e.target.value);
         });
+        
+        // 确保初始时也调用一次setupIndexDownLinks，特别是在开发者模式下
+        setTimeout(() => {
+            console.log('检查线路选择器状态:', {
+                选择器存在: !!odlmSelect,
+                当前值: odlmSelect.value,
+                选项数量: odlmSelect.options ? odlmSelect.options.length : 0,
+                所有选项: Array.from(odlmSelect.options || []).map(opt => opt.value)
+            });
+            
+            if (odlmSelect.value) {
+                console.log('初始调用setupIndexDownLinks，线路：', odlmSelect.value);
+                window.setupIndexDownLinks(odlmSelect.value);
+            } else {
+                console.log('线路选择器没有值，尝试使用第一个选项');
+                if (odlmSelect.options && odlmSelect.options.length > 0) {
+                    const firstValue = odlmSelect.options[0].value;
+                    console.log('使用第一个选项:', firstValue);
+                    window.setupIndexDownLinks(firstValue);
+                }
+            }
+        }, 2000); // 延迟2秒确保所有模块加载完成
     }
     
     // 页面加载时检查hash

@@ -23,7 +23,7 @@ async function checkLatency(url) {
         );
 
         // 对于JSON API，我们发送一个HEAD请求来测量延迟
-        // 对于其他类型，可以考虑发送一个简单的GET请求或OPTIONS请求
+        // 使用新的开发者模式的fetch包装器，它会自动处理外部请求拦截
         const fetchPromise = devModeFetch(url, { method: 'HEAD', mode: 'no-cors' });
         
         // 使用Promise.race来处理超时

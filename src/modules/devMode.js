@@ -1,6 +1,10 @@
 // 开发者模式管理模块
+// 已升级为使用增强的核心模块
 
-// 开发者模式状态
+import { devModeManager } from './devModeCore.js';
+import { devModePanel, initDevModeUI } from './devModePanel.js';
+
+// 开发者模式状态（保持向后兼容）
 let isDevMode = false;
 
 /**
@@ -8,34 +12,53 @@ let isDevMode = false;
  * @param {boolean} [initialState=false] - 初始状态
  */
 function initDevMode(initialState = false) {
-    // 检测是否为localhost访问
-    const isLocalhost = window.location.hostname === 'localhost' || 
-                       window.location.hostname === '127.0.0.1' || 
-                       window.location.hostname === '';
+    // 初始化新的开发者模式核心模块
+    devModeManager.init();
     
-    // 如果是localhost访问，自动启用开发者模式
-    if (isLocalhost) {
+    // 初始化开发者模式UI面板
+    initDevModeUI();
+    
+    // 保持向后兼容的状态同步
+    isDevMode = devModeManager.getState().isEnabled;
+    
+    // 监听开发者模式状态变化
+    document.addEventListener('devModeEnabled', () => {
         isDevMode = true;
-        console.log('检测到localhost访问，自动启用开发者模式');
-    } else {
-        isDevMode = initialState;
-        
-        // 从本地存储中读取开发者模式状态
-        const savedDevMode = localStorage.getItem('devMode');
-        if (savedDevMode !== null) {
-            isDevMode = savedDevMode === 'true';
-        }
-    }
-    
-    // 创建开发者模式切换按钮
-    createDevModeToggle();
-    
-    // 如果开发者模式已启用，则应用开发者模式的设置
-    if (isDevMode) {
         applyDevModeSettings();
-    }
+        devModePanel.show();
+        updateDevModeToggleUI();
+    });
     
-    console.log(`开发者模式已${isDevMode ? '启用' : '禁用'}`);
+    document.addEventListener('devModeDisabled', () => {
+        isDevMode = false;
+        removeDevModeSettings();
+        devModePanel.hide();
+        updateDevModeToggleUI();
+    });
+    
+    // 监听URL参数变化（通过popstate事件）
+    window.addEventListener('popstate', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const devParam = urlParams.get('dev');
+        const currentState = devModeManager.getState().isEnabled;
+        
+        // 如果URL参数与当前状态不匹配，更新状态
+        if (devParam === '1' && !currentState) {
+            devModeManager.enable();
+        } else if (devParam === '0' && currentState) {
+            devModeManager.disable();
+        } else if (!devParam && currentState && !isLocalhostAccess()) {
+            // 如果没有dev参数且不是localhost，禁用开发者模式
+            devModeManager.disable();
+        }
+    });
+    
+    // 如果开发者模式已启用，创建切换按钮
+    if (isDevMode) {
+        createDevModeToggle();
+        showDevModeNotification('开发者模式已自动启用');
+        devModePanel.show();
+    }
 }
 
 /**
@@ -50,9 +73,8 @@ function createDevModeToggle() {
     // 创建开发者模式切换按钮
     const devModeToggle = document.createElement('button');
     devModeToggle.id = 'dev-mode-toggle';
-    devModeToggle.className = `fixed bottom-4 right-4 z-50 p-2 rounded-full transition ${isDevMode ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-gray-700 hover:bg-gray-800'} text-white shadow-lg`;
+    devModeToggle.className = 'fixed bottom-4 right-4 z-50 p-2 rounded-full transition text-white shadow-lg';
     devModeToggle.setAttribute('aria-label', '切换开发者模式');
-    devModeToggle.innerHTML = '<i class="fas fa-code"></i>';
     devModeToggle.style.fontSize = '0.75rem'; // 使按钮更小
     devModeToggle.style.width = '2rem'; // 设置固定宽度
     devModeToggle.style.height = '2rem'; // 设置固定高度
@@ -63,66 +85,43 @@ function createDevModeToggle() {
     // 添加到页面底部
     document.body.appendChild(devModeToggle);
     
-    // 如果是localhost访问，添加提示文本
-    const isLocalhost = window.location.hostname === 'localhost' || 
-                       window.location.hostname === '127.0.0.1' || 
-                       window.location.hostname === '';
-    
-    if (isLocalhost && isDevMode) {
-        const devModeLabel = document.createElement('div');
-        devModeLabel.id = 'dev-mode-label';
-        devModeLabel.className = 'fixed bottom-4 right-16 z-50 bg-yellow-500 text-white px-2 py-1 rounded-md text-xs shadow-lg';
-        devModeLabel.textContent = '开发者模式已启用';
-        document.body.appendChild(devModeLabel);
-    }
+    // 更新按钮UI状态
+    updateDevModeToggleUI();
 }
 
 /**
  * 切换开发者模式
  */
 function toggleDevMode() {
-    isDevMode = !isDevMode;
-    
-    // 保存状态到本地存储
-    localStorage.setItem('devMode', isDevMode.toString());
-    
-    // 更新按钮样式
-    const devModeToggle = document.getElementById('dev-mode-toggle');
-    if (devModeToggle) {
-        if (isDevMode) {
-            devModeToggle.classList.remove('bg-gray-700', 'hover:bg-gray-800');
-            devModeToggle.classList.add('bg-yellow-500', 'hover:bg-yellow-600');
-        } else {
-            devModeToggle.classList.remove('bg-yellow-500', 'hover:bg-yellow-600');
-            devModeToggle.classList.add('bg-gray-700', 'hover:bg-gray-800');
-        }
-    }
-    
-    // 更新或移除提示文本
-    const devModeLabel = document.getElementById('dev-mode-label');
     if (isDevMode) {
-        if (!devModeLabel) {
-            const newDevModeLabel = document.createElement('div');
-            newDevModeLabel.id = 'dev-mode-label';
-            newDevModeLabel.className = 'fixed bottom-4 right-16 z-50 bg-yellow-500 text-white px-2 py-1 rounded-md text-xs shadow-lg';
-            newDevModeLabel.textContent = '开发者模式已启用';
-            document.body.appendChild(newDevModeLabel);
-        }
-    } else if (devModeLabel) {
-        devModeLabel.remove();
-    }
-    
-    // 应用或取消开发者模式设置
-    if (isDevMode) {
-        applyDevModeSettings();
+        devModeManager.disable();
+        // 更新URL参数
+        updateUrlParameter('dev', '0');
     } else {
-        removeDevModeSettings();
+        devModeManager.enable();
+        // 更新URL参数
+        updateUrlParameter('dev', '1');
+    }
+}
+
+/**
+ * 更新URL参数
+ * @param {string} key - 参数名
+ * @param {string} value - 参数值
+ */
+function updateUrlParameter(key, value) {
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
+    
+    if (value === null || value === undefined || value === '') {
+        params.delete(key);
+    } else {
+        params.set(key, value);
     }
     
-    console.log(`开发者模式已${isDevMode ? '启用' : '禁用'}`);
-    
-    // 刷新页面以应用更改
-    window.location.reload();
+    // 更新URL，不重新加载页面
+    const newUrl = `${url.pathname}${params.toString() ? '?' + params.toString() : ''}${url.hash}`;
+    window.history.replaceState({}, '', newUrl);
 }
 
 /**
@@ -132,42 +131,50 @@ function applyDevModeSettings() {
     // 添加开发者模式类到body
     document.body.classList.add('dev-mode');
     
-    // 显示开发者模式提示
-    showDevModeNotification();
+    // 显示启用通知
+    showDevModeNotification('开发者模式已启用');
+    
+    // 触发自定义事件
+    document.dispatchEvent(new CustomEvent('devModeEnabled'));
 }
 
 /**
  * 移除开发者模式设置
  */
 function removeDevModeSettings() {
-    // 移除开发者模式类
+    // 从body元素中移除开发者模式的CSS类
     document.body.classList.remove('dev-mode');
     
-    // 移除提示文本
-    const devModeLabel = document.getElementById('dev-mode-label');
-    if (devModeLabel) {
-        devModeLabel.remove();
-    }
+    // 显示禁用通知
+    showDevModeNotification('开发者模式已禁用');
+    
+    // 触发自定义事件
+    document.dispatchEvent(new CustomEvent('devModeDisabled'));
 }
 
 /**
- * 显示开发者模式提示
+ * 显示开发者模式通知
  */
-function showDevModeNotification() {
+function showDevModeNotification(message) {
     // 创建通知元素
     const notification = document.createElement('div');
-    notification.className = 'fixed top-20 right-4 glass-effect px-4 py-2 rounded-md z-50 transition-opacity duration-300';
-    notification.textContent = '开发者模式已启用 - 外部请求已被阻止';
+    notification.id = 'dev-mode-notification';
+    notification.className = 'fixed top-20 right-4 bg-yellow-500 text-white px-4 py-2 rounded-md shadow-lg z-50 transform transition-all duration-300';
+    notification.textContent = message;
     
     // 添加到页面
     document.body.appendChild(notification);
     
-    // 3秒后自动消失
+    // 3秒后自动移除
     setTimeout(() => {
-        notification.style.opacity = '0';
-        setTimeout(() => {
-            notification.remove();
-        }, 300);
+        if (notification.parentNode) {
+            notification.style.opacity = '0';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }
     }, 3000);
 }
 
@@ -176,7 +183,7 @@ function showDevModeNotification() {
  * @returns {boolean} 是否为开发者模式
  */
 function isDevModeEnabled() {
-    return isDevMode;
+    return devModeManager.getState().isEnabled;
 }
 
 /**
@@ -187,33 +194,14 @@ function isDevModeEnabled() {
  * @returns {Promise<Response>} fetch响应
  */
 async function devModeFetch(url, options = {}) {
-    // 如果不是开发者模式，直接使用原始fetch
-    if (!isDevMode) {
-        return fetch(url, options);
+    // 如果开发者模式未启用，使用原始fetch
+    if (!isDevModeEnabled()) {
+        return window.fetch(url, options);
     }
     
-    // 检查是否为外部请求
-    const isExternalRequest = isExternalUrl(url);
-    
-    if (isExternalRequest) {
-        console.warn(`开发者模式：阻止外部请求 - ${url}`);
-        
-        // 返回一个模拟的响应
-        return new Response(JSON.stringify({
-            error: '开发者模式已启用',
-            message: '外部请求已被阻止',
-            url: url
-        }), {
-            status: 403,
-            statusText: 'Forbidden',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-    }
-    
-    // 如果是内部请求，则正常执行
-    return fetch(url, options);
+    // 开发者模式启用时，使用核心模块的拦截逻辑
+    // 注意：devModeCore.js会自动拦截所有fetch调用，所以这里直接调用即可
+    return window.fetch(url, options);
 }
 
 /**
@@ -240,6 +228,51 @@ function isExternalUrl(url) {
     } catch (e) {
         // 如果URL解析失败，视为外部URL
         return true;
+    }
+}
+
+/**
+ * 检查是否为localhost访问
+ */
+function isLocalhostAccess() {
+    const hostname = window.location.hostname;
+    return hostname === 'localhost' || 
+           hostname === '127.0.0.1' || 
+           hostname === '' ||
+           hostname === '::1';
+}
+
+/**
+ * 更新开发者模式切换按钮UI
+ */
+function updateDevModeToggleUI() {
+    const toggleButton = document.getElementById('dev-mode-toggle');
+    const toggleLabel = document.getElementById('dev-mode-label');
+    
+    if (toggleButton) {
+        if (isDevMode) {
+            toggleButton.className = 'fixed bottom-4 right-4 z-50 p-2 rounded-full transition bg-yellow-500 hover:bg-yellow-600 text-white shadow-lg';
+            toggleButton.innerHTML = '<i class="fas fa-code"></i>';
+            toggleButton.setAttribute('aria-label', '禁用开发者模式');
+            
+            // 如果是localhost访问，显示标签
+            if (isLocalhostAccess() && !toggleLabel) {
+                const label = document.createElement('div');
+                label.id = 'dev-mode-label';
+                label.className = 'fixed bottom-4 right-16 z-50 bg-yellow-500 text-white px-2 py-1 rounded-md text-xs shadow-lg';
+                label.textContent = '开发者模式已启用';
+                document.body.appendChild(label);
+            }
+        } else {
+            toggleButton.className = 'fixed bottom-4 right-4 z-50 p-2 rounded-full transition bg-gray-700 hover:bg-gray-800 text-white shadow-lg';
+            toggleButton.innerHTML = '<i class="fas fa-code"></i>';
+            toggleButton.setAttribute('aria-label', '启用开发者模式');
+            
+            // 移除标签
+            if (toggleLabel) {
+                toggleLabel.remove();
+            }
+        }
     }
 }
 
