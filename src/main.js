@@ -182,14 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 移动端菜单切换
-    const menuToggle = document.getElementById('menu-toggle');
-    const mobileMenu = document.getElementById('mobile-menu');
-    if (menuToggle && mobileMenu) {
-        menuToggle.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-    }
+    // 移动端菜单切换功能已移除 - 现在使用统一的导航栏
 
     // 导航链接激活状态切换
     const navLinks = document.querySelectorAll('.nav-link');

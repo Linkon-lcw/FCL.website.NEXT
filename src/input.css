@@ -90,3 +90,18 @@
     transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
     overflow: hidden;
 }
+
+/* 移动端导航栏样式优化 */
+@media (max-width: 767px) {
+    #main-nav ul {
+        @apply justify-center space-x-4 px-2;
+    }
+    
+    #main-nav a {
+        @apply flex items-center justify-center w-10 h-10;
+    }
+    
+    #main-nav i {
+        @apply text-xl;
+    }
+}
