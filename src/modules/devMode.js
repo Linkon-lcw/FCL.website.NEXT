@@ -26,14 +26,12 @@ function initDevMode(initialState = false) {
         isDevMode = true;
         applyDevModeSettings();
         devModePanel.show();
-        updateDevModeToggleUI();
     });
     
     document.addEventListener('devModeDisabled', () => {
         isDevMode = false;
         removeDevModeSettings();
         devModePanel.hide();
-        updateDevModeToggleUI();
     });
     
     // 监听URL参数变化（通过popstate事件）
@@ -53,41 +51,14 @@ function initDevMode(initialState = false) {
         }
     });
     
-    // 如果开发者模式已启用，创建切换按钮
+    // 如果开发者模式已启用，显示通知和面板
     if (isDevMode) {
-        createDevModeToggle();
         showDevModeNotification('开发者模式已自动启用');
         devModePanel.show();
     }
 }
 
-/**
- * 创建开发者模式切换按钮
- */
-function createDevModeToggle() {
-    // 检查是否已存在开发者模式切换按钮
-    if (document.getElementById('dev-mode-toggle')) {
-        return;
-    }
-    
-    // 创建开发者模式切换按钮
-    const devModeToggle = document.createElement('button');
-    devModeToggle.id = 'dev-mode-toggle';
-    devModeToggle.className = 'fixed bottom-4 right-4 z-50 p-2 rounded-full transition text-white shadow-lg';
-    devModeToggle.setAttribute('aria-label', '切换开发者模式');
-    devModeToggle.style.fontSize = '0.75rem'; // 使按钮更小
-    devModeToggle.style.width = '2rem'; // 设置固定宽度
-    devModeToggle.style.height = '2rem'; // 设置固定高度
-    
-    // 添加点击事件
-    devModeToggle.addEventListener('click', toggleDevMode);
-    
-    // 添加到页面底部
-    document.body.appendChild(devModeToggle);
-    
-    // 更新按钮UI状态
-    updateDevModeToggleUI();
-}
+// 开发者模式切换功能已移至devModePanel.js中的统一按钮实现
 
 /**
  * 切换开发者模式
@@ -242,39 +213,15 @@ function isLocalhostAccess() {
            hostname === '::1';
 }
 
-/**
- * 更新开发者模式切换按钮UI
- */
-function updateDevModeToggleUI() {
-    const toggleButton = document.getElementById('dev-mode-toggle');
-    const toggleLabel = document.getElementById('dev-mode-label');
-    
-    if (toggleButton) {
-        if (isDevMode) {
-            toggleButton.className = 'fixed bottom-4 right-4 z-50 p-2 rounded-full transition bg-yellow-500 hover:bg-yellow-600 text-white shadow-lg';
-            toggleButton.innerHTML = '<i class="fas fa-code"></i>';
-            toggleButton.setAttribute('aria-label', '禁用开发者模式');
-            
-            // 如果是localhost访问，显示标签
-            if (isLocalhostAccess() && !toggleLabel) {
-                const label = document.createElement('div');
-                label.id = 'dev-mode-label';
-                label.className = 'fixed bottom-4 right-16 z-50 bg-yellow-500 text-white px-2 py-1 rounded-md text-xs shadow-lg';
-                label.textContent = '开发者模式已启用';
-                document.body.appendChild(label);
-            }
-        } else {
-            toggleButton.className = 'fixed bottom-4 right-4 z-50 p-2 rounded-full transition bg-gray-700 hover:bg-gray-800 text-white shadow-lg';
-            toggleButton.innerHTML = '<i class="fas fa-code"></i>';
-            toggleButton.setAttribute('aria-label', '启用开发者模式');
-            
-            // 移除标签
-            if (toggleLabel) {
-                toggleLabel.remove();
-            }
-        }
-    }
-}
+// 更新开发者模式切换按钮UI功能已移至devModePanel.js中的统一按钮实现
 
 // 导出函数
-export { initDevMode, isDevModeEnabled, devModeFetch, isExternalUrl };
+export { 
+    initDevMode, 
+    isDevModeEnabled, 
+    devModeFetch, 
+    isExternalUrl,
+    isLocalhostAccess,
+    toggleDevMode,
+    updateUrlParameter
+};

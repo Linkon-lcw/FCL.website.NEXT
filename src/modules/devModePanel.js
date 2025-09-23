@@ -83,14 +83,19 @@ class DevModePanel {
         this.panel = panel;
         this.bindEvents();
         this.startAutoUpdate();
+        
+        // 初始化拖动功能
+        this.initDrag();
     }
 
     /**
      * 绑定事件
      */
     bindEvents() {
-        // 关闭按钮
+        // 关闭按钮 - 禁用开发者模式
         document.getElementById('dev-mode-close').addEventListener('click', () => {
+            devModeManager.disable();
+            updateUrlParameter('dev', '0');
             this.hide();
         });
 
@@ -527,6 +532,114 @@ class DevModePanel {
     }
 
     /**
+     * 初始化拖动功能
+     */
+    initDrag() {
+        const panel = this.panel;
+        const header = panel.querySelector('.flex.items-center.justify-between.p-3');
+        
+        let isDragging = false;
+        let startX, startY, startLeft, startTop;
+        
+        // 鼠标按下事件 - 开始拖动
+        header.addEventListener('mousedown', (e) => {
+            // 只允许通过标题栏拖动，排除按钮区域
+            if (e.target.closest('button')) return;
+            
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            
+            // 获取当前面板位置
+            const rect = panel.getBoundingClientRect();
+            startLeft = rect.left;
+            startTop = rect.top;
+            
+            // 添加拖动样式
+            panel.style.cursor = 'grabbing';
+            panel.style.userSelect = 'none';
+            
+            e.preventDefault();
+        });
+        
+        // 鼠标移动事件 - 处理拖动
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            
+            const deltaX = e.clientX - startX;
+            const deltaY = e.clientY - startY;
+            
+            // 计算新位置，限制在窗口范围内
+            const newLeft = Math.max(0, Math.min(window.innerWidth - panel.offsetWidth, startLeft + deltaX));
+            const newTop = Math.max(0, Math.min(window.innerHeight - panel.offsetHeight, startTop + deltaY));
+            
+            // 应用新位置
+            panel.style.position = 'fixed';
+            panel.style.left = newLeft + 'px';
+            panel.style.top = newTop + 'px';
+            panel.style.right = 'auto';
+            panel.style.bottom = 'auto';
+            
+            e.preventDefault();
+        });
+        
+        // 鼠标释放事件 - 结束拖动
+        document.addEventListener('mouseup', () => {
+            if (isDragging) {
+                isDragging = false;
+                panel.style.cursor = '';
+                panel.style.userSelect = '';
+            }
+        });
+        
+        // 触摸事件支持
+        header.addEventListener('touchstart', (e) => {
+            if (e.target.closest('button')) return;
+            
+            isDragging = true;
+            const touch = e.touches[0];
+            startX = touch.clientX;
+            startY = touch.clientY;
+            
+            const rect = panel.getBoundingClientRect();
+            startLeft = rect.left;
+            startTop = rect.top;
+            
+            panel.style.cursor = 'grabbing';
+            panel.style.userSelect = 'none';
+            
+            e.preventDefault();
+        });
+        
+        document.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            
+            const touch = e.touches[0];
+            const deltaX = touch.clientX - startX;
+            const deltaY = touch.clientY - startY;
+            
+            const newLeft = Math.max(0, Math.min(window.innerWidth - panel.offsetWidth, startLeft + deltaX));
+            const newTop = Math.max(0, Math.min(window.innerHeight - panel.offsetHeight, startTop + deltaY));
+            
+            panel.style.position = 'fixed';
+            panel.style.left = newLeft + 'px';
+            panel.style.top = newTop + 'px';
+            panel.style.right = 'auto';
+            panel.style.bottom = 'auto';
+            
+            e.preventDefault();
+        });
+        
+        document.addEventListener('touchend', () => {
+            if (isDragging) {
+                isDragging = false;
+                panel.style.cursor = '';
+                panel.style.userSelect = '';
+            }
+        });
+    }
+    
+    /**
      * 销毁面板
      */
     destroy() {
@@ -542,14 +655,34 @@ class DevModePanel {
     }
 }
 
+/**
+ * 更新URL参数
+ * @param {string} key - 参数名
+ * @param {string} value - 参数值
+ */
+function updateUrlParameter(key, value) {
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
+    
+    if (value === null || value === undefined || value === '') {
+        params.delete(key);
+    } else {
+        params.set(key, value);
+    }
+    
+    // 更新URL，不重新加载页面
+    const newUrl = `${url.pathname}${params.toString() ? '?' + params.toString() : ''}${url.hash}`;
+    window.history.replaceState({}, '', newUrl);
+}
+
 // 创建全局实例
 const devModePanel = new DevModePanel();
 
-// 创建快速访问按钮
+// 创建统一开发者模式按钮
 function createQuickAccessButton() {
     const button = document.createElement('button');
     button.id = 'dev-mode-quick-access';
-    button.className = 'fixed bottom-4 right-4 w-12 h-12 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 z-40';
+    button.className = 'fixed bottom-4 right-4 w-12 h-12 bg-gray-500 text-white rounded-full shadow-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 z-40 transition-colors';
     button.innerHTML = `
         <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
@@ -558,7 +691,18 @@ function createQuickAccessButton() {
     button.title = '开发者模式';
     
     button.addEventListener('click', () => {
-        devModePanel.show();
+        // 如果开发者模式未启用，先启用它
+        if (!devModeManager.getState().isEnabled) {
+            devModeManager.enable();
+            updateUrlParameter('dev', '1');
+        } else {
+            // 如果已启用，切换面板显示状态
+            if (devModePanel.isVisible) {
+                devModePanel.hide();
+            } else {
+                devModePanel.show();
+            }
+        }
     });
     
     document.body.appendChild(button);
@@ -567,8 +711,22 @@ function createQuickAccessButton() {
 
 // 初始化开发者模式UI
 function initDevModeUI() {
-    // 创建快速访问按钮
+    // 创建统一开发者模式按钮
     createQuickAccessButton();
+    
+    // 设置按钮初始状态
+    const button = document.getElementById('dev-mode-quick-access');
+    if (button) {
+        if (devModeManager.getState().isEnabled) {
+            button.classList.remove('bg-gray-500');
+            button.classList.add('bg-blue-500');
+            button.title = '开发者模式 (点击打开/关闭面板)';
+        } else {
+            button.classList.remove('bg-blue-500');
+            button.classList.add('bg-gray-500');
+            button.title = '开发者模式 (点击启用)';
+        }
+    }
     
     // 监听开发者模式状态变化
     document.addEventListener('devModeEnabled', () => {
@@ -576,7 +734,9 @@ function initDevModeUI() {
         if (button) {
             button.classList.remove('bg-gray-500');
             button.classList.add('bg-blue-500');
-            button.title = '开发者模式 (已启用)';
+            button.title = '开发者模式 (点击打开/关闭面板)';
+            // 启用时自动显示面板
+            devModePanel.show();
         }
     });
     
@@ -585,7 +745,7 @@ function initDevModeUI() {
         if (button) {
             button.classList.remove('bg-blue-500');
             button.classList.add('bg-gray-500');
-            button.title = '开发者模式 (已禁用)';
+            button.title = '开发者模式 (点击启用)';
         }
         devModePanel.hide();
     });

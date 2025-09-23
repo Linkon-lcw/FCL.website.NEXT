@@ -7,13 +7,13 @@
 
 /* 淡入动画 */
 .fade-in {
-    animation: fadeIn 0.5s ease-in forwards;
+    animation: fadeIn 0.3s ease-in forwards;
 }
 
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(20px) scale(0.9);
+        transform: translateY(5px) scale(0.9);
         filter: blur(10px);
     }
     to {
@@ -75,9 +75,9 @@
     @apply bottom-4 left-4 z-40 fixed flex items-center px-3 py-2 rounded-full text-white transition glass-effect;
 }
 
-/* 开发者模式按钮样式 */
+/* 开发者模式按钮样式 - 已废弃，使用dev-mode-quick-access替代 */
 #dev-mode-toggle {
-    @apply right-4 bottom-4 z-40 fixed flex justify-center items-center p-2 rounded-full text-white transition glass-effect;
+    display: none !important;
 }
 
 /* 开发者模式标签样式 */
