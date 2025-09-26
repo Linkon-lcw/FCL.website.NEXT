@@ -188,6 +188,26 @@ FCL.website.NEXT/
 - 保持了原有功能的完整性
 - 为后续功能扩展奠定了良好基础
 
+### 2025年9月 - 折叠面板组件深色模式支持
+
+**功能增强：**
+为ReusableCollapsiblePanel组件添加完整的深色模式支持，确保在深色主题下折叠面板具有良好的视觉体验。
+
+**实现细节：**
+1. **组件样式更新**: 在ReusableCollapsiblePanel.js的默认配置中添加深色模式类
+   - headerClass: `dark:bg-gray-700 dark:text-gray-100`
+   - bodyClass: `dark:bg-gray-600`
+   - 外层容器: `dark:border-gray-600`
+2. **页面样式统一**: 更新about.html和check.html页面中所有折叠面板的样式
+   - 移除硬编码的`bg-gray-50`背景色类
+   - 添加深色模式边框类`dark:border-gray-600`
+   - 确保折叠面板使用组件默认样式，支持深色模式自动切换
+
+**兼容性：**
+- 与项目现有的深色模式切换机制完全兼容
+- 支持基于class的深色模式切换（Tailwind CSS `darkMode: 'class'`配置）
+- 保持原有折叠动画和交互功能不变
+
 ### 2025年9月 - 移动端导航栏功能优化
 
 **问题描述：**

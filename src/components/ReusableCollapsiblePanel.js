@@ -17,8 +17,8 @@ function createCollapsiblePanel(title, content, options = {}) {
     // 默认选项
     const defaults = {
         id: `collapsible-panel-${Date.now()}`,
-        headerClass: 'flex justify-between items-center p-4 cursor-pointer bg-gray-100',
-        bodyClass: 'max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out',
+        headerClass: 'flex justify-between items-center p-4 cursor-pointer bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100',
+        bodyClass: 'max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out bg-white dark:bg-gray-600',
         startExpanded: false,
         allowMultiple: false
     };
@@ -28,7 +28,7 @@ function createCollapsiblePanel(title, content, options = {}) {
     
     // 创建外层折叠面板容器
     const outerPanel = document.createElement('div');
-    outerPanel.className = 'border border-gray-200 rounded-md mb-4 overflow-hidden collapsible-panel';
+    outerPanel.className = 'border border-gray-200 dark:border-gray-600 rounded-md mb-4 overflow-hidden collapsible-panel';
     outerPanel.id = `${opts.id}-panel`;
     
     // 创建标题部分
