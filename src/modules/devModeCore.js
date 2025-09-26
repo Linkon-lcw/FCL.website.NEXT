@@ -45,6 +45,7 @@ class PerformanceMonitor {
     startMeasure(name) {
         if (!devModeState.isEnabled || !devModeState.config.enablePerformanceMonitor) return;
         this.startTimes.set(name, performance.now());
+        console.log(`[PerformanceMonitor] 性能监控开始: ${name}`);
         this.log(`性能监控开始: ${name}`, LOG_LEVELS.DEBUG);
     }
 
@@ -55,6 +56,7 @@ class PerformanceMonitor {
             const duration = performance.now() - startTime;
             this.metrics.set(name, duration);
             this.startTimes.delete(name);
+            console.log(`[PerformanceMonitor] 性能监控结束: ${name}, 耗时: ${duration.toFixed(2)}ms`);
             this.log(`性能监控结束: ${name}, 耗时: ${duration.toFixed(2)}ms`, LOG_LEVELS.INFO);
         }
     }
@@ -132,6 +134,7 @@ class NetworkAnalyzer {
                 ? `网络请求失败: ${request.url}, 错误: ${error.message}, 耗时: ${duration.toFixed(2)}ms`
                 : `网络请求完成: ${request.url}, 状态: ${response.status}, 耗时: ${duration.toFixed(2)}ms`;
             
+            console.log(`[NetworkAnalyzer] ${logMessage}`);
             this.log(logMessage, logLevel);
         }
     }
@@ -226,6 +229,7 @@ class ErrorCapture {
 
     captureError(errorInfo) {
         devModeState.errors.push(errorInfo);
+        console.log(`[ErrorCapture] 捕获错误: ${errorInfo.type} - ${errorInfo.message}`);
         this.log(`捕获错误: ${errorInfo.type} - ${errorInfo.message}`, LOG_LEVELS.ERROR);
     }
 
@@ -290,6 +294,7 @@ class MemoryMonitor {
 
             // 如果内存使用率超过90%，发出警告
             if (parseFloat(memoryData.usagePercentage) > 90) {
+                console.log(`[MemoryMonitor] 内存使用警告: ${memoryData.usagePercentage}%`);
                 this.log(`内存使用警告: ${memoryData.usagePercentage}%`, LOG_LEVELS.WARN);
             }
         }, 5000); // 每5秒检查一次
@@ -348,6 +353,7 @@ class DevModeManager {
         // 如果URL参数为dev=0，明确禁用开发者模式（优先级最高）
         if (devParam === '0') {
             this.disable();
+            console.log('[DevModeManager] 检测到URL参数 dev=0，禁用开发者模式');
             this.log('检测到URL参数 dev=0，禁用开发者模式', LOG_LEVELS.INFO);
             return;
         }
@@ -356,16 +362,19 @@ class DevModeManager {
         const isLocalhost = this.isLocalhostAccess();
         
         // 检查本地存储
-        const savedDevMode = localStorage.getItem('devMode');
+        // 禁用本地存储记录，确保每次都检查URL参数和localhost访问
+        // const savedDevMode = localStorage.getItem('devMode');
         
-        // 自动启用条件（dev=1参数、localhost访问或本地存储）
-        if (devParam === '1' || isLocalhost || savedDevMode === 'true') {
+        // 自动启用条件（dev=1参数、localhost访问）
+        if (devParam === '1' || isLocalhost) {
             this.enable();
             
             if (devParam === '1') {
+                console.log('[DevModeManager] 检测到URL参数 dev=1，启用开发者模式');
                 this.log('检测到URL参数 dev=1，启用开发者模式', LOG_LEVELS.INFO);
             }
             if (isLocalhost) {
+                console.log('[DevModeManager] 检测到localhost访问，自动启用开发者模式');
                 this.log('检测到localhost访问，自动启用开发者模式', LOG_LEVELS.INFO);
             }
         }
@@ -388,10 +397,13 @@ class DevModeManager {
         // 添加开发者模式类到body
         document.body.classList.add('dev-mode');
 
+        console.log('[DevModeManager] 开发者模式已启用');
         this.log('开发者模式已启用', LOG_LEVELS.INFO);
         
         // 显示启用通知
         this.showNotification('开发者模式已启用', 'success');
+        
+        // window.location.reload();
     }
 
     /**
@@ -410,10 +422,14 @@ class DevModeManager {
         // 移除开发者模式类
         document.body.classList.remove('dev-mode');
 
+        console.log('[DevModeManager] 开发者模式已禁用');
         this.log('开发者模式已禁用', LOG_LEVELS.INFO);
         
         // 显示禁用通知
         this.showNotification('开发者模式已禁用', 'info');
+
+        
+            // window.location.reload();
     }
 
     /**
@@ -432,14 +448,28 @@ class DevModeManager {
                 // 检查是否为外部请求
                 if (self.isExternalUrl(url)) {
                     self.log(`阻止外部请求: ${url}`, LOG_LEVELS.WARN);
+
+                    //排除'./src/settings/dev/Url.json'配置文件内指定的URL
+                    const urlConfig = await self.loadUrlConfig('./src/settings/dev/Url.json');
+                    if (urlConfig.urls.some(item => item.url === url && item.rule === 'pass')) {
+                        self.log(`允许外部请求: ${url}`, LOG_LEVELS.INFO);
+                        return self.originalFetch.call(this, url, options);
+                    }
+
+                    //帮我改成做一个随机延迟
+                    const delay = Math.floor(Math.random() * 2000) + 1000; // 1-3秒之间的随机延迟
+                    await new Promise(resolve => setTimeout(resolve, delay));
+
+                    //重定向到.\file\testdata\fclExample.json的内容
+                    const response = await self.originalFetch.call(this, './file/testdata/fclExample.json');
+                    const json = await response.json();
                     
                     const mockResponse = new Response(JSON.stringify({
-                        error: '开发者模式已启用',
-                        message: '外部请求已被阻止',
+                        message: json.message,
                         url: url
                     }), {
-                        status: 403,
-                        statusText: 'Forbidden',
+                        status: 200,
+                        statusText: 'OK',
                         headers: { 'Content-Type': 'application/json' }
                     });
                     
@@ -522,14 +552,14 @@ class DevModeManager {
      * 显示通知
      */
     showNotification(message, type = 'info') {
-        // 使用统一的toast通知系统
-        import('../utils/toast.js').then(module => {
-            const toastType = type === 'success' ? 'success' : 
-                             type === 'error' ? 'error' : 
-                             type === 'warn' ? 'warning' : 'info';
-            module.showToast(message, toastType, 3000, 'top-right');
+        // 使用统一的notification通知系统
+        import('../utils/notification.js').then(module => {
+            const notificationType = type === 'success' ? 'success' : 
+                                   type === 'error' ? 'error' : 
+                                   type === 'warn' ? 'warning' : 'info';
+            module.default.show(message, { type: notificationType, duration: 3000, position: 'top-right' });
         }).catch(() => {
-            // 如果toast模块加载失败，使用备用通知方式
+            // 如果notification模块加载失败，使用备用通知方式
             const notification = document.createElement('div');
             notification.className = `fixed top-20 right-4 px-4 py-2 rounded-md z-50 transition-opacity duration-300 ${
                 type === 'success' ? 'bg-green-500' : 
@@ -588,6 +618,7 @@ class DevModeManager {
      */
     updateConfig(newConfig) {
         devModeState.config = { ...devModeState.config, ...newConfig };
+        console.log('[DevModeManager] 开发者模式配置已更新');
         this.log('开发者模式配置已更新', LOG_LEVELS.INFO);
     }
 
@@ -615,6 +646,7 @@ class DevModeManager {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
 
+        console.log('[DevModeManager] 日志已导出');
         this.log('日志已导出', LOG_LEVELS.INFO);
     }
 
@@ -628,7 +660,25 @@ class DevModeManager {
         devModeState.memoryUsage = [];
         this.performanceMonitor.metrics.clear();
 
+        console.log('[DevModeManager] 日志已清除');
         this.log('日志已清除', LOG_LEVELS.INFO);
+    }
+
+    /**
+     * 加载URL配置文件
+     */
+    async loadUrlConfig(url) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.log(`[DevModeManager] 加载URL配置文件失败: ${error.message}`);
+            this.log(`加载URL配置文件失败: ${error.message}`, LOG_LEVELS.ERROR);
+            return { urls: [] };
+        }
     }
 }
 

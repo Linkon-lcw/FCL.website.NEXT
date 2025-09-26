@@ -1,0 +1,9 @@
+{
+    "注释": "需要特殊要求的URL列表",
+    "urls": [
+        {
+            "url": "https://get.microsoft.com/badge/ms-store-badge.bundled.js",
+            "rule": "pass"
+        }
+    ]
+}

@@ -21,7 +21,7 @@ class DevModePanel {
 
         const panel = document.createElement('div');
         panel.id = 'dev-mode-panel';
-        panel.className = 'fixed top-4 left-4 w-96 max-h-96 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg z-50 hidden';
+        panel.className = 'fixed top-4 left-4 w-96 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 scroll-y rounded-lg shadow-lg z-50 hidden';
         
         panel.innerHTML = `
             <div class="flex items-center justify-between p-3 border-b border-gray-200 dark:border-gray-600">
@@ -171,8 +171,6 @@ class DevModePanel {
                 break;
         }
 
-        // 滚动到底部
-        content.scrollTop = content.scrollHeight;
     }
 
     /**
@@ -194,6 +192,7 @@ class DevModePanel {
             const levelNames = ['DEBUG', 'INFO', 'WARN', 'ERROR'];
             const time = new Date(log.timestamp).toLocaleTimeString();
             const colorClass = levelColors[log.level] || 'text-gray-600 dark:text-gray-400';
+
 
             return `
                 <div class="mb-2 p-2 bg-gray-50 dark:bg-gray-700 rounded text-xs">
@@ -682,7 +681,7 @@ const devModePanel = new DevModePanel();
 function createQuickAccessButton() {
     const button = document.createElement('button');
     button.id = 'dev-mode-quick-access';
-    button.className = 'fixed bottom-4 right-4 w-12 h-12 bg-gray-500 text-white rounded-full shadow-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 z-40 transition-colors';
+    button.className = 'fixed bottom-4 right-4 w-12 h-12 rounded-full shadow-lg z-40 transition-colors glass-effect';
     button.innerHTML = `
         <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
@@ -695,6 +694,8 @@ function createQuickAccessButton() {
         if (!devModeManager.getState().isEnabled) {
             devModeManager.enable();
             updateUrlParameter('dev', '1');
+            
+            window.location.reload();
         } else {
             // 如果已启用，切换面板显示状态
             if (devModePanel.isVisible) {
@@ -718,12 +719,14 @@ function initDevModeUI() {
     const button = document.getElementById('dev-mode-quick-access');
     if (button) {
         if (devModeManager.getState().isEnabled) {
-            button.classList.remove('bg-gray-500');
-            button.classList.add('bg-blue-500');
+            button.classList.remove('bg-gray-500/20');
+            button.classList.add('ring-2');
+            button.classList.add('ring-blue-500/20');
             button.title = '开发者模式 (点击打开/关闭面板)';
         } else {
-            button.classList.remove('bg-blue-500');
-            button.classList.add('bg-gray-500');
+            button.classList.remove('ring-2');
+            button.classList.remove('ring-blue-500/20');
+            button.classList.add('bg-gray-500/20');
             button.title = '开发者模式 (点击启用)';
         }
     }
@@ -732,8 +735,9 @@ function initDevModeUI() {
     document.addEventListener('devModeEnabled', () => {
         const button = document.getElementById('dev-mode-quick-access');
         if (button) {
-            button.classList.remove('bg-gray-500');
-            button.classList.add('bg-blue-500');
+            button.classList.remove('bg-gray-500/20');
+            button.classList.add('ring-2');
+            button.classList.add('ring-blue-500/20');
             button.title = '开发者模式 (点击打开/关闭面板)';
             // 启用时自动显示面板
             devModePanel.show();
@@ -743,8 +747,9 @@ function initDevModeUI() {
     document.addEventListener('devModeDisabled', () => {
         const button = document.getElementById('dev-mode-quick-access');
         if (button) {
-            button.classList.remove('bg-blue-500');
-            button.classList.add('bg-gray-500');
+            button.classList.remove('ring-2');
+            button.classList.remove('ring-blue-500/20');
+            button.classList.add('bg-gray-500/20');
             button.title = '开发者模式 (点击启用)';
         }
         devModePanel.hide();

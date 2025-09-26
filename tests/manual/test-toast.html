@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toast测试页面</title>
+    <title>Notification通知测试页面</title>
     <link rel="stylesheet" href="/dist/output.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-gray-100 min-h-screen p-8">
     <div class="max-w-4xl mx-auto">
-        <h1 class="text-3xl font-bold text-gray-800 mb-8">Toast通知测试</h1>
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">Notification通知测试</h1>
         
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 class="text-xl font-semibold text-gray-700 mb-4">测试不同类型的Toast通知</h2>
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">测试不同类型的Notification通知</h2>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <button onclick="testInfoToast()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors">
                     <i class="fas fa-info-circle mr-2"></i>信息通知
@@ -67,14 +67,24 @@
     </div>
 
     <script type="module">
-        import { showToast, showSuccessToast, showErrorToast, showWarningToast, showInfoToast } from '/src/utils/toast.js';
+        import Notification from '/src/utils/notification.js';
         
         // 将函数暴露到全局作用域供按钮调用
-        window.showToast = showToast;
-        window.showSuccessToast = showSuccessToast;
-        window.showErrorToast = showErrorToast;
-        window.showWarningToast = showWarningToast;
-        window.showInfoToast = showInfoToast;
+        window.showToast = (message, type = 'info', duration = 3000, position = 'top-right') => {
+            Notification.show(message, { type, duration, position });
+        };
+        window.showSuccessToast = (message, duration = 3000, position = 'top-right') => {
+            Notification.success(message, { duration, position });
+        };
+        window.showErrorToast = (message, duration = 3000, position = 'top-right') => {
+            Notification.error(message, { duration, position });
+        };
+        window.showWarningToast = (message, duration = 3000, position = 'top-right') => {
+            Notification.warning(message, { duration, position });
+        };
+        window.showInfoToast = (message, duration = 3000, position = 'top-right') => {
+            Notification.info(message, { duration, position });
+        };
         
         window.testInfoToast = function() {
             showInfoToast('这是一个信息通知！');

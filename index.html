@@ -134,6 +134,13 @@
                 loadModule('./src/modules/html/sponsors.html', 'sponsors-module'),
                 loadModule('./src/modules/html/about.html', 'about-module')
             ]);
+
+            // 所有模块加载完成后，调用main.js的初始化函数
+            if (window.initializeApp) {
+                window.initializeApp();
+            } else {
+                console.error('initializeApp函数未找到，请检查main.js是否正确加载');
+            }
         });
     </script>
 </body>

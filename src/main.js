@@ -18,8 +18,11 @@ perfMonitor.mark('MainScriptStart');
 // 将setupIndexDownLinks函数挂载到window对象上，以便其他模块可以访问
 window.setupIndexDownLinks = setupIndexDownLinks;
 
-// 简单的路由和DOM操作
-document.addEventListener('DOMContentLoaded', () => {
+// 主初始化函数 - 在模块加载完成后调用
+function initializeApp() {
+    // log 主脚本开始执行
+    console.log('[MainScript] 主脚本开始执行');
+
     // 记录DOM内容加载完成时间
     perfMonitor.mark('DOMContentReady');
     
@@ -158,8 +161,18 @@ document.addEventListener('DOMContentLoaded', () => {
         perfMonitor.mark('EndCheckHash');
     };
 
-    // 主题切换
+    // 主题切换按钮事件处理
+
+    // 加入日志记录
+    console.log('Themes:初始化主题切换按钮事件处理');
+    
     const themeToggle = document.getElementById('theme-toggle');
+
+    if (!themeToggle) {
+        console.error('Themes:未找到主题切换按钮元素');
+        return;
+    }
+
     if (themeToggle) {
         // 检查本地存储中的主题偏好
         const savedTheme = localStorage.getItem('theme');
@@ -171,6 +184,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         themeToggle.addEventListener('click', () => {
+            console.log('Themes:点击了主题切换按钮');
+
             document.body.classList.toggle('dark');
             
             // 更新本地存储中的主题偏好
@@ -184,97 +199,81 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 移动端菜单切换功能已移除 - 现在使用统一的导航栏
-
-    // 导航链接激活状态切换
+    // 导航链接事件处理
     const navLinks = document.querySelectorAll('.nav-link');
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
-            perfMonitor.mark(`StartNavigateTo_${link.getAttribute('href').substring(1)}`);
             e.preventDefault();
-            const targetId = link.getAttribute('href').substring(1);
             
-            // 更新导航激活状态
+            // 移除所有链接的active类
             navLinks.forEach(l => l.classList.remove('active'));
+            
+            // 为当前点击的链接添加active类
             link.classList.add('active');
             
-            // 显示对应的内容区域
+            // 获取目标section的id
+            const targetId = link.getAttribute('href').substring(1);
+            
+            // 隐藏所有section
             document.querySelectorAll('.section').forEach(section => {
                 section.classList.add('hidden');
             });
-            document.getElementById(targetId)?.classList.remove('hidden');
             
-            // 隐藏移动端菜单
-            if (mobileMenu) {
-                mobileMenu.classList.add('hidden');
-            }
-            
-            // 根据目标页面加载相应内容
-            switch (targetId) {
-                case 'downloads':
-                    perfMonitor.mark('StartLoadDownloadsOnClick');
-                    loadAllFclDownWays();
-                    loadAllZlDownWays();
-                    // 在内容加载完成后重新初始化折叠面板
-                    setTimeout(() => {
-                        initCollapsiblePanels();
-                    }, 100);
-                    perfMonitor.mark('EndLoadDownloadsOnClick');
-                    break;
-                case 'verification':
-                    perfMonitor.mark('StartLoadVerificationOnClick');
-                    loadChecksums('verification');
-                    // 在内容加载完成后重新初始化折叠面板
-                    setTimeout(() => {
-                        initCollapsiblePanels();
-                    }, 100);
-                    perfMonitor.mark('EndLoadVerificationOnClick');
-                    break;
-                case 'about':
-                    perfMonitor.mark('StartLoadAboutOnClick');
-                    loadAbout('about-content');
-                    // 在内容加载完成后重新初始化折叠面板
-                    setTimeout(() => {
-                        initCollapsiblePanels();
-                    }, 100);
-                    perfMonitor.mark('EndLoadAboutOnClick');
-                    break;
-            }
-            
-            // 更新URL hash
-            window.location.hash = targetId;
-            
-            // 滚动到目标元素，并考虑固定标题栏的高度
-            const targetElement = document.getElementById(targetId);
-            if (targetElement) {
+            // 显示目标section
+            const targetSection = document.getElementById(targetId);
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+                
+                // 根据目标页面加载相应内容
+                switch (targetId) {
+                    case 'downloads':
+                        loadAllFclDownWays();
+                        loadAllZlDownWays();
+                        // 在内容加载完成后重新初始化折叠面板
+                        setTimeout(() => {
+                            initCollapsiblePanels();
+                        }, 100);
+                        break;
+                    case 'verification':
+                        loadChecksums('verification-content');
+                        // 在内容加载完成后重新初始化折叠面板
+                        setTimeout(() => {
+                            initCollapsiblePanels();
+                        }, 100);
+                        break;
+                    case 'about':
+                        loadAbout('about-content');
+                        // 在内容加载完成后重新初始化折叠面板
+                        setTimeout(() => {
+                            initCollapsiblePanels();
+                        }, 100);
+                        break;
+                }
+                
+                // 滚动到目标section，考虑固定标题栏的高度
                 const headerHeight = document.querySelector('header').offsetHeight;
                 const navHeight = document.getElementById('main-nav').offsetHeight;
                 const offset = headerHeight + navHeight;
                 
                 window.scrollTo({
-                    top: targetElement.offsetTop - offset,
+                    top: targetSection.offsetTop - offset,
                     behavior: 'smooth'
                 });
             }
-            perfMonitor.mark(`EndNavigateTo_${link.getAttribute('href').substring(1)}`);
         });
     });
 
-    // 初始化设备检测和建议功能
-    // 由于模块化加载，我们需要确保DOM元素已加载完成
-    setTimeout(async () => {
-        const deviceInfoElement = document.getElementById('deviceInfo');
-        if (deviceInfoElement) {
-            deviceInfoElement.innerHTML = showDeviceInfo();
-        }
-        
-        // 确保showDeviceSuggestions先执行完成，设置好androidVer变量
-        await showDeviceSuggestions('deviceSuggestions');
-    }, 100); // 延迟执行以确保模块加载完成
-
-    // 初始化智能线路选择
+    // 页面加载时检查hash并导航
+    checkHashAndNavigate();
+    
+    // 监听hash变化
+    window.addEventListener('hashchange', checkHashAndNavigate);
+    
+    // 初始化设备检测和智能线路选择
+    showDeviceInfo();
+    showDeviceSuggestions();
     initAutoLineSelection();
-
+    
     // 监听线路选择变化
     const odlmSelect = document.getElementById('odlmSelect');
     if (odlmSelect) {
@@ -305,24 +304,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 2000); // 延迟2秒确保所有模块加载完成
     }
     
-    // 页面加载时检查hash
-    checkHashAndNavigate();
-    
-    // 监听hash变化
-    window.addEventListener('hashchange', checkHashAndNavigate);
-    
-    // 初始化折叠面板组件
+    // 初始化可折叠面板
     initCollapsiblePanels();
     
     // 添加公告按钮
     setTimeout(() => {
         const noticeBtn = document.createElement('button');
         noticeBtn.id = 'notice-btn';
-        noticeBtn.className = 'fixed bottom-4 left-4 bg-primary-600 text-white px-3 py-2 rounded-full shadow-lg hover:bg-primary-700 transition';
-        noticeBtn.innerHTML = '<i class="fas fa-bullhorn mr-1"></i>公告';
+        noticeBtn.innerHTML = '<i class="fas fa-bullhorn"></i>';
         noticeBtn.onclick = () => {
             openNotice();
         };
         document.body.appendChild(noticeBtn);
     }, 1000);
-});
+    
+    // 记录主脚本执行完成时间
+    perfMonitor.mark('MainScriptEnd');
+    
+    // 记录性能指标
+    perfMonitor.measure('DOMContentLoadTime', 'MainScriptStart', 'DOMContentReady');
+    perfMonitor.measure('MainScriptExecutionTime', 'DOMContentReady', 'MainScriptEnd');
+    
+    console.log('[MainScript] 主脚本初始化完成');
+}
+
+// 导出初始化函数，供index.html调用
+window.initializeApp = initializeApp;
