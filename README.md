@@ -208,6 +208,23 @@ FCL.website.NEXT/
 - 支持基于class的深色模式切换（Tailwind CSS `darkMode: 'class'`配置）
 - 保持原有折叠动画和交互功能不变
 
+### 2025年9月 - 下载页折叠面板使用规范修复
+
+**问题描述：** 下载页面中的折叠面板使用了自定义实现而非统一的ReusableCollapsiblePanel组件，导致代码重复、维护困难且缺乏深色模式支持。
+
+**修复方案：**
+- **统一组件使用：** 重写`src/modules/downloads.js`中的`loadFclDownWay`函数，使用统一的`createCollapsiblePanel`组件替换自定义折叠面板实现
+- **移除重复代码：** 删除自定义折叠逻辑（max-height设置、ResizeObserver监听、图标切换等）
+- **保持功能完整：** 确保原有功能（动态内容加载、版本面板创建）完全保留
+
+**技术实现：**
+- 使用`createCollapsiblePanel(title, content, options)`函数创建版本面板
+- 为每个版本面板生成唯一ID：`${containerId}-version-${index}`
+- 保持原有的内容结构和样式（架构按钮、数据源显示等）
+- 利用组件内置的深色模式支持，无需额外处理
+
+**效果：** 代码更简洁、维护性更好、深色模式支持完整、功能保持一致。
+
 ### 2025年9月 - 移动端导航栏功能优化
 
 **问题描述：**
