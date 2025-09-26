@@ -3,6 +3,7 @@
 
 import { devModeManager } from './devModeCore.js';
 import { devModePanel, initDevModeUI } from './devModePanel.js';
+import Notification from '../utils/notification.js';
 
 // 开发者模式状态（保持向后兼容）
 let isDevMode = false;
@@ -40,14 +41,16 @@ function initDevMode(initialState = false) {
         const devParam = urlParams.get('dev');
         const currentState = devModeManager.getState().isEnabled;
         
-        // 如果URL参数与当前状态不匹配，更新状态
+        // 如果URL参数与当前状态不匹配，刷新页面
         if (devParam === '1' && !currentState) {
-            devModeManager.enable();
+            // 刷新页面以应用开发者模式
+            window.location.reload();
         } else if (devParam === '0' && currentState) {
-            devModeManager.disable();
+            // 刷新页面以禁用开发者模式
+            window.location.reload();
         } else if (!devParam && currentState && !isLocalhostAccess()) {
-            // 如果没有dev参数且不是localhost，禁用开发者模式
-            devModeManager.disable();
+            // 如果没有dev参数且不是localhost，刷新页面以禁用开发者模式
+            window.location.reload();
         }
     });
     
@@ -119,6 +122,9 @@ function removeDevModeSettings() {
     // 显示禁用通知
     showDevModeNotification('开发者模式已禁用');
     
+    // 刷新页面以禁用开发者模式
+    window.location.reload();
+    
     // 触发自定义事件
     document.dispatchEvent(new CustomEvent('devModeDisabled'));
 }
@@ -127,26 +133,12 @@ function removeDevModeSettings() {
  * 显示开发者模式通知
  */
 function showDevModeNotification(message) {
-    // 创建通知元素
-    const notification = document.createElement('div');
-    notification.id = 'dev-mode-notification';
-    notification.className = 'fixed top-20 right-4 bg-yellow-500 text-white px-4 py-2 rounded-md shadow-lg z-50 transform transition-all duration-300';
-    notification.textContent = message;
-    
-    // 添加到页面
-    document.body.appendChild(notification);
-    
-    // 3秒后自动移除
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.style.opacity = '0';
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.parentNode.removeChild(notification);
-                }
-            }, 300);
-        }
-    }, 3000);
+    // 使用通用通知组件显示开发者模式通知
+    return Notification.warning(message, {
+        position: 'top-right',
+        duration: 3000,
+        className: 'dev-mode-notification'
+    });
 }
 
 /**

@@ -11,20 +11,34 @@ import { devModeFetch, isDevModeEnabled } from './devMode.js';
  * @param {Array} [nestedPath] - 嵌套路径数组
  */
 function findNestedDirectory(children, targetName, nestedPath = []) {
+    console.log(`findNestedDirectory: 开始查找目录 "${targetName}"，嵌套路径:`, nestedPath);
+    console.log('findNestedDirectory: 当前children:', children);
+    
     let currentChildren = children;
     if (nestedPath) {
+        console.log('findNestedDirectory: 处理嵌套路径:', nestedPath);
         for (const dirName of nestedPath) {
+            console.log(`findNestedDirectory: 查找嵌套目录 "${dirName}"`);
             const dir = currentChildren.find(
                 d => d.name === dirName && d.type === 'directory'
             );
-            if (!dir || !dir.children) return null;
+            console.log(`findNestedDirectory: 找到嵌套目录:`, dir);
+            if (!dir || !dir.children) {
+                console.log(`findNestedDirectory: 嵌套目录 "${dirName}" 未找到或没有子目录`);
+                return null;
+            }
             currentChildren = dir.children;
+            console.log(`findNestedDirectory: 更新当前子目录为:`, currentChildren);
         }
     }
 
-    return currentChildren.find(
+    console.log(`findNestedDirectory: 在最终子目录中查找 "${targetName}"`);
+    const result = currentChildren.find(
         dir => dir.type === 'directory' && dir.name === targetName
     );
+    console.log(`findNestedDirectory: 查找结果:`, result);
+    
+    return result;
 }
 
 /** 
@@ -59,11 +73,15 @@ async function setupIndexDownLinks(sourceKey) {
         console.log(`开门见山：JSON：${jsonUrl}`);
 
         // 并行执行网络请求，但设置超时避免阻塞
-        const fetchDataWithTimeout = (url, timeout = 5000) => {
+        const fetchDataWithTimeout = (url, sourceConfig, timeout = 5000) => {
+            console.log(`fetchDataWithTimeout: 开始处理URL: ${url}, nestedPath:`, sourceConfig?.nestedPath);
+            
             // 如果开发者模式已启用，直接返回一个模拟数据
             if (isDevModeEnabled()) {
                 console.warn(`开发者模式：跳过下载链接加载 - ${url}`);
-                return Promise.resolve({
+                
+                // 根据nestedPath构建正确的模拟数据结构
+                let devModeData = {
                     latest: "dev-mode",
                     children: [
                         {
@@ -79,7 +97,30 @@ async function setupIndexDownLinks(sourceKey) {
                             ]
                         }
                     ]
-                });
+                };
+                
+                // 如果存在嵌套路径，需要构建嵌套结构
+                if (sourceConfig.nestedPath && sourceConfig.nestedPath.length > 0) {
+                    console.log(`开发者模式：构建嵌套路径结构:`, sourceConfig.nestedPath);
+                    
+                    // 从内向外构建嵌套结构
+                    let currentLevel = devModeData.children[0];
+                    
+                    // 反向遍历nestedPath，从最内层开始包装
+                    for (let i = sourceConfig.nestedPath.length - 1; i >= 0; i--) {
+                        const dirName = sourceConfig.nestedPath[i];
+                        currentLevel = {
+                            type: "directory",
+                            name: dirName,
+                            children: [currentLevel]
+                        };
+                    }
+                    
+                    devModeData.children = [currentLevel];
+                    console.log(`开发者模式：构建后的数据结构:`, devModeData);
+                }
+                
+                return Promise.resolve(devModeData);
             }
             
             return Promise.race([
@@ -94,7 +135,7 @@ async function setupIndexDownLinks(sourceKey) {
             ]);
         };
 
-        const jsonData = await fetchDataWithTimeout(jsonUrl);
+        const jsonData = await fetchDataWithTimeout(jsonUrl, sourceConfig);
 
         const { latest, children } = jsonData;
 

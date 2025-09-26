@@ -78,8 +78,10 @@ async function loadFclDownWay(url, containerId, lineName) {
             console.log(`${lineName}：找到版本数：${versionDirs.length}`);
         }
 
+        // 清空容器内容，移除"正在加载..."文本
+        container.innerHTML = '';
+
         // 为每个版本创建可折叠面板
-        let contentHtml = '';
         versionDirs.forEach((versionDir, index) => {
             const version = versionDir.name;
             const archMap = {};
@@ -94,128 +96,56 @@ async function loadFclDownWay(url, containerId, lineName) {
             // 为每个版本面板创建唯一的ID
             const versionId = `${containerId}-version-${index}`;
 
-            // 创建版本面板的标题
-            contentHtml += `
-                <div class="border border-gray-200 rounded-md overflow-hidden mb-3" id="${versionId}-panel">
-                    <div class="flex justify-between items-center p-3 cursor-pointer bg-gray-50" id="${versionId}-header">
-                        <h5 class="font-medium">${version}</h5>
-                        <i class="fas fa-chevron-down transition-transform duration-300" id="${versionId}-icon"></i>
-                    </div>
-                    <div class="max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out collapsible-content" id="${versionId}-body" style="max-height: 0px;">
-            `;
-
+            // 创建版本面板的内容HTML
+            let versionContent = '';
             if (allArchs.length === 0) {
-                contentHtml += '<div class="p-3"><p class="text-gray-500 text-sm">此版本无可用下载文件</p></div>';
+                versionContent = '<div class="p-3"><p class="text-gray-500 text-sm">此版本无可用下载文件</p></div>';
             } else {
                 // 显示JSON源链接
-                contentHtml += `<div class="p-3 text-xs text-gray-500">数据源: ${url}</div>`;
+                versionContent = `<div class="p-3 text-xs text-gray-500">数据源: ${url}</div>`;
                 // 创建架构按钮
-                contentHtml += '<div class="p-3"><div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">';
+                versionContent += '<div class="p-3"><div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">';
                 allArchs.forEach(arch => {
                     const link = archMap[arch];
                     const buttonText = arch === 'all' ? '通用版' : arch;
-                    contentHtml += `<a href="${link || 'javascript:void(0)'}" 
+                    versionContent += `<a href="${link || 'javascript:void(0)'}" 
                                       class="bg-primary-100 hover:bg-primary-200 text-primary-700 py-1 px-2 rounded text-xs text-center transition block ${!link ? 'opacity-50 cursor-not-allowed' : ''}" 
                                       ${link ? 'target="_blank"' : ''} 
                                       ${!link ? 'title="未提供此架构版本"' : ''}>${buttonText}</a>`;
                 });
-                contentHtml += '</div></div>';
+                versionContent += '</div></div>';
             }
 
-            // 结束版本面板
-            contentHtml += `
-                    </div>
-                </div>
-            `;
+            // 使用统一的折叠面板组件创建版本面板
+            const versionPanel = createCollapsiblePanel(
+                version,
+                versionContent,
+                versionId
+            );
+
+            // 添加调试日志
+            console.log(`${lineName}：创建版本面板 ${versionId}，标题：${version}`);
+
+            // 将面板添加到容器
+            container.appendChild(versionPanel);
         });
 
-        // 更新容器内容
-        container.innerHTML = contentHtml;
-
-        // 为新添加的版本面板添加折叠功能和动画
-        const versionPanels = container.querySelectorAll('[id$="-panel"]');
-        versionPanels.forEach(panel => {
-            const header = panel.querySelector('[id$="-header"]');
-            const body = panel.querySelector('[id$="-body"]');
-            const icon = panel.querySelector('[id$="-icon"]');
-
-            if (header && body && icon) {
-                // 使用更robust的折叠机制
-                const toggleCollapse = () => {
-                    const isCollapsed = body.classList.contains('collapsed') || body.style.maxHeight === '0px';
-                    
-                    if (isCollapsed) {
-                        // 展开面板 - 使用足够大的值确保内容完全显示
-                        body.classList.remove('collapsed');
-                        body.style.maxHeight = 'none'; // 临时移除max-height以获取真实高度
-                        const scrollHeight = body.scrollHeight;
-                        body.style.maxHeight = '0px'; // 重置为折叠状态
-                        
-                        // 强制重排
-                        body.offsetHeight;
-                        
-                        // 设置实际高度并添加动画
-                        body.style.maxHeight = Math.min(scrollHeight + 50, 2000) + 'px'; // 增加50px缓冲区，限制最大2000px
-                        body.style.opacity = '1';
-                        
-                        // 更新图标
-                        icon.classList.remove('fa-chevron-down');
-                        icon.classList.add('fa-chevron-up');
-                        
-                        // 动画完成后重置为auto，以便内容变化时自动调整
-                        const onExpandEnd = () => {
-                            body.style.maxHeight = 'none';
-                            body.removeEventListener('transitionend', onExpandEnd);
-                        };
-                        body.addEventListener('transitionend', onExpandEnd);
-                        
-                    } else {
-                        // 折叠面板
-                        body.classList.add('collapsed');
-                        
-                        // 获取当前高度以创建平滑动画
-                        const currentHeight = body.scrollHeight;
-                        body.style.maxHeight = currentHeight + 'px';
-                        
-                        // 强制重排
-                        body.offsetHeight;
-                        
-                        // 动画到折叠状态
-                        body.style.maxHeight = '0px';
-                        body.style.opacity = '0';
-                        
-                        // 更新图标
-                        icon.classList.remove('fa-chevron-up');
-                        icon.classList.add('fa-chevron-down');
-                    }
-                };
-
-                header.addEventListener('click', toggleCollapse);
-
-                // 初始化状态 - 默认折叠
-                body.classList.add('collapsed');
-                body.style.maxHeight = '0px';
-                body.style.opacity = '0';
-                
-                // 添加resize监听器，当内容变化时更新高度
-                const resizeObserver = new ResizeObserver(() => {
-                    if (!body.classList.contains('collapsed') && body.style.maxHeight !== '0px') {
-                        // 如果面板是展开状态，更新高度
-                        body.style.maxHeight = 'none';
-                        const newHeight = body.scrollHeight;
-                        body.style.maxHeight = Math.min(newHeight + 50, 2000) + 'px';
-                    }
-                });
-                
-                // 观察内容变化
-                resizeObserver.observe(body);
-                
-                // 清理函数（可选，如果需要动态移除面板）
-                panel._cleanup = () => {
-                    resizeObserver.disconnect();
-                };
-            }
-        });
+        // 在所有面板创建完成后，统一初始化事件监听器
+        const { initCollapsiblePanels } = await import('../components/ReusableCollapsiblePanel.js');
+        
+        // 添加延迟，确保DOM完全渲染
+        setTimeout(() => {
+            initCollapsiblePanels(container);
+            console.log(`${lineName}：已初始化所有版本面板的事件监听器`);
+            
+            // 验证事件监听器是否成功添加
+            const panelHeaders = container.querySelectorAll('.collapsible-panel-header');
+            console.log(`${lineName}：容器中找到 ${panelHeaders.length} 个面板头部元素`);
+            
+            panelHeaders.forEach((header, index) => {
+                console.log(`${lineName}：面板 ${index + 1} - 监听器状态：`, header.dataset.listenerAdded || '未添加');
+            });
+        }, 100);
 
         console.log(`${lineName}：完成`);
     } catch (error) {

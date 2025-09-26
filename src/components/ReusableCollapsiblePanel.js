@@ -17,8 +17,8 @@ function createCollapsiblePanel(title, content, options = {}) {
     // 默认选项
     const defaults = {
         id: `collapsible-panel-${Date.now()}`,
-        headerClass: 'flex justify-between items-center p-4 cursor-pointer bg-gray-100',
-        bodyClass: 'max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out',
+        headerClass: 'flex justify-between items-center p-4 cursor-pointer bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100',
+        bodyClass: 'max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out bg-white dark:bg-gray-600',
         startExpanded: false,
         allowMultiple: false
     };
@@ -28,7 +28,7 @@ function createCollapsiblePanel(title, content, options = {}) {
     
     // 创建外层折叠面板容器
     const outerPanel = document.createElement('div');
-    outerPanel.className = 'border border-gray-200 rounded-md mb-4 overflow-hidden collapsible-panel';
+    outerPanel.className = 'border border-gray-200 dark:border-gray-700 rounded-md mb-4 overflow-hidden collapsible-panel';
     outerPanel.id = `${opts.id}-panel`;
     
     // 创建标题部分
@@ -98,11 +98,16 @@ function initCollapsiblePanels(container = document) {
     // 获取所有折叠面板头部元素
     const panelHeaders = targetContainer.querySelectorAll('.collapsible-panel-header');
     
+    console.log(`折叠面板：在容器中找到 ${panelHeaders.length} 个面板头部元素`);
+    
     // 为每个头部元素添加点击事件监听器
-    panelHeaders.forEach(header => {
+    panelHeaders.forEach((header, index) => {
         // 确保每个面板只添加一次事件监听器
         if (!header.dataset.listenerAdded) {
+            console.log(`折叠面板：为第${index + 1}个面板添加事件监听器`);
+            
             header.addEventListener('click', function(e) {
+                console.log('折叠面板：点击事件触发，目标：', this);
                 // 阻止事件冒泡
                 e.stopPropagation();
                 
@@ -115,6 +120,9 @@ function initCollapsiblePanels(container = document) {
             
             // 标记已添加监听器
             header.dataset.listenerAdded = 'true';
+            console.log(`折叠面板：第${index + 1}个面板事件监听器添加完成`);
+        } else {
+            console.log(`折叠面板：第${index + 1}个面板已添加事件监听器，跳过`);
         }
     });
 }

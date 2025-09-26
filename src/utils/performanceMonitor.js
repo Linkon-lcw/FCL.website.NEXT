@@ -18,6 +18,20 @@ class PerformanceMonitor {
     }
 
     /**
+     * 测量两个时间点之间的间隔
+     * @param {string} name - 测量名称
+     * @param {string} startMark - 开始时间点名称
+     * @param {string} endMark - 结束时间点名称
+     */
+    measure(name, startMark, endMark) {
+        if (this.metrics[startMark] && this.metrics[endMark]) {
+            this.metrics[name] = this.metrics[endMark] - this.metrics[startMark];
+        } else {
+            console.warn(`无法测量 ${name}: 时间点 ${startMark} 或 ${endMark} 不存在`);
+        }
+    }
+
+    /**
      * 记录资源加载时间
      */
     measureResourceTiming() {

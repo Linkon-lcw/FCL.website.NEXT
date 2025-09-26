@@ -68,7 +68,7 @@ const ARCH_RULES = [
   { regex: /x86|i[36]86/i, name: 'x86' }
 ];
 
-import { showWarningToast } from '../utils/toast.js';
+import Notification from '../utils/notification.js';
 
 /**
  * 安卓版本检测：检测当前安卓版本是否大于等于给定的安卓版本
@@ -89,13 +89,13 @@ function testAndroidVersion(version, lineName) {
 
   if (currentVersion === 0) {
     console.log('安卓版本检测：非安卓');
-    showWarningToast(`安卓版本检测：非安卓\n您不是Android系统，而${lineName}最低要求 Android ${reqVersion} 。（仅供参考，不一定准）`);
+    Notification.warning(`安卓版本检测：非安卓\n您不是Android系统，而${lineName}最低要求 Android ${reqVersion} 。（仅供参考，不一定准）`);
     return false;
   }
 
   if (currentVersion < reqVersion) {
     console.log(`安卓版本检测：版本过低`);
-    showWarningToast(`安卓版本检测：版本过低\n您的Android版本为 ${currentVersion} ，而${lineName}最低要求 Android ${reqVersion} 。（仅供参考，不一定准）`);
+    Notification.warning(`安卓版本检测：版本过低\n您的Android版本为 ${currentVersion} ，而${lineName}最低要求 Android ${reqVersion} 。（仅供参考，不一定准）`);
     return false;
   }
 

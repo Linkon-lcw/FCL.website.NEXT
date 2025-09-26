@@ -52,33 +52,35 @@
     }
 }
 
-/* 液态玻璃效果 */
+
+/* Flow玻璃效果 */
+
+
 .glass-effect {
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), linear-gradient(0deg, rgba(204, 204, 204, 0.18), rgba(204, 204, 204, 0.18)), rgba(255, 255, 255, 0.19);
-    background-blend-mode: darken,normal,lighten;
+    color: #fff;
+    background: #00000044;
     box-sizing: border-box;
-    border-image: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.6) 15.97%, rgba(255, 255, 255, 0) 43.75%) 1;
-    box-shadow: inset 0px 3px 3px rgba(255, 255, 255, 0.5), 0px 2px 10px 5px rgba(0, 0, 0, 0.1), inset 0px 0px 10px rgba(255, 255, 255, 0.5), inset 0px 0px 20px rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(5px);
+    box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(var(--blur-radius, 5px));
+    @apply border border-black/20;
 }
 
 /* 深色模式玻璃效果 */
 @media (prefers-color-scheme: dark) {
+
     .glass-effect {
-        background: linear-gradient(0deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05)), linear-gradient(0deg, rgba(128, 128, 128, 0.1), rgba(128, 128, 128, 0.1)), rgba(30, 30, 30, 0.3);
-        border-image: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 15.97%, rgba(255, 255, 255, 0) 43.75%) 1;
+        color: #000;
+        background: #FFFFFF44;
+        @apply border border-white/20;
     }
 }
 
 /* 公告按钮样式 */
 #notice-btn {
-    @apply bottom-4 left-4 z-40 fixed flex items-center px-3 py-2 rounded-full text-white transition glass-effect;
+    --blur-radius: 5px;
+    @apply bottom-4 left-4 z-40 fixed flex justify-center items-center shadow-lg px-3 py-2 rounded-full w-12 h-12 text-white transition glass-effect;
 }
 
-/* 开发者模式按钮样式 - 已废弃，使用dev-mode-quick-access替代 */
-#dev-mode-toggle {
-    display: none !important;
-}
 
 /* 开发者模式标签样式 */
 #dev-mode-label {

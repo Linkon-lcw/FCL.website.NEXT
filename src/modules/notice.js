@@ -1,7 +1,7 @@
 // 公告系统模块
 import { initCollapsiblePanels } from '../components/ReusableCollapsiblePanel.js';
 import { devModeFetch } from './devMode.js';
-import { showErrorToast } from '../utils/toast.js';
+import Notification from '../utils/notification.js';
 
 /**
  * 打开公告
@@ -23,7 +23,7 @@ async function openNotice(forceShow = false) {
         dialog.innerHTML = `
             <div class="glass-effect rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col ">
                 <div class="flex justify-between items-center p-4 glass-effect">
-                    <h3 class="text-lg font-bold text-gray-800 dark:text-white">公告</h3>
+                    <h3 class="text-lg font-bold text-white dark:text-gray-800">公告</h3>
                     <button id="close-notice" class="text-gray-500 hover:text-gray-700">
                         <i class="fas fa-times"></i>
                     </button>
@@ -81,7 +81,7 @@ async function openNotice(forceShow = false) {
         
     } catch (error) {
         console.error('公告：加载出错：', error);
-        showErrorToast('公告加载失败: ' + error.message);
+        Notification.error('公告加载失败: ' + error.message);
     }
 }
 

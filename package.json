@@ -3,12 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "playwright test",
-    "test:ui": "playwright test --ui",
-    "test:debug": "playwright test --debug",
-    "test:report": "playwright show-report",
     "build": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
-    "dev": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --minify --watch"
+    "watch": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --minify --watch"
   },
   "repository": {
     "type": "git",

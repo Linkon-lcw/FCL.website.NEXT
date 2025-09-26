@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通知组件修复测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+        }
+        
+        .test-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .test-description {
+            margin-bottom: 15px;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .test-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        button.success {
+            background-color: #28a745;
+        }
+        
+        button.success:hover {
+            background-color: #1e7e34;
+        }
+        
+        button.warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        button.warning:hover {
+            background-color: #e0a800;
+        }
+        
+        button.error {
+            background-color: #dc3545;
+        }
+        
+        button.error:hover {
+            background-color: #c82333;
+        }
+        
+        button.info {
+            background-color: #17a2b8;
+        }
+        
+        button.info:hover {
+            background-color: #138496;
+        }
+        
+        .long-text {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+            border-left: 4px solid #007bff;
+        }
+        
+        .code {
+            font-family: 'Courier New', monospace;
+            background-color: #f8f9fa;
+            padding: 2px 4px;
+            border-radius: 2px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>通知组件修复测试</h1>
+        
+        <div class="test-section">
+            <div class="test-title">测试1: 堆叠通知显示修复</div>
+            <div class="test-description">
+                测试修复后的堆叠通知功能，特别是当通知内容超过三行时的显示效果。<br>
+                修复内容：动态计算通知高度，避免通知重叠问题。
+            </div>
+            <div class="long-text">
+                <strong>测试用例：</strong><br>
+                - 短文本通知（1-2行）<br>
+                - 中等长度通知（3-4行）<br>
+                - 长文本通知（5行以上）<br>
+                - 混合长度通知堆叠
+            </div>
+            <div class="test-buttons">
+                <button onclick="testShortNotification()">短文本通知</button>
+                <button onclick="testMediumNotification()">中等通知</button>
+                <button onclick="testLongNotification()">长文本通知</button>
+                <button onclick="testMixedStack()">混合堆叠测试</button>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <div class="test-title">测试2: 阴影效果增强</div>
+            <div class="test-description">
+                测试增强后的阴影效果，提升通知的视觉层次感。<br>
+                修复内容：将阴影从 <code class="code">0 10px 15px -3px rgba(0, 0, 0, 0.1)</code> 增强为 <code class="code">0 20px 25px -5px rgba(0, 0, 0, 0.15)</code>
+            </div>
+            <div class="test-buttons">
+                <button onclick="testShadowEffect()">测试阴影效果</button>
+                <button onclick="testShadowComparison()">阴影对比测试</button>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <div class="test-title">测试3: 综合功能测试</div>
+            <div class="test-description">
+                测试通知组件的完整功能，包括不同类型、位置和配置选项。
+            </div>
+            <div class="test-buttons">
+                <button class="success" onclick="testSuccess()">成功通知</button>
+                <button class="warning" onclick="testWarning()">警告通知</button>
+                <button class="error" onclick="testError()">错误通知</button>
+                <button class="info" onclick="testInfo()">信息通知</button>
+                <button onclick="testDifferentPositions()">不同位置测试</button>
+                <button onclick="testCloseAll()">关闭所有通知</button>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <div class="test-title">测试说明</div>
+            <div class="test-description">
+                <strong>修复内容总结：</strong><br>
+                1. <strong>堆叠通知修复</strong>：动态计算通知高度，解决长文本通知重叠问题<br>
+                2. <strong>阴影效果增强</strong>：提升阴影深度，增强视觉层次感<br>
+                3. <strong>高度计算优化</strong>：添加估算逻辑，确保通知元素未完全渲染时也能正确计算高度
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import Notification from '../../src/utils/notification.js';
+        
+        // 将Notification设为全局变量以便测试
+        window.Notification = Notification;
+        
+        // 测试函数
+        function testShortNotification() {
+            Notification.success('这是一个短文本通知，用于测试堆叠功能。');
+        }
+        
+        function testMediumNotification() {
+            Notification.warning('这是一个中等长度的通知消息，包含更多的文本内容，用于测试三行文本的显示效果。');
+        }
+        
+        function testLongNotification() {
+            const longText = '这是一个非常长的通知消息，包含多行文本内容，用于测试堆叠管理器对长文本通知的高度计算功能。这个通知应该占据多行空间，确保堆叠时不会与其他通知重叠。';
+            Notification.error(longText);
+        }
+        
+        function testMixedStack() {
+            // 创建混合长度的通知堆叠
+            setTimeout(() => Notification.success('短通知1'), 100);
+            setTimeout(() => Notification.info('中等长度通知2，包含更多文本内容'), 300);
+            setTimeout(() => Notification.warning('长通知3：这是一个非常长的通知消息，用于测试堆叠管理器的高度计算功能，确保不同长度的通知能够正确堆叠显示。'), 500);
+            setTimeout(() => Notification.error('短通知4'), 700);
+            setTimeout(() => {
+                const veryLongText = '超长通知5：这是一个特别长的通知消息，包含大量的文本内容，用于测试极端情况下的堆叠显示效果。这个通知应该占据多行空间，确保堆叠管理器能够正确处理这种情况。';
+                Notification.info(veryLongText);
+            }, 900);
+        }
+        
+        function testShadowEffect() {
+            Notification.show('测试增强阴影效果', { 
+                type: 'info',
+                duration: 5000,
+                position: 'top-center'
+            });
+        }
+        
+        function testShadowComparison() {
+            // 在相同位置显示两个通知，观察阴影效果
+            Notification.success('成功通知 - 增强阴影效果', { position: 'top-left' });
+            setTimeout(() => {
+                Notification.info('信息通知 - 增强阴影效果', { position: 'top-left' });
+            }, 100);
+        }
+        
+        function testSuccess() {
+            Notification.success('操作成功完成！');
+        }
+        
+        function testWarning() {
+            Notification.warning('请注意：这是一个警告消息。');
+        }
+        
+        function testError() {
+            Notification.error('发生错误，请检查系统设置。');
+        }
+        
+        function testInfo() {
+            Notification.info('系统信息：当前运行正常。');
+        }
+        
+        function testDifferentPositions() {
+            Notification.success('右上角通知', { position: 'top-right' });
+            setTimeout(() => Notification.warning('左上角通知', { position: 'top-left' }), 200);
+            setTimeout(() => Notification.error('右下角通知', { position: 'bottom-right' }), 400);
+            setTimeout(() => Notification.info('左下角通知', { position: 'bottom-left' }), 600);
+            setTimeout(() => Notification.success('顶部居中通知', { position: 'top-center' }), 800);
+            setTimeout(() => Notification.info('底部居中通知', { position: 'bottom-center' }), 1000);
+        }
+        
+        function testCloseAll() {
+            Notification.closeAll();
+        }
+        
+        // 页面加载完成后显示欢迎通知
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                Notification.info('通知组件修复测试页面已加载完成！', { duration: 3000 });
+            }, 500);
+        });
+    </script>
+</body>
+</html>
