@@ -244,6 +244,14 @@ async function setupIndexDownLinks(sourceKey) {
                 button.classList.remove('loading');
             });
         }
+
+        // 启用线路选择器，确保在成功状态下可以正常切换线路
+        const odlmSelect = document.getElementById('odlmSelect');
+        if (odlmSelect) {
+            odlmSelect.disabled = false;
+            odlmSelect.classList.remove('opacity-50', 'cursor-not-allowed');
+            console.log('线路选择器已启用，可以正常切换线路');
+        }
     } catch (error) {
         console.error(`开门见山：出错：${error.message}`, error);
         
@@ -253,6 +261,14 @@ async function setupIndexDownLinks(sourceKey) {
             buttons.forEach(button => {
                 button.classList.remove('loading');
             });
+        }
+
+        // 禁用线路选择器，防止用户在错误状态下切换线路
+        const odlmSelect = document.getElementById('odlmSelect');
+        if (odlmSelect) {
+            odlmSelect.disabled = true;
+            odlmSelect.classList.add('opacity-50', 'cursor-not-allowed');
+            console.log('线路选择器已禁用，防止错误状态下切换线路');
         }
 
         const errorHtml = `

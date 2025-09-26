@@ -58,7 +58,7 @@
 
 .glass-effect {
     color: #fff;
-    background: #00000044;
+    background: rgba(0, 0, 0, 0.3);
     box-sizing: border-box;
     box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.15);
     backdrop-filter: blur(var(--blur-radius, 5px));
@@ -69,8 +69,8 @@
 @media (prefers-color-scheme: dark) {
 
     .glass-effect {
-        color: #000;
-        background: #FFFFFF44;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.1);
         @apply border border-white/20;
     }
 }
