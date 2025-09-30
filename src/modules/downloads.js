@@ -85,7 +85,7 @@ async function loadFclDownWay(url, containerId, lineName) {
         container.innerHTML = '';
 
         // 为每个版本创建可折叠面板
-        console.groupCollapsed(`${lineName}：创建版本面板 ${versionDir.name}`);
+        console.groupCollapsed(`${lineName}：创建版本面板`);
         versionDirs.forEach((versionDir, index) => {
             const version = versionDir.name;
             const archMap = {};

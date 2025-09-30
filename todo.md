@@ -389,6 +389,30 @@
   - ✅ scale动画效果不受影响
 - [x] **完成状态**：✅ 已完成
 
+## 修复downloads.js中versionDir未定义错误
+- [x] **任务目标**：修复downloads.js第88行ReferenceError: versionDir is not defined错误
+- [x] **问题分析**：
+  - 第88行代码`console.groupCollapsed(`${lineName}：创建版本面板 ${versionDir.name}`);`中使用了`versionDir.name`
+  - 但`versionDir`变量是在`versionDirs.forEach`循环中才定义的，此时还未定义
+  - 导致所有下载线路都出现ReferenceError错误
+- [x] **修复计划**：
+  - 分析downloads.js中loadFclDownWay函数的代码结构
+  - 修复console.groupCollapsed语句中的变量引用错误
+  - 测试修复后的下载功能
+- [x] **修改详情**：
+  - 修改console.groupCollapsed语句，移除对未定义变量的引用
+  - 确保代码逻辑正确
+  - 保持其他功能不变
+- [x] **修改结果**：
+  - **修复变量引用错误**：将`console.groupCollapsed(`${lineName}：创建版本面板 ${versionDir.name}`);`改为`console.groupCollapsed(`${lineName}：创建版本面板`);`
+  - **保持功能完整**：移除了对未定义变量的引用，但保持了日志功能
+  - **代码逻辑正确**：现在console.groupCollapsed语句不再引用未定义的变量
+- [x] **预期结果**：
+  - ✅ 所有下载线路正常加载，不再出现ReferenceError错误
+  - ✅ 版本面板正确显示
+  - ✅ 下载功能正常工作
+- [x] **完成状态**：✅ 已完成
+
     - testNotification：测试单个通知
     - testCustomNotification：测试自定义通知
     - testAllNotifications：批量测试所有类型通知
