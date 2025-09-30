@@ -20,7 +20,15 @@ const DEV_MODE_CONFIG = {
     enableExternalRequestBlock: true,
     maxLogEntries: 1000,
     autoExportLogs: false,
-    enableConsoleOverride: true
+    enableConsoleOverride: true,
+    
+    // 新增配置参数
+    autoUpdateInterval: 1000, // 自动更新频率（毫秒）
+    notificationDuration: 3000, // 通知显示时长（毫秒）
+    networkRequestDelay: 0, // 网络请求延迟模拟（毫秒）
+    enableErrorSimulation: false, // 启用错误模拟
+    performanceSamplingInterval: 1000, // 性能监控采样频率（毫秒）
+    memorySamplingInterval: 5000 // 内存监控采样频率（毫秒）
 };
 
 // 开发者模式状态
@@ -47,6 +55,95 @@ class PerformanceMonitor {
         this.startTimes.set(name, performance.now());
         console.log(`[PerformanceMonitor] 性能监控开始: ${name}`);
         this.log(`性能监控开始: ${name}`, LOG_LEVELS.DEBUG);
+    }
+
+    /**
+     * 开始性能监控
+     */
+    startMonitoring() {
+        if (this.monitoringInterval) {
+            clearInterval(this.monitoringInterval);
+        }
+        
+        const interval = devModeState.config.performanceSamplingInterval || 1000;
+        
+        this.monitoringInterval = setInterval(() => {
+            this.collectPerformanceData();
+        }, interval);
+    }
+
+    /**
+     * 收集性能数据
+     */
+    collectPerformanceData() {
+        if (!devModeState.isEnabled || !devModeState.config.enablePerformanceMonitor) return;
+        
+        const performanceData = {
+            timestamp: Date.now(),
+            memory: this.getMemoryInfo(),
+            timing: performance.timing ? {
+                loadEventEnd: performance.timing.loadEventEnd,
+                domContentLoadedEventEnd: performance.timing.domContentLoadedEventEnd,
+                responseEnd: performance.timing.responseEnd
+            } : null
+        };
+        
+        devModeState.performanceData = devModeState.performanceData || [];
+        devModeState.performanceData.push(performanceData);
+        
+        // 保持性能数据在最大限制内
+        if (devModeState.performanceData.length > 100) {
+            devModeState.performanceData.shift();
+        }
+    }
+    
+    /**
+     * 获取内存信息
+     */
+    getMemoryInfo() {
+        if (performance.memory) {
+            return {
+                usedJSHeapSize: performance.memory.usedJSHeapSize,
+                totalJSHeapSize: performance.memory.totalJSHeapSize,
+                jsHeapSizeLimit: performance.memory.jsHeapSizeLimit
+            };
+        }
+        return null;
+    }
+    
+    /**
+     * 开始内存监控
+     */
+    startMemoryMonitoring() {
+        if (this.memoryMonitoringInterval) {
+            clearInterval(this.memoryMonitoringInterval);
+        }
+        
+        const interval = devModeState.config.memorySamplingInterval || 5000;
+        
+        this.memoryMonitoringInterval = setInterval(() => {
+            this.collectMemoryData();
+        }, interval);
+    }
+    
+    /**
+     * 收集内存数据
+     */
+    collectMemoryData() {
+        if (!devModeState.isEnabled || !devModeState.config.enablePerformanceMonitor) return;
+        
+        const memoryData = {
+            timestamp: Date.now(),
+            memory: this.getMemoryInfo()
+        };
+        
+        devModeState.memoryData = devModeState.memoryData || [];
+        devModeState.memoryData.push(memoryData);
+        
+        // 保持内存数据在最大限制内
+        if (devModeState.memoryData.length > 50) {
+            devModeState.memoryData.shift();
+        }
     }
 
     endMeasure(name) {
@@ -392,6 +489,7 @@ class DevModeManager {
         // 初始化各个组件
         this.errorCapture.init();
         this.memoryMonitor.start();
+        this.performanceMonitor.startMemoryMonitoring();
         this.interceptFetch();
 
         // 添加开发者模式类到body
@@ -445,6 +543,21 @@ class DevModeManager {
             const requestId = self.networkAnalyzer.interceptRequest(url, options);
             
             try {
+                // 应用网络请求延迟模拟
+                const delay = devModeState.config.networkRequestDelay || 0;
+                if (delay > 0) {
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                }
+                
+                // 错误模拟功能
+                if (devModeState.config.enableErrorSimulation) {
+                    const shouldSimulateError = Math.random() < 0.3; // 30%概率模拟错误
+                    if (shouldSimulateError) {
+                        self.log(`模拟网络请求错误: ${url}`, LOG_LEVELS.ERROR);
+                        throw new Error('模拟错误：网络请求失败');
+                    }
+                }
+                
                 // 检查是否为外部请求
                 if (self.isExternalUrl(url)) {
                     self.log(`阻止外部请求: ${url}`, LOG_LEVELS.WARN);
@@ -456,9 +569,9 @@ class DevModeManager {
                         return self.originalFetch.call(this, url, options);
                     }
 
-                    //帮我改成做一个随机延迟
-                    const delay = Math.floor(Math.random() * 2000) + 1000; // 1-3秒之间的随机延迟
-                    await new Promise(resolve => setTimeout(resolve, delay));
+                    //做一个随机延迟
+                    const randomDelay = Math.floor(Math.random() * 2000) + 1000; // 1-3秒之间的随机延迟
+                    await new Promise(resolve => setTimeout(resolve, randomDelay));
 
                     //重定向到.\file\testdata\fclExample.json的内容
                     const response = await self.originalFetch.call(this, './file/testdata/fclExample.json');

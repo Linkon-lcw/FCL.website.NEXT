@@ -35,24 +35,8 @@ function initDevMode(initialState = false) {
         devModePanel.hide();
     });
     
-    // 监听URL参数变化（通过popstate事件）
-    window.addEventListener('popstate', () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const devParam = urlParams.get('dev');
-        const currentState = devModeManager.getState().isEnabled;
-        
-        // 如果URL参数与当前状态不匹配，刷新页面
-        if (devParam === '1' && !currentState) {
-            // 刷新页面以应用开发者模式
-            window.location.reload();
-        } else if (devParam === '0' && currentState) {
-            // 刷新页面以禁用开发者模式
-            window.location.reload();
-        } else if (!devParam && currentState && !isLocalhostAccess()) {
-            // 如果没有dev参数且不是localhost，刷新页面以禁用开发者模式
-            window.location.reload();
-        }
-    });
+    // 注意：移除了URL参数变化监听和自动关闭逻辑
+    // 现在开发者模式只能通过配置面板中的关闭按钮来禁用
     
     // 如果开发者模式已启用，显示通知和面板
     if (isDevMode) {

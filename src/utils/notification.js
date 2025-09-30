@@ -121,10 +121,24 @@ class Notification {
                 notification.style.right = basePosition.right;
             }
             
-            // 居中位置的特殊处理
+            // 居中位置的特殊处理 - 修复逻辑
             if (position.includes('center')) {
+                // 对于居中位置，保持水平居中效果
                 notification.style.left = '50%';
-                notification.style.transform = `translateX(-50%) scale(1)`;
+                
+                // 获取当前transform值，避免覆盖scale动画
+                const currentTransform = notification.style.transform || '';
+                
+                // 如果当前transform不包含translateX(-50%)，则添加水平居中
+                if (!currentTransform.includes('translateX(-50%)')) {
+                    // 保留scale动画，添加水平居中
+                    if (currentTransform.includes('scale')) {
+                        notification.style.transform = `translateX(-50%) ${currentTransform}`;
+                    } else {
+                        notification.style.transform = `translateX(-50%) scale(1)`;
+                    }
+                }
+                // 如果已经包含translateX(-50%)，则保持原有transform
             }
         }
     };
@@ -195,7 +209,13 @@ class Notification {
         setTimeout(() => {
             console.log('触发显示动画');
             notification.style.opacity = '1';
-            notification.style.transform = 'scale(1)';
+            
+            // 智能处理transform属性：对于居中位置保留translateX(-50%)，其他位置使用scale(1)
+            if (config.position.includes('center')) {
+                notification.style.transform = 'translateX(-50%) scale(1)';
+            } else {
+                notification.style.transform = 'scale(1)';
+            }
         }, 10);
         
         // 设置自动关闭
@@ -314,9 +334,15 @@ class Notification {
             console.log('通知已从堆叠管理器移除，位置:', position);
         }
         
-        // 添加关闭动画
+        // 添加关闭动画 - 智能处理transform属性
         notification.style.opacity = '0';
-        notification.style.transform = 'scale(0.95)';
+        
+        // 对于居中位置保留translateX(-50%)，其他位置使用scale(0.95)
+        if (position && position.includes('center')) {
+            notification.style.transform = 'translateX(-50%) scale(0.95)';
+        } else {
+            notification.style.transform = 'scale(0.95)';
+        }
         
         // 动画完成后移除元素
         setTimeout(() => {

@@ -214,6 +214,9 @@ function initializeApp() {
             // 获取目标section的id
             const targetId = link.getAttribute('href').substring(1);
             
+            // 更新URL中的哈希值
+            window.location.hash = targetId;
+            
             // 隐藏所有section
             document.querySelectorAll('.section').forEach(section => {
                 section.classList.add('hidden');
