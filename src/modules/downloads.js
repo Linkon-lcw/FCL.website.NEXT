@@ -4,6 +4,60 @@ import { SOURCE_MAP } from './downloadWays.js';
 import { createCollapsiblePanel } from '../components/ReusableCollapsiblePanel.js';
 import { devModeFetch } from './devMode.js';
 
+/**
+ * 创建特点小胶囊
+ * @param {string} description - 特点描述
+ * @param {string} icon - 图标字符
+ * @returns {string} 小胶囊HTML
+ */
+function createFeatureCapsule(description, icon) {
+    if (!description) return '';
+    
+    // 特点到样式的映射
+    const featureClassMap = {
+        '已开学': 'school',
+        '更新快': 'fast-update',
+        '全版本': 'all-versions',
+        '速度快': 'fast-speed',
+        '高防御': 'high-defense'
+    };
+    
+    const featureClass = featureClassMap[description] || '';
+    const displayIcon = icon || '📋';
+    
+    return `<span class="capsule capsule-feature ${featureClass}">
+        <span class="capsule-icon">${displayIcon}</span>
+        ${description}
+    </span>`;
+}
+
+/**
+ * 创建贡献者小胶囊
+ * @param {string} provider - 贡献者名称
+ * @returns {string} 小胶囊HTML
+ */
+function createProviderCapsule(provider) {
+    if (!provider) return '';
+    
+    // 贡献者到图标的映射
+    const providerMap = {
+        '站长提供': '👑',
+        '哈哈66623332提供': '😄',
+        'fishcpy提供': '🐟',
+        '八蓝米提供': '🍚',
+        'Linkong提供': '🔗',
+        '广告哥提供': '📢',
+        'LANt提供': '🌐'
+    };
+    
+    const icon = providerMap[provider] || '🙋';
+    
+    return `<span class="capsule capsule-provider">
+        <span class="capsule-icon">${icon}</span>
+        ${provider}
+    </span>`;
+}
+
 /**\n * 加载下载线路\n * @param {string} url - 文件树JSON的URL\n * @param {string} containerId - 容器元素的ID\n * @param {string} lineName - 线路名称（用于日志标识）\n * @returns {Promise<void>} 无返回值\n */
 async function loadFclDownWay(url, containerId, lineName) {
     const container = document.getElementById(containerId);
@@ -186,13 +240,17 @@ async function loadAllFclDownWays() {
     fclLines.forEach(line => {
         const sourceConfig = SOURCE_MAP[line.key]; // 获取线路配置
         
-        // 构建显示文本
-        let text = `${line.name}`;
+        // 构建显示文本，使用小胶囊样式
+        let text = `<span class="font-semibold">${line.name}</span>`;
+        
+        // 添加特点小胶囊
         if (sourceConfig.description) {
-            text += ` (${sourceConfig.description})`;
+            text += createFeatureCapsule(sourceConfig.description, sourceConfig.icon);
         }
+        
+        // 添加贡献者小胶囊
         if (sourceConfig.provider) {
-            text += ` [${sourceConfig.provider}]`;
+            text += createProviderCapsule(sourceConfig.provider);
         }
 
         // 创建折叠面板内容
@@ -246,13 +304,17 @@ async function loadAllZlDownWays() {
     zlLines.forEach(line => {
         const sourceConfig = SOURCE_MAP[line.key]; // 获取线路配置
         
-        // 构建显示文本
-        let text = `${line.name}`;
+        // 构建显示文本，使用小胶囊样式
+        let text = `<span class="font-semibold">${line.name}</span>`;
+        
+        // 添加特点小胶囊
         if (sourceConfig.description) {
-            text += ` (${sourceConfig.description})`;
+            text += createFeatureCapsule(sourceConfig.description, sourceConfig.icon);
         }
+        
+        // 添加贡献者小胶囊
         if (sourceConfig.provider) {
-            text += ` [${sourceConfig.provider}]`;
+            text += createProviderCapsule(sourceConfig.provider);
         }
 
         // 创建折叠面板内容
