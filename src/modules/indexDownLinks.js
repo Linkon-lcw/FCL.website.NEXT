@@ -11,6 +11,8 @@ import { devModeFetch, isDevModeEnabled } from './devMode.js';
  * @param {Array} [nestedPath] - 嵌套路径数组
  */
 function findNestedDirectory(children, targetName, nestedPath = []) {
+    console.groupCollapsed('findNestedDirectory: 查找目录', targetName, '嵌套路径:', nestedPath);
+
     console.log(`findNestedDirectory: 开始查找目录 "${targetName}"，嵌套路径:`, nestedPath);
     console.log('findNestedDirectory: 当前children:', children);
     
@@ -37,6 +39,8 @@ function findNestedDirectory(children, targetName, nestedPath = []) {
         dir => dir.type === 'directory' && dir.name === targetName
     );
     console.log(`findNestedDirectory: 查找结果:`, result);
+
+    console.groupEnd();
     
     return result;
 }

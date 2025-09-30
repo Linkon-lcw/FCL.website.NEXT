@@ -20,6 +20,9 @@ async function loadFclDownWay(url, containerId, lineName) {
     }
 
     try {
+
+        console.groupCollapsed(`${lineName}：加载下载线路`);
+
         console.log(`${lineName}：${url}`);
         const response = await devModeFetch(url);
         if (!response.ok) {
@@ -82,6 +85,7 @@ async function loadFclDownWay(url, containerId, lineName) {
         container.innerHTML = '';
 
         // 为每个版本创建可折叠面板
+        console.groupCollapsed(`${lineName}：创建版本面板 ${versionDir.name}`);
         versionDirs.forEach((versionDir, index) => {
             const version = versionDir.name;
             const archMap = {};
@@ -123,12 +127,16 @@ async function loadFclDownWay(url, containerId, lineName) {
                 versionId
             );
 
+
             // 添加调试日志
+            
             console.log(`${lineName}：创建版本面板 ${versionId}，标题：${version}`);
 
             // 将面板添加到容器
             container.appendChild(versionPanel);
         });
+
+        console.groupEnd();
 
         // 在所有面板创建完成后，统一初始化事件监听器
         const { initCollapsiblePanels } = await import('../components/ReusableCollapsiblePanel.js');
@@ -148,6 +156,7 @@ async function loadFclDownWay(url, containerId, lineName) {
         }, 100);
 
         console.log(`${lineName}：完成`);
+        console.groupEnd();
     } catch (error) {
         console.error(`${lineName}：出错：`, error);
         container.innerHTML = `<div class="text-red-500 p-4">${lineName}：出错：${error.message}</div>`;

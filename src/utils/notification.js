@@ -160,7 +160,7 @@ class Notification {
      */
     static show(message, options = {}) {
         // 开始日志 - 打包输出
-        console.group('开始显示通知');
+        console.groupCollapsed('开始显示通知:', message);
         console.log('消息:', message);
         console.log('选项:', options);
         

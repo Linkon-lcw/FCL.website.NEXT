@@ -85,6 +85,7 @@ function createCollapsiblePanel(title, content, options = {}) {
  * @param {string|HTMLElement} [container=document] - 容器元素或选择器，默认为整个文档
  */
 function initCollapsiblePanels(container = document) {
+    console.group('折叠面板：初始化');
     // 获取容器元素
     const targetContainer = typeof container === 'string' 
         ? document.querySelector(container) 
@@ -125,6 +126,7 @@ function initCollapsiblePanels(container = document) {
             console.log(`折叠面板：第${index + 1}个面板已添加事件监听器，跳过`);
         }
     });
+    console.groupEnd();
 }
 
 /**

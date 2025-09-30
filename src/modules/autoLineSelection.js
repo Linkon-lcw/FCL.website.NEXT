@@ -33,7 +33,7 @@ function updateFastestLine(newFastestLine, newMinLatency) {
  * @returns {Promise<string|null>} 最终选择的线路key，如果没有可用线路则返回null
  */
 async function autoSelectFastestLine() {
-    console.log('智能线路选择: 开始检测所有线路延迟...');
+    console.groupCollapsed('智能线路选择');
     
     // 重置状态
     currentFastestLine = null;
@@ -78,6 +78,8 @@ async function autoSelectFastestLine() {
     } catch (error) {
         console.error('智能线路选择: 检测过程中出错', error);
         return null;
+    } finally {
+        console.groupEnd();
     }
 }
 

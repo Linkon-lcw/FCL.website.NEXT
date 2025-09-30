@@ -114,7 +114,6 @@ FCL.website.NEXT/
 │   │   ├── devModeCore.js               # 开发者模式核心模块（性能监控、网络分析、错误捕获）
 │   │   ├── devModePanel.js              # 开发者模式UI控制面板
 │   │   ├── notice.js                    # 公告系统模块
-│   │   ├── CollapsiblePanel.js          # 旧版折叠面板组件（待移除）
 │   │   └── html/                        # HTML模块文件
 │   │       ├── header.html              # 页面头部区域
 │   │       ├── navigation.html          # 导航菜单
