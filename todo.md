@@ -954,3 +954,28 @@ F5、F2、Z22、F8线路在开发者模式下出现数据格式错误，控制�
 - 校验链接：http://localhost:5500/#verification ✅
 - 赞助链接：http://localhost:5500/#sponsors ✅
 - 关于链接：http://localhost:5500/#about ✅
+
+## 修复：下载页无法查看文件列表 ✅ 已完成
+
+### 问题描述
+用户报告下载页无法查看文件列表，使用浏览器MCP从index.html?dev=0#download访问时出现问题。
+
+### 问题分析
+通过代码分析发现，下载页的文件列表加载逻辑存在问题：
+
+1. **加载函数访问问题**：在`loadSoftwareDownWays`函数中，代码试图通过`window`对象访问加载函数（如`loadFclDownWay`），但ES6模块导出的函数不会自动挂载到`window`对象上
+2. **函数映射缺失**：代码缺少正确的函数映射机制，导致无法找到对应的加载函数
+
+### 修复措施
+1. ✅ 在downloads.js文件中创建加载函数映射表
+2. ✅ 修改`loadSoftwareDownWays`函数，使用函数映射表而不是`window`对象来访问加载函数
+
+### 修复详情
+- **创建函数映射表**：在downloads.js顶部添加`loadFunctionMap`映射表，包含`loadFclDownWay`和`loadFileListDownWay`函数
+- **修改函数访问逻辑**：将`loadSoftwareDownWays`函数中的`window[loadFunctionName]`改为`loadFunctionMap[loadFunctionName]`
+- **保持兼容性**：保留`loadFileListDownWay`作为默认函数，确保向后兼容
+
+### 修复结果
+- 下载页现在能够正确加载和显示文件列表
+- 所有软件下载线路都能正常访问对应的加载函数
+- 解决了因ES6模块导出函数未挂载到window对象导致的函数访问失败问题

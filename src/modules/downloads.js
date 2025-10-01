@@ -4,6 +4,12 @@ import { SOURCE_MAP, getSoftwareList, getSoftwareLines, getSoftwareById, getFeat
 import { createCollapsiblePanel } from '../components/ReusableCollapsiblePanel.js';
 import { devModeFetch } from './devMode.js';
 
+// 加载函数映射表
+const loadFunctionMap = {
+    loadFclDownWay: loadFclDownWay,
+    loadFileListDownWay: loadFileListDownWay
+};
+
 /**
  * 创建特点小胶囊
  * @param {string} description - 特点描述
@@ -554,7 +560,7 @@ async function loadSoftwareDownWays(softwareId) {
         if (lineConfig) {
             // 根据JSON配置选择加载函数
             const loadFunctionName = softwareConfig.loadFunction || 'loadFileListDownWay';
-            const loadFunction = window[loadFunctionName] || loadFileListDownWay;
+            const loadFunction = loadFunctionMap[loadFunctionName] || loadFileListDownWay;
             
             await loadFunction(lineConfig.path, `${softwareId}-${lineConfig.id}`, lineConfig.id);
         }
