@@ -18,7 +18,9 @@
       "八蓝米提供": "⚡",
       "Linkong提供": "🚀",
       "广告哥提供": "🚀",
-      "LANt提供": "🛡️"
+      "LANt提供": "🛡️",
+      "梦泽提供": "🌙",
+      "MLFKWMC提供": "⚡"
     },
     "displayOrder": ["fcl", "zl", "zl2", "renderer", "driver"],
     "enabledSoftware": ["fcl", "zl", "zl2", "renderer", "driver"]
@@ -170,7 +172,7 @@
           "path": "./file/data/渲染器线3.json",
           "markLatest": false,
           "description": "",
-          "provider": "站长提供"
+          "provider": "fishcpy提供"
         }
       ]
     },
@@ -196,7 +198,7 @@
           "path": "./file/data/驱动线8.json",
           "markLatest": false,
           "description": "",
-          "provider": "站长提供"
+          "provider": "MLFKWMC提供"
         }
       ]
     }

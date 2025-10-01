@@ -154,7 +154,10 @@ async function loadFileListDownWay(url, containerId, lineName) {
         panelContent += '<div class="p-3"><div class="space-y-2">';
         
         fileList.forEach((file, index) => {
-            if (!file.name || !file.download_link) {
+            // 支持两种字段名：download_link 或 url
+            const downloadLink = file.download_link || file.url;
+            
+            if (!file.name || !downloadLink) {
                 console.warn(`${lineName}：文件 ${index} 缺少必要字段：`, file);
                 return;
             }
@@ -162,7 +165,7 @@ async function loadFileListDownWay(url, containerId, lineName) {
             panelContent += `
                 <div class="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded">
                     <span class="text-sm font-medium">${file.name}</span>
-                    <a href="${file.download_link}" 
+                    <a href="${downloadLink}" 
                        class="bg-primary-100 hover:bg-primary-200 text-primary-700 py-1 px-3 rounded text-xs transition" 
                        target="_blank">下载</a>
                 </div>

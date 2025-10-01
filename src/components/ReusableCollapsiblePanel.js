@@ -85,7 +85,7 @@ function createCollapsiblePanel(title, content, options = {}) {
  * @param {string|HTMLElement} [container=document] - 容器元素或选择器，默认为整个文档
  */
 function initCollapsiblePanels(container = document) {
-    console.group('折叠面板：初始化');
+    console.groupCollapsed('折叠面板：初始化');
     // 获取容器元素
     const targetContainer = typeof container === 'string' 
         ? document.querySelector(container) 
