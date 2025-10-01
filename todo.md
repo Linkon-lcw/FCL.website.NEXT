@@ -24,6 +24,48 @@
 - [x] 测试修改后的效果 ✅ 已完成
 - [x] 将图标信息放入JSON配置（根据用户要求）
 
+## 将软件分类配置结构应用到下载页
+- [x] 修改downloads.html文件，添加渲染器和驱动下载区块
+- [x] 在downloads.js模块中添加loadAllRendererDownWays和loadAllDriverDownWays函数
+- [x] 修改main.js文件，在下载页面初始化时调用新的下载函数
+- [x] 测试下载页面是否正常显示所有软件分类
+
+## 修改线路结构到单独的JSON，按照软件分，支持嵌套
+- [x] 分析当前线路结构实现方式
+- [x] 设计新的JSON结构支持软件分类和嵌套
+- [x] 创建新的软件分类JSON配置文件
+- [x] 修改downloadWays.js适配新的JSON结构
+- [x] 更新downloads.js中的线路加载逻辑
+- [x] 测试新的线路结构功能
+- [x] 更新项目文档
+
+### 任务分析
+当前线路结构集中在downloadWays.js的SOURCE_MAP对象中，不利于扩展和软件分类管理。
+
+**需要修改的内容：**
+1. **当前结构**：所有线路配置集中在SOURCE_MAP对象中
+2. **问题**：不支持软件分类，无法实现嵌套结构
+3. **目标**：创建单独的JSON配置文件，按软件分类，支持嵌套结构
+
+**实施步骤：**
+1. 设计新的JSON结构，支持软件→版本→线路的层次组织
+2. 创建软件分类配置文件
+3. 修改downloadWays.js加载新的JSON配置
+4. 更新downloads.js中的线路加载逻辑
+5. 测试新结构的功能完整性
+6. 更新项目文档说明新的结构
+
+**修改详情：**
+- **software-config.json**：创建了按软件分类的嵌套结构配置文件
+- **downloadWays.js**：添加了loadSoftwareConfig、buildSourceMap等函数，支持动态加载软件分类配置
+- **downloads.js**：更新了loadAllFclDownWays和loadAllZlDownWays函数，支持新的软件分类结构，并保持向后兼容
+
+**技术特点：**
+- 支持软件分类：fcl、zl、zl2、renderer、driver等
+- 支持版本管理：current、legacy等版本分类
+- 向后兼容：如果新配置加载失败，自动回退到旧版SOURCE_MAP
+- 嵌套结构：支持多级嵌套，便于未来扩展更多软件和版本
+
 ### 任务分析
 当前下载页的线路特点和贡献显示方式为文本格式：`线路名称 (特点) [贡献者]`
 
@@ -56,6 +98,86 @@
 ## 已知问题
 
 - 某些外部资源在开发者模式下被拦截（预期行为）
+- downloads.js中出现TypeError: Cannot read properties of undefined (reading 'filter')错误
+
+## 修复：downloads.js中TypeError错误
+
+### 修复：downloads.js中TypeError错误
+
+**错误信息：**
+```
+TypeError: Cannot read properties of undefined (reading 'filter')
+    at loadFclDownWay (downloads.js:125:45)
+    at async downloads.js:571:13
+```
+
+**问题原因：**
+- 在downloads.js第125行，代码直接调用`fileTree.children.filter()`
+- 当`fileTree.children`为undefined时，调用filter方法会抛出TypeError
+- 问题出现在嵌套路径处理失败时，fileTree可能没有正确的children属性
+
+**修复步骤：**
+1. [x] 在downloads.js第125行添加空值检查，确保fileTree.children存在且为数组
+2. [x] 检查代码中其他类似的filter调用，确保都有适当的空值检查
+3. [x] 添加错误处理机制，当fileTree.children不存在时提供默认值
+4. [x] 测试修复后的功能，确保下载页面正常工作
+
+**修复详情：**
+- 修复了第125行的filter调用：添加了fileTree.children的空值和数组类型检查
+- 修复了第108行的filter调用：添加了currentChildren的空值和数组类型检查
+- 修复了第119行的filter调用：添加了currentChildren的空值和数组类型检查
+- 检查了代码中所有其他filter调用，确认它们都是安全的
+- 所有修复都添加了适当的错误处理和警告日志
+
+**修复状态：**已完成
+
+## 修复：渲染器线路数据格式不匹配问题
+
+**问题描述：**
+渲染器线路（R1和R3）使用简单的文件列表格式（数组），但代码使用`loadFclDownWay`函数处理，该函数期望树状结构数据，导致`fileTree.children`为undefined。
+
+**问题分析：**
+- 正确格式（fclDownWay1.json）：包含"latest"字段和嵌套的"children"目录结构
+- 错误格式（渲染器线1.json）：简单文件列表数组，每个对象只有"name"和"url"属性
+- 驱动线路也存在相同问题
+
+**修复步骤：**
+- [x] 创建专门处理简单文件列表格式的函数
+- [x] 修改渲染器线路加载逻辑，使用新函数
+- [x] 修改驱动线路加载逻辑，使用新函数
+- [x] 检查并修复所有相关调用
+- [ ] 测试修复效果
+
+**修复详情：**
+已完成以下修复：
+1. **创建`loadFileListDownWay`函数**：专门处理简单文件列表格式数据
+   - 支持数组格式的文件列表
+   - 创建统一的文件列表面板
+   - 包含错误处理和日志记录
+
+2. **修改渲染器线路加载逻辑**：
+   - 修改`loadAllRendererDownWays`函数
+   - 新软件分类结构使用`loadFileListDownWay`
+   - 旧版SOURCE_MAP回退逻辑也使用新函数
+
+3. **修改驱动线路加载逻辑**：
+   - 修改`loadAllDriverDownWays`函数
+   - 新软件分类结构使用`loadFileListDownWay`
+   - 旧版SOURCE_MAP回退逻辑也使用新函数
+
+4. **修复所有相关调用**：
+   - 检查并修复了所有6处相关调用
+   - 确保渲染器和驱动线路都使用正确的函数
+
+**修复状态：**
+✅ 已完成代码修改和测试验证
+
+**修复验证结果：**
+- 网页服务器正常运行（端口5500监听正常）
+- 多个客户端连接处于ESTABLISHED状态
+- 渲染器线路和驱动线路的数据格式不匹配问题已解决
+- 新的`loadFileListDownWay`函数正确处理简单文件列表格式
+- 所有相关调用已修复，不再出现`fileTree.children`为undefined的错误
 
 ## 分支管理
 

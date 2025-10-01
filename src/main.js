@@ -4,7 +4,8 @@ import { showDeviceInfo, sysArch } from './modules/deviceSuggestions.js';
 import { showDeviceSuggestions } from './modules/deviceSuggestions.js';
 import { initAutoLineSelection } from './modules/autoLineSelection.js';
 import { setupIndexDownLinks } from './modules/indexDownLinks.js';
-import { loadAllFclDownWays, loadAllZlDownWays } from './modules/downloads.js';
+// 导入下载模块
+import { loadAllFclDownWays, loadAllZlDownWays, loadAllRendererDownWays, loadAllDriverDownWays } from './modules/downloads.js';
 import { loadIntroFcl, loadChecksums, loadAbout } from './modules/staticContent.js';
 import { perfMonitor } from './utils/performanceMonitor.js';
 import { openNotice } from './modules/notice.js';
@@ -121,6 +122,8 @@ function initializeApp() {
                         perfMonitor.mark('StartLoadDownloads');
                         loadAllFclDownWays();
                         loadAllZlDownWays();
+                        loadAllRendererDownWays();
+                        loadAllDriverDownWays();
                         // 在内容加载完成后重新初始化折叠面板
                         setTimeout(() => {
                             initCollapsiblePanels();
@@ -232,6 +235,8 @@ function initializeApp() {
                     case 'downloads':
                         loadAllFclDownWays();
                         loadAllZlDownWays();
+                        loadAllRendererDownWays();
+                        loadAllDriverDownWays();
                         // 在内容加载完成后重新初始化折叠面板
                         setTimeout(() => {
                             initCollapsiblePanels();
