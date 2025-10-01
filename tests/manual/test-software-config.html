@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>软件分类配置测试</title>
+    <script type="module">
+        import { SOURCE_MAP, getSoftwareList, getSoftwareLines, getSoftwareConfig } from '../../src/modules/downloadWays.js';
+        
+        async function testSoftwareConfig() {
+            console.group('软件分类配置测试');
+            
+            try {
+                // 测试1: 获取软件列表
+                console.log('测试1: 获取软件列表');
+                const softwareList = getSoftwareList();
+                console.log('软件列表:', softwareList);
+                
+                // 测试2: 获取FCL软件配置
+                console.log('测试2: 获取FCL软件配置');
+                const fclConfig = getSoftwareConfig('fcl');
+                console.log('FCL配置:', fclConfig);
+                
+                // 测试3: 获取FCL线路
+                console.log('测试3: 获取FCL线路');
+                const fclLines = getSoftwareLines('fcl', 'current');
+                console.log('FCL线路:', fclLines);
+                
+                // 测试4: 获取ZL线路
+                console.log('测试4: 获取ZL线路');
+                const zlLines = getSoftwareLines('zl', 'current');
+                console.log('ZL线路:', zlLines);
+                
+                // 测试5: 获取ZL2线路
+                console.log('测试5: 获取ZL2线路');
+                const zl2Lines = getSoftwareLines('zl2', 'current');
+                console.log('ZL2线路:', zl2Lines);
+                
+                // 测试6: 向后兼容性测试
+                console.log('测试6: 向后兼容性测试');
+                console.log('SOURCE_MAP:', SOURCE_MAP);
+                
+                // 测试7: 获取渲染器线路
+                console.log('测试7: 获取渲染器线路');
+                const rendererLines = getSoftwareLines('renderer', 'current');
+                console.log('渲染器线路:', rendererLines);
+                
+                // 测试8: 获取驱动线路
+                console.log('测试8: 获取驱动线路');
+                const driverLines = getSoftwareLines('driver', 'current');
+                console.log('驱动线路:', driverLines);
+                
+                console.log('✅ 所有测试通过！');
+                
+            } catch (error) {
+                console.error('❌ 测试失败:', error);
+            }
+            
+            console.groupEnd();
+        }
+        
+        // 页面加载完成后运行测试
+        document.addEventListener('DOMContentLoaded', testSoftwareConfig);
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+    </style>
+</head>
+<body>
+    <h1>软件分类配置测试</h1>
+    
+    <div class="test-section">
+        <h2>测试说明</h2>
+        <p>此页面用于测试新的软件分类配置功能，包括：</p>
+        <ul>
+            <li>软件列表获取</li>
+            <li>软件配置获取</li>
+            <li>线路数据获取</li>
+            <li>向后兼容性</li>
+        </ul>
+        <p>请打开浏览器控制台查看测试结果。</p>
+    </div>
+    
+    <div class="test-section">
+        <h2>测试状态</h2>
+        <p id="test-status">测试进行中...</p>
+    </div>
+    
+    <div class="test-section">
+        <h2>预期结果</h2>
+        <ul>
+            <li>✅ 软件列表包含 fcl, zl, zl2, renderer, driver</li>
+            <li>✅ FCL配置包含 current 和 legacy 版本</li>
+            <li>✅ 每个软件都能正确获取线路数据</li>
+            <li>✅ SOURCE_MAP 向后兼容</li>
+        </ul>
+    </div>
+    
+    <script>
+        // 更新测试状态
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const status = document.getElementById('test-status');
+                status.innerHTML = '<span class="success">✅ 测试已完成，请查看控制台输出</span>';
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

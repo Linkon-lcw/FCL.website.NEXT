@@ -1,33 +1,33 @@
 {
-  "latest": "1.2.4.9",
+  "latest": "dev-mode",
   "children": [
   {
-    "name": "1.2.4.9",
+    "name": "dev-mode",
     "type": "directory",
     "children": [
     {
       "type": "file",
-      "download_link": "https://pan.huang1111.cn/f/PLqTq/FCL-release-1.2.4.9-all.apk",
+      "download_link": "about:blank",
       "arch": "all"
     },
     {
       "type": "file",
-      "download_link": "https://pan.huang1111.cn/f/dN2tW/FCL-release-1.2.4.9-arm64-v8a.apk",
+      "download_link": "about:blank",
       "arch": "arm64-v8a"
     },
     {
       "type": "file",
-      "download_link": "https://pan.huang1111.cn/f/21mt6/FCL-release-1.2.4.9-armeabi-v7a.apk",
+      "download_link": "about:blank",
       "arch": "armeabi-v7a"
     },
     {
       "type": "file",
-      "download_link": "https://pan.huang1111.cn/f/z71iE/FCL-release-1.2.4.9-x86.apk",
+      "download_link": "about:blank",
       "arch": "x86"
     },
     {
       "type": "file",
-      "download_link": "https://pan.huang1111.cn/f/9kgCx/FCL-release-1.2.4.9-x86_64.apk",
+      "download_link": "about:blank",
       "arch": "x86_64"
     }]
   }

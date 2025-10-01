@@ -93,6 +93,17 @@ FCL.website.NEXT/
 ├── file/                 # 静态资源文件（图片、数据文件等）
 │   ├── avatar/           # 用户头像图片
 │   ├── data/             # JSON数据文件
+│   │   ├── software-config.json    # 软件分类配置文件
+│   │   ├── fclDownWay1.json    # FCL线路1数据
+│   │   ├── fclDownWay3.json    # FCL线路3数据
+│   │   ├── fclDownWay4.json    # FCL线路4数据
+│   │   ├── zlDownWay1.json     # ZL线路1数据
+│   │   ├── zlDownWay3.json     # ZL线路3数据
+│   │   ├── zl2DownWay1.json    # ZL2线路1数据
+│   │   ├── 渲染器线1.json       # 渲染器线路1数据
+│   │   ├── 渲染器线3.json       # 渲染器线路3数据
+│   │   ├── 驱动线1.json         # 驱动线路1数据
+│   │   └── 驱动线8.json         # 驱动线路8数据
 │   ├── font/             # 字体文件
 │   ├── picture/          # 页面图片资源
 │   └── sound/            # 音频文件
@@ -136,7 +147,8 @@ FCL.website.NEXT/
 │       ├── test-collapse-fix.html       # 下载页折叠菜单动态高度修复测试
 │       ├── test-collapsible.html        # 可折叠面板组件测试
 │       ├── test-notice-overflow-fixed.html  # 公告溢出问题修复测试
-│       └── test-notice-overflow.html    # 公告溢出问题测试
+│       ├── test-notice-overflow.html    # 公告溢出问题测试
+│       └── test-software-config.html    # 软件分类配置测试
 ├── .github/              # GitHub相关配置
 │   └── workflows/        # GitHub Actions工作流
 ├── .vscode/              # VS Code配置
@@ -151,6 +163,36 @@ FCL.website.NEXT/
 │   └── QWEN.md              # Qwen Agent 上下文文件
 ├── todo.md               # 项目任务列表
 └── README.md            # 项目说明文件 (本文件)
+
+## 软件分类结构
+
+项目现在支持软件分类的嵌套结构，便于管理多个软件和版本：
+
+### 配置文件结构
+- `software-config.json`：软件分类配置文件
+- 支持软件→版本→线路的层次结构
+- 支持向后兼容，如果新配置加载失败会自动回退到旧版结构
+
+### 软件分类
+- **fcl**: Fold Craft Launcher
+- **zl**: Zalith Launcher  
+- **zl2**: Zalith Launcher 2
+- **renderer**: 渲染器
+- **driver**: 驱动
+
+### 版本管理
+- **current**: 当前版本
+- **legacy**: 历史版本（预留）
+
+### 线路配置
+每个线路包含以下属性：
+- `name`: 线路名称
+- `path`: 数据源路径
+- `markLatest`: 是否标记为最新版本
+- `description`: 线路特点描述
+- `provider`: 贡献者信息
+- `icon`: 图标字符
+- `nestedPath`: 嵌套路径（可选）
 
 ## 文档说明
 
