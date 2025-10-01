@@ -1,199 +1,204 @@
 {
-  "//": "软件分类配置文件 - 支持嵌套结构，按软件→版本→线路层次组织",
-  "version": "1.0.0",
+  "//": "软件分类配置文件 - 简化结构，按软件→线路层次组织，移除版本分层",
+  "version": "2.1.0",
   "lastUpdated": "2024-01-01",
-  "software": {
-    "fcl": {
+  "metadata": {
+    "featureMapping": {
+      "已开学": "🏫",
+      "更新快": "🚀",
+      "全版本": "📦",
+      "速度快": "⚡",
+      "高防御": "🛡️",
+      "": "👑"
+    },
+    "providerMapping": {
+      "站长提供": "👑",
+      "哈哈66623332提供": "😄",
+      "fishcpy提供": "🐟",
+      "八蓝米提供": "⚡",
+      "Linkong提供": "🚀",
+      "广告哥提供": "🚀",
+      "LANt提供": "🛡️"
+    },
+    "displayOrder": ["fcl", "zl", "zl2", "renderer", "driver"],
+    "enabledSoftware": ["fcl", "zl", "zl2", "renderer", "driver"]
+  },
+  "software": [
+    {
+      "id": "fcl",
       "name": "Fold Craft Launcher",
       "description": "FCL启动器下载线路",
       "icon": "🎮",
-      "versions": {
-        "current": {
-          "name": "当前版本",
-          "description": "FCL最新版本下载线路",
-          "lines": {
-            "F1": {
-              "name": "FCL线1",
-              "path": "./file/data/fclDownWay1.json",
-              "markLatest": false,
-              "description": "已开学",
-              "provider": "站长提供",
-              "icon": "🏫"
-            },
-            "F2": {
-              "name": "FCL线2",
-              "path": "https://frostlynx.work/external/fcl/file_tree.json",
-              "markLatest": true,
-              "nestedPath": ["fcl"],
-              "description": "更新快",
-              "provider": "哈哈66623332提供",
-              "icon": "🚀"
-            },
-            "F3": {
-              "name": "FCL线3",
-              "path": "./file/data/fclDownWay3.json",
-              "markLatest": false,
-              "description": "全版本",
-              "provider": "fishcpy提供",
-              "icon": "📦"
-            },
-            "F4": {
-              "name": "FCL线4",
-              "path": "./file/data/fclDownWay4.json",
-              "markLatest": false,
-              "description": "速度快",
-              "provider": "八蓝米提供",
-              "icon": "⚡"
-            },
-            "F5": {
-              "name": "FCL线5",
-              "path": "https://fcl.switch.api.072211.xyz/?from=foldcraftlauncher&isDev=1",
-              "markLatest": true,
-              "description": "更新快",
-              "provider": "Linkong提供",
-              "icon": "🚀"
-            },
-            "F6": {
-              "name": "FCL线6",
-              "path": "https://bbs.xn--rhqx00c95nv9a.club/mirror.json",
-              "markLatest": false,
-              "description": "更新快",
-              "provider": "广告哥提供",
-              "icon": "🚀"
-            },
-            "F8": {
-              "name": "FCL线8",
-              "path": "https://api.cxsjmc.cn/api/FCL/filelist.json",
-              "markLatest": false,
-              "description": "高防御",
-              "provider": "LANt提供",
-              "icon": "🛡️"
-            }
-          }
+      "containerId": "fcl-downloads",
+      "loadFunction": "loadFclDownWay",
+      "lines": [
+        {
+          "id": "F1",
+          "name": "FCL线1",
+          "path": "./file/data/fclDownWay1.json",
+          "markLatest": false,
+          "description": "已开学",
+          "provider": "站长提供"
         },
-        "legacy": {
-          "name": "历史版本",
-          "description": "FCL历史版本下载线路",
-          "lines": {}
+        {
+          "id": "F2",
+          "name": "FCL线2",
+          "path": "https://frostlynx.work/external/fcl/file_tree.json",
+          "markLatest": true,
+          "nestedPath": ["fcl"],
+          "description": "更新快",
+          "provider": "哈哈66623332提供",
+          "loadFunction": "loadFileListDownWay"
+        },
+        {
+          "id": "F3",
+          "name": "FCL线3",
+          "path": "./file/data/fclDownWay3.json",
+          "markLatest": false,
+          "description": "全版本",
+          "provider": "fishcpy提供"
+        },
+        {
+          "id": "F4",
+          "name": "FCL线4",
+          "path": "./file/data/fclDownWay4.json",
+          "markLatest": false,
+          "description": "速度快",
+          "provider": "八蓝米提供"
+        },
+        {
+          "id": "F5",
+          "name": "FCL线5",
+          "path": "https://fcl.switch.api.072211.xyz/?from=foldcraftlauncher&isDev=1",
+          "markLatest": true,
+          "description": "更新快",
+          "provider": "Linkong提供",
+          "loadFunction": "loadFileListDownWay"
+        },
+        {
+          "id": "F6",
+          "name": "FCL线6",
+          "path": "https://bbs.xn--rhqx00c95nv9a.club/mirror.json",
+          "markLatest": false,
+          "description": "更新快",
+          "provider": "广告哥提供"
+        },
+        {
+          "id": "F8",
+          "name": "FCL线8",
+          "path": "https://api.cxsjmc.cn/api/FCL/filelist.json",
+          "markLatest": false,
+          "description": "高防御",
+          "provider": "LANt提供",
+          "loadFunction": "loadFileListDownWay"
         }
-      }
+      ]
     },
-    "zl": {
+    {
+      "id": "zl",
       "name": "Zalith Launcher",
       "description": "ZL启动器下载线路",
       "icon": "⚡",
-      "versions": {
-        "current": {
-          "name": "当前版本",
-          "description": "ZL最新版本下载线路",
-          "lines": {
-            "Z1": {
-              "name": "ZL线1",
-              "path": "./file/data/zlDownWay1.json",
-              "markLatest": false,
-              "description": "",
-              "provider": "站长提供",
-              "icon": "👑"
-            },
-            "Z3": {
-              "name": "ZL线3",
-              "path": "./file/data/zlDownWay3.json",
-              "markLatest": false,
-              "description": "",
-              "provider": "fishcpy提供",
-              "icon": "🐟"
-            }
-          }
+      "containerId": "zl-downloads",
+      "loadFunction": "loadFclDownWay",
+      "lines": [
+        {
+          "id": "Z1",
+          "name": "ZL线1",
+          "path": "./file/data/zlDownWay1.json",
+          "markLatest": false,
+          "description": "",
+          "provider": "站长提供"
+        },
+        {
+          "id": "Z3",
+          "name": "ZL线3",
+          "path": "./file/data/zlDownWay3.json",
+          "markLatest": false,
+          "description": "",
+          "provider": "fishcpy提供"
         }
-      }
+      ]
     },
-    "zl2": {
+    {
+      "id": "zl2",
       "name": "Zalith Launcher 2",
       "description": "ZL2启动器下载线路",
       "icon": "🚀",
-      "versions": {
-        "current": {
-          "name": "当前版本",
-          "description": "ZL2最新版本下载线路",
-          "lines": {
-            "Z21": {
-              "name": "ZL2线1",
-              "path": "./file/data/zl2DownWay1.json",
-              "markLatest": false,
-              "description": "",
-              "provider": "站长提供",
-              "icon": "👑"
-            },
-            "Z22": {
-              "name": "ZL2线2",
-              "path": "https://frostlynx.work/external/zl2/file_tree.json",
-              "markLatest": false,
-              "nestedPath": ["zl2"],
-              "description": "",
-              "provider": "哈哈66623332提供",
-              "icon": "😄"
-            }
-          }
+      "containerId": "zl2-downloads",
+      "loadFunction": "loadFclDownWay",
+      "lines": [
+        {
+          "id": "Z21",
+          "name": "ZL2线1",
+          "path": "./file/data/zl2DownWay1.json",
+          "markLatest": false,
+          "description": "",
+          "provider": "站长提供"
+        },
+        {
+          "id": "Z22",
+          "name": "ZL2线2",
+          "path": "https://frostlynx.work/external/zl2/file_tree.json",
+          "markLatest": false,
+          "nestedPath": ["zl2"],
+          "description": "",
+          "provider": "哈哈66623332提供",
+          "loadFunction": "loadFileListDownWay"
         }
-      }
+      ]
     },
-    "renderer": {
+    {
+      "id": "renderer",
       "name": "渲染器",
       "description": "渲染器下载线路",
       "icon": "🎨",
-      "versions": {
-        "current": {
-          "name": "当前版本",
-          "description": "渲染器下载线路",
-          "lines": {
-            "R1": {
-              "name": "渲染器线1",
-              "path": "./file/data/渲染器线1.json",
-              "markLatest": false,
-              "description": "",
-              "provider": "站长提供",
-              "icon": "👑"
-            },
-            "R3": {
-              "name": "渲染器线3",
-              "path": "./file/data/渲染器线3.json",
-              "markLatest": false,
-              "description": "",
-              "provider": "站长提供",
-              "icon": "👑"
-            }
-          }
+      "containerId": "renderer-downloads",
+      "loadFunction": "loadFileListDownWay",
+      "lines": [
+        {
+          "id": "R1",
+          "name": "渲染器线1",
+          "path": "./file/data/渲染器线1.json",
+          "markLatest": false,
+          "description": "",
+          "provider": "站长提供"
+        },
+        {
+          "id": "R3",
+          "name": "渲染器线3",
+          "path": "./file/data/渲染器线3.json",
+          "markLatest": false,
+          "description": "",
+          "provider": "站长提供"
         }
-      }
+      ]
     },
-    "driver": {
+    {
+      "id": "driver",
       "name": "驱动",
       "description": "驱动下载线路",
       "icon": "🔧",
-      "versions": {
-        "current": {
-          "name": "当前版本",
-          "description": "驱动下载线路",
-          "lines": {
-            "D1": {
-              "name": "驱动线1",
-              "path": "./file/data/驱动线1.json",
-              "markLatest": false,
-              "description": "",
-              "provider": "站长提供",
-              "icon": "👑"
-            },
-            "D8": {
-              "name": "驱动线8",
-              "path": "./file/data/驱动线8.json",
-              "markLatest": false,
-              "description": "",
-              "provider": "站长提供",
-              "icon": "👑"
-            }
-          }
+      "containerId": "driver-downloads",
+      "loadFunction": "loadFileListDownWay",
+      "lines": [
+        {
+          "id": "D1",
+          "name": "驱动线1",
+          "path": "./file/data/驱动线1.json",
+          "markLatest": false,
+          "description": "",
+          "provider": "站长提供"
+        },
+        {
+          "id": "D8",
+          "name": "驱动线8",
+          "path": "./file/data/驱动线8.json",
+          "markLatest": false,
+          "description": "",
+          "provider": "站长提供"
         }
-      }
+      ]
     }
-  }
+  ]
 }

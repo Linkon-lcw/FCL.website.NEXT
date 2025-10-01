@@ -1,6 +1,6 @@
 // 下载模块功能
 
-import { SOURCE_MAP, getSoftwareList, getSoftwareLines } from './downloadWays.js';
+import { SOURCE_MAP, getSoftwareList, getSoftwareLines, getSoftwareById, getFeatureIcon, getProviderIcon, getDisplaySoftwareList } from './downloadWays.js';
 import { createCollapsiblePanel } from '../components/ReusableCollapsiblePanel.js';
 import { devModeFetch } from './devMode.js';
 
@@ -13,7 +13,11 @@ import { devModeFetch } from './devMode.js';
 function createFeatureCapsule(description, icon) {
     if (!description) return '';
     
-    // 特点到样式的映射
+    // 从JSON配置获取特点到样式的映射
+    const softwareConfig = getSoftwareList();
+    const featureMapping = softwareConfig?.metadata?.featureMapping || {};
+    
+    // 特点到样式的映射（如果没有配置，使用默认映射）
     const featureClassMap = {
         '已开学': 'school',
         '更新快': 'fast-update',
@@ -23,7 +27,7 @@ function createFeatureCapsule(description, icon) {
     };
     
     const featureClass = featureClassMap[description] || '';
-    const displayIcon = icon || '📋';
+    const displayIcon = icon || featureMapping[description] || '📋';
     
     return `<span class="capsule capsule-feature ${featureClass}">
         <span class="capsule-icon">${displayIcon}</span>
@@ -39,8 +43,12 @@ function createFeatureCapsule(description, icon) {
 function createProviderCapsule(provider) {
     if (!provider) return '';
     
-    // 贡献者到图标的映射
-    const providerMap = {
+    // 从JSON配置获取贡献者到图标的映射
+    const softwareConfig = getSoftwareList();
+    const providerMapping = softwareConfig?.metadata?.providerMapping || {};
+    
+    // 贡献者到图标的映射（如果没有配置，使用默认映射）
+    const defaultProviderMap = {
         '站长提供': '👑',
         '哈哈66623332提供': '😄',
         'fishcpy提供': '🐟',
@@ -50,7 +58,7 @@ function createProviderCapsule(provider) {
         'LANt提供': '🌐'
     };
     
-    const icon = providerMap[provider] || '🙋';
+    const icon = providerMapping[provider] || defaultProviderMap[provider] || '🙋';
     
     return `<span class="capsule capsule-provider">
         <span class="capsule-icon">${icon}</span>
@@ -76,16 +84,48 @@ async function loadFileListDownWay(url, containerId, lineName) {
         console.group(`${lineName}：加载文件列表下载线路`);
         console.log(`${lineName}：${url}`);
         
+        console.log(`${lineName}：开始请求URL：${url}`);
         const response = await devModeFetch(url);
+        
+        console.log(`${lineName}：请求状态：${response.status} ${response.statusText}`);
+        console.log(`${lineName}：响应头：`, Object.fromEntries(response.headers.entries()));
+        
         if (!response.ok) {
-            throw new Error(`HTTP ${response.status} ${response.statusText}`);
+            console.error(`${lineName}：HTTP请求失败：${response.status} ${response.statusText}`);
+            throw new Error(`HTTP错误：${response.status} ${response.statusText}`);
         }
 
-        const fileList = await response.json();
+        const jsonData = await response.json();
         
-        // 检查数据格式是否为数组
-        if (!Array.isArray(fileList)) {
-            throw new Error('数据格式错误：期望数组格式');
+        // 调试：输出原始JSON数据格式
+        console.log(`${lineName}：原始JSON数据：`, jsonData);
+        console.log(`${lineName}：数据类型：`, typeof jsonData);
+        console.log(`${lineName}：是否为数组：`, Array.isArray(jsonData));
+        
+        // 处理不同的JSON数据格式
+        let fileList = [];
+        
+        if (Array.isArray(jsonData)) {
+            // 格式1：纯数组格式
+            fileList = jsonData;
+            console.log(`${lineName}：使用纯数组格式，文件数：${fileList.length}`);
+        } else if (jsonData && Array.isArray(jsonData.children)) {
+            // 格式2：包含children数组的对象格式
+            fileList = jsonData.children;
+            console.log(`${lineName}：使用children数组格式，文件数：${fileList.length}`);
+        } else if (jsonData && jsonData.latest && Array.isArray(jsonData.children)) {
+            // 格式3：包含latest字段和children数组的对象格式
+            fileList = jsonData.children;
+            console.log(`${lineName}：使用latest+children格式，文件数：${fileList.length}`);
+        } else {
+            // 调试：输出详细的结构信息
+            console.error(`${lineName}：数据格式不匹配，详细结构：`, {
+                hasChildren: jsonData && Array.isArray(jsonData.children),
+                hasLatest: jsonData && jsonData.latest,
+                keys: jsonData ? Object.keys(jsonData) : 'null',
+                dataType: typeof jsonData
+            });
+            throw new Error('数据格式错误：期望数组格式或包含children数组的对象格式');
         }
 
         // 清空容器内容，移除"正在加载..."文本
@@ -108,7 +148,7 @@ async function loadFileListDownWay(url, containerId, lineName) {
         panelContent += '<div class="p-3"><div class="space-y-2">';
         
         fileList.forEach((file, index) => {
-            if (!file.name || !file.url) {
+            if (!file.name || !file.download_link) {
                 console.warn(`${lineName}：文件 ${index} 缺少必要字段：`, file);
                 return;
             }
@@ -116,7 +156,7 @@ async function loadFileListDownWay(url, containerId, lineName) {
             panelContent += `
                 <div class="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded">
                     <span class="text-sm font-medium">${file.name}</span>
-                    <a href="${file.url}" 
+                    <a href="${file.download_link}" 
                        class="bg-primary-100 hover:bg-primary-200 text-primary-700 py-1 px-3 rounded text-xs transition" 
                        target="_blank">下载</a>
                 </div>
@@ -329,339 +369,170 @@ async function loadFclDownWay(url, containerId, lineName) {
     }
 }
 
+
+
+
 /**
- * 加载所有FCL下载线路
+ * 动态生成软件下载区域的HTML结构
  * @returns {Promise<void>}
  */
-async function loadAllFclDownWays() {
-    const container = document.getElementById('fcl-downloads');
+async function generateSoftwareDownloadsHTML() {
+    const container = document.getElementById('software-downloads-container');
     if (!container) {
-        console.error('FCL下载：找不到容器：fcl-downloads');
+        console.error('软件下载：找不到软件下载容器');
         return;
     }
+
+    // 获取显示软件列表
+    const displaySoftwareList = getDisplaySoftwareList();
+    
+    if (!displaySoftwareList || displaySoftwareList.length === 0) {
+        console.warn('软件下载：未找到需要显示的软件配置');
+        container.innerHTML = '<div class="text-red-500 p-4">未找到软件配置</div>';
+        return;
+    }
+
+    console.groupCollapsed('软件下载：动态生成HTML结构');
+    console.log('显示软件数量:', displaySoftwareList.length);
 
     // 清空容器
     container.innerHTML = '';
 
-    // 使用新的软件分类结构
-    const fclLines = getSoftwareLines('fcl', 'current');
-    
-    if (!fclLines) {
-        console.warn('FCL下载：未找到FCL线路配置，使用旧版SOURCE_MAP');
-        // 回退到旧版逻辑
-        const oldFclLines = Object.entries(SOURCE_MAP)
-            .filter(([key, _]) => key.startsWith('F'))
-            .map(([key, config]) => ({ key, name: config.name }));
-        
-        // 为每个线路创建外层折叠面板
-        oldFclLines.forEach(line => {
-            const sourceConfig = SOURCE_MAP[line.key];
-            
-            // 构建显示文本，使用小胶囊样式
-            let text = `<span class="font-semibold">${line.name}</span>`;
-            
-            // 添加特点小胶囊
-            if (sourceConfig.description) {
-                text += createFeatureCapsule(sourceConfig.description, sourceConfig.icon);
-            }
-            
-            // 添加贡献者小胶囊
-            if (sourceConfig.provider) {
-                text += createProviderCapsule(sourceConfig.provider);
-            }
+    // 将软件列表分成两行显示（每行最多2个软件）
+    const firstRowSoftware = displaySoftwareList.slice(0, 2);
+    const secondRowSoftware = displaySoftwareList.slice(2);
 
-            // 创建折叠面板内容
-            const panelContent = `
-                <div class="p-4" id="fcl-${line.key}" class="space-y-3">
-                    <div class="text-center py-4 text-gray-500">
-                        <p>正在加载${line.name}...</p>
+    // 生成第一行软件区域
+    if (firstRowSoftware.length > 0) {
+        const firstRowHTML = `
+            <div class="gap-6 grid grid-cols-1 md:grid-cols-2">
+                ${firstRowSoftware.map(software => `
+                    <div>
+                        <h3 class="mb-3 font-semibold text-primary-600 text-xl">
+                            ${software.icon || '📦'} ${software.name} 下载
+                        </h3>
+                        <div class="space-y-4" id="${software.containerId || software.id + '-downloads'}">
+                            <div class="py-4 text-gray-500 text-center">
+                                <p>正在加载${software.name}下载线路...</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            `;
-
-            // 使用独立的折叠面板组件
-            const panel = createCollapsiblePanel(
-                text,
-                panelContent,
-                `fcl-line-${line.key}`
-            );
-
-            container.appendChild(panel);
-        });
-
-        // 并行加载所有线路，谁先加载完谁先显示
-        oldFclLines.forEach(async (line) => {
-            const sourceConfig = SOURCE_MAP[line.key];
-            if (sourceConfig) {
-                await loadFclDownWay(sourceConfig.path, `fcl-${line.key}`, line.key);
-            }
-        });
-        return;
-    }
-
-    // 使用新的软件分类结构
-    console.groupCollapsed('FCL下载：使用软件分类结构');
-    console.log('FCL线路数量:', Object.keys(fclLines).length);
-
-    // 为每个线路创建外层折叠面板
-    Object.entries(fclLines).forEach(([lineKey, lineConfig]) => {
-        // 构建显示文本，使用小胶囊样式
-        let text = `<span class="font-semibold">${lineConfig.name}</span>`;
-        
-        // 添加特点小胶囊
-        if (lineConfig.description) {
-            text += createFeatureCapsule(lineConfig.description, lineConfig.icon);
-        }
-        
-        // 添加贡献者小胶囊
-        if (lineConfig.provider) {
-            text += createProviderCapsule(lineConfig.provider);
-        }
-
-        // 创建折叠面板内容
-        const panelContent = `
-            <div class="p-4" id="fcl-${lineKey}" class="space-y-3">
-                <div class="text-center py-4 text-gray-500">
-                    <p>正在加载${lineConfig.name}...</p>
-                </div>
+                `).join('')}
             </div>
         `;
+        container.innerHTML += firstRowHTML;
+    }
 
-        // 使用独立的折叠面板组件
-        const panel = createCollapsiblePanel(
-            text,
-            panelContent,
-            `fcl-line-${lineKey}`
-        );
+    // 生成第二行软件区域（如果有）
+    if (secondRowSoftware.length > 0) {
+        const secondRowHTML = `
+            <div class="gap-6 grid grid-cols-1 md:grid-cols-2 mt-8">
+                ${secondRowSoftware.map(software => `
+                    <div>
+                        <h3 class="mb-3 font-semibold text-primary-600 text-xl">
+                            ${software.icon || '📦'} ${software.name} 下载
+                        </h3>
+                        <div class="space-y-4" id="${software.containerId || software.id + '-downloads'}">
+                            <div class="py-4 text-gray-500 text-center">
+                                <p>正在加载${software.name}下载线路...</p>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+        container.innerHTML += secondRowHTML;
+    }
 
-        container.appendChild(panel);
-    });
-
-    // 并行加载所有线路，谁先加载完谁先显示
-    Object.entries(fclLines).forEach(async ([lineKey, lineConfig]) => {
-        if (lineConfig) {
-            await loadFclDownWay(lineConfig.path, `fcl-${lineKey}`, lineKey);
-        }
-    });
-    
+    console.log('HTML结构生成完成');
     console.groupEnd();
 }
 
 /**
- * 加载所有ZL下载线路
+ * 加载所有软件的下载线路（统一函数）
+ * 通过JSON配置控制软件数量、名称和显示顺序
  * @returns {Promise<void>}
  */
-async function loadAllZlDownWays() {
-    const container = document.getElementById('zl-downloads');
-    if (!container) {
-        console.error('ZL下载：找不到容器：zl-downloads');
+async function loadAllSoftwareDownWays() {
+    // 先动态生成HTML结构
+    await generateSoftwareDownloadsHTML();
+    
+    // 获取显示软件列表
+    const displaySoftwareList = getDisplaySoftwareList();
+    
+    if (!displaySoftwareList || displaySoftwareList.length === 0) {
+        console.warn('软件下载：未找到需要显示的软件配置');
         return;
     }
 
-    // 清空容器
-    container.innerHTML = '';
+    console.groupCollapsed('软件下载：使用统一函数加载所有软件');
+    console.log('显示软件数量:', displaySoftwareList.length);
+    console.log('软件列表:', displaySoftwareList.map(s => s.id));
 
-    // 使用新的软件分类结构
-    const zlLines = getSoftwareLines('zl', 'current');
-    const zl2Lines = getSoftwareLines('zl2', 'current');
-    
-    if (!zlLines && !zl2Lines) {
-        console.warn('ZL下载：未找到ZL线路配置，使用旧版SOURCE_MAP');
-        // 回退到旧版逻辑
-        const oldZlLines = Object.entries(SOURCE_MAP)
-            .filter(([key, _]) => key.startsWith('Z'))
-            .map(([key, config]) => ({ key, name: config.name }));
-
-        // 为每个线路创建外层折叠面板
-        oldZlLines.forEach(line => {
-            const sourceConfig = SOURCE_MAP[line.key];
-            
-            // 构建显示文本，使用小胶囊样式
-            let text = `<span class="font-semibold">${line.name}</span>`;
-            
-            // 添加特点小胶囊
-            if (sourceConfig.description) {
-                text += createFeatureCapsule(sourceConfig.description, sourceConfig.icon);
-            }
-            
-            // 添加贡献者小胶囊
-            if (sourceConfig.provider) {
-                text += createProviderCapsule(sourceConfig.provider);
-            }
-
-            // 创建折叠面板内容
-            const panelContent = `
-                <div class="p-4" id="zl-${line.key}" class="space-y-3">
-                    <div class="text-center py-4 text-gray-500">
-                        <p>正在加载${line.name}...</p>
-                    </div>
-                </div>
-            `;
-
-            // 使用独立的折叠面板组件
-            const panel = createCollapsiblePanel(
-                text,
-                panelContent,
-                `zl-line-${line.key}`
-            );
-
-            container.appendChild(panel);
-        });
-
-        // 并行加载所有线路，谁先加载完谁先显示
-        oldZlLines.forEach(async (line) => {
-            const sourceConfig = SOURCE_MAP[line.key];
-            if (sourceConfig) {
-                await loadFclDownWay(sourceConfig.path, `zl-${line.key}`, line.key);
-            }
-        });
-        return;
-    }
-
-    // 使用新的软件分类结构
-    console.groupCollapsed('ZL下载：使用软件分类结构');
-    
-    // 合并ZL和ZL2线路
-    const allZlLines = { ...zlLines, ...zl2Lines };
-    console.log('ZL线路数量:', Object.keys(allZlLines).length);
-
-    // 为每个线路创建外层折叠面板
-    Object.entries(allZlLines).forEach(([lineKey, lineConfig]) => {
-        // 构建显示文本，使用小胶囊样式
-        let text = `<span class="font-semibold">${lineConfig.name}</span>`;
-        
-        // 添加特点小胶囊
-        if (lineConfig.description) {
-            text += createFeatureCapsule(lineConfig.description, lineConfig.icon);
-        }
-        
-        // 添加贡献者小胶囊
-        if (lineConfig.provider) {
-            text += createProviderCapsule(lineConfig.provider);
-        }
-
-        // 创建折叠面板内容
-        const panelContent = `
-            <div class="p-4" id="zl-${lineKey}" class="space-y-3">
-                <div class="text-center py-4 text-gray-500">
-                    <p>正在加载${lineConfig.name}...</p>
-                </div>
-            </div>
-        `;
-
-        // 使用独立的折叠面板组件
-        const panel = createCollapsiblePanel(
-            text,
-            panelContent,
-            `zl-line-${lineKey}`
-        );
-
-        container.appendChild(panel);
-    });
-
-    // 并行加载所有线路，谁先加载完谁先显示
-    Object.entries(allZlLines).forEach(async ([lineKey, lineConfig]) => {
-        if (lineConfig) {
-            await loadFclDownWay(lineConfig.path, `zl-${lineKey}`, lineKey);
+    // 并行加载所有软件
+    const loadPromises = displaySoftwareList.map(async (softwareConfig) => {
+        try {
+            await loadSoftwareDownWays(softwareConfig.id);
+        } catch (error) {
+            console.error(`加载软件 ${softwareConfig.id} 失败:`, error);
         }
     });
-    
+
+    await Promise.all(loadPromises);
     console.groupEnd();
 }
 
 /**
- * 加载所有渲染器下载线路
+ * 加载单个软件的下载线路
+ * @param {string} softwareId - 软件ID
  * @returns {Promise<void>}
  */
-async function loadAllRendererDownWays() {
-    const container = document.getElementById('renderer-downloads');
+async function loadSoftwareDownWays(softwareId) {
+    // 获取软件配置
+    const softwareConfig = getSoftwareById(softwareId);
+    if (!softwareConfig) {
+        console.error(`软件下载：找不到软件配置：${softwareId}`);
+        return;
+    }
+
+    const container = document.getElementById(softwareConfig.containerId || `${softwareId}-downloads`);
     if (!container) {
-        console.error('渲染器下载：找不到容器：renderer-downloads');
+        console.error(`软件下载：找不到容器：${softwareConfig.containerId || `${softwareId}-downloads`}`);
         return;
     }
 
     // 清空容器
     container.innerHTML = '';
 
-    // 使用新的软件分类结构
-    const rendererLines = getSoftwareLines('renderer', 'current');
+    // 获取软件线路配置
+    const softwareLines = getSoftwareLines(softwareId);
     
-    if (!rendererLines) {
-        console.warn('渲染器下载：未找到渲染器线路配置，使用旧版SOURCE_MAP');
-        // 回退到旧版逻辑
-        const oldRendererLines = Object.entries(SOURCE_MAP)
-            .filter(([key, _]) => key.includes('渲染器'))
-            .map(([key, config]) => ({ key, name: config.name }));
-
-        // 为每个线路创建外层折叠面板
-        oldRendererLines.forEach(line => {
-            const sourceConfig = SOURCE_MAP[line.key];
-            
-            // 构建显示文本，使用小胶囊样式
-            let text = `<span class="font-semibold">${line.name}</span>`;
-            
-            // 添加特点小胶囊
-            if (sourceConfig.description) {
-                text += createFeatureCapsule(sourceConfig.description, sourceConfig.icon);
-            }
-            
-            // 添加贡献者小胶囊
-            if (sourceConfig.provider) {
-                text += createProviderCapsule(sourceConfig.provider);
-            }
-
-            // 创建折叠面板内容
-            const panelContent = `
-                <div class="p-4" id="renderer-${line.key}" class="space-y-3">
-                    <div class="text-center py-4 text-gray-500">
-                        <p>正在加载${line.name}...</p>
-                    </div>
-                </div>
-            `;
-
-            // 使用独立的折叠面板组件
-            const panel = createCollapsiblePanel(
-                text,
-                panelContent,
-                `renderer-line-${line.key}`
-            );
-
-            container.appendChild(panel);
-        });
-
-        // 并行加载所有线路，谁先加载完谁先显示
-        oldRendererLines.forEach(async (line) => {
-            const sourceConfig = SOURCE_MAP[line.key];
-            if (sourceConfig) {
-                // 渲染器线路使用简单文件列表格式，使用专门的函数
-                await loadFileListDownWay(sourceConfig.path, `renderer-${line.key}`, line.key);
-            }
-        });
+    if (!softwareLines || softwareLines.length === 0) {
+        console.warn(`软件下载：未找到软件线路配置：${softwareId}`);
         return;
     }
 
-    // 使用新的软件分类结构
-    console.groupCollapsed('渲染器下载：使用软件分类结构');
-    console.log('渲染器线路数量:', Object.keys(rendererLines).length);
+    console.groupCollapsed(`软件下载：${softwareConfig.name}`);
+    console.log('线路数量:', softwareLines.length);
 
     // 为每个线路创建外层折叠面板
-    Object.entries(rendererLines).forEach(([lineKey, lineConfig]) => {
+    softwareLines.forEach((lineConfig) => {
         // 构建显示文本，使用小胶囊样式
         let text = `<span class="font-semibold">${lineConfig.name}</span>`;
         
         // 添加特点小胶囊
         if (lineConfig.description) {
-            text += createFeatureCapsule(lineConfig.description, lineConfig.icon);
+            text += createFeatureCapsule(lineConfig.description, getFeatureIcon(lineConfig.feature));
         }
         
         // 添加贡献者小胶囊
         if (lineConfig.provider) {
-            text += createProviderCapsule(lineConfig.provider);
+            text += createProviderCapsule(lineConfig.provider, getProviderIcon(lineConfig.provider));
         }
 
         // 创建折叠面板内容
         const panelContent = `
-            <div class="p-4" id="renderer-${lineKey}" class="space-y-3">
+            <div class="p-4" id="${softwareId}-${lineConfig.id}" class="space-y-3">
                 <div class="text-center py-4 text-gray-500">
                     <p>正在加载${lineConfig.name}...</p>
                 </div>
@@ -672,137 +543,20 @@ async function loadAllRendererDownWays() {
         const panel = createCollapsiblePanel(
             text,
             panelContent,
-            `renderer-line-${lineKey}`
+            `${softwareId}-line-${lineConfig.id}`
         );
 
         container.appendChild(panel);
     });
 
     // 并行加载所有线路，谁先加载完谁先显示
-    Object.entries(rendererLines).forEach(async ([lineKey, lineConfig]) => {
+    softwareLines.forEach(async (lineConfig) => {
         if (lineConfig) {
-            // 渲染器线路使用简单文件列表格式，使用专门的函数
-            await loadFileListDownWay(lineConfig.path, `renderer-${lineKey}`, lineKey);
-        }
-    });
-    
-    console.groupEnd();
-}
-
-/**
- * 加载所有驱动下载线路
- * @returns {Promise<void>}
- */
-async function loadAllDriverDownWays() {
-    const container = document.getElementById('driver-downloads');
-    if (!container) {
-        console.error('驱动下载：找不到容器：driver-downloads');
-        return;
-    }
-
-    // 清空容器
-    container.innerHTML = '';
-
-    // 使用新的软件分类结构
-    const driverLines = getSoftwareLines('driver', 'current');
-    
-    if (!driverLines) {
-        console.warn('驱动下载：未找到驱动线路配置，使用旧版SOURCE_MAP');
-        // 回退到旧版逻辑
-        const oldDriverLines = Object.entries(SOURCE_MAP)
-            .filter(([key, _]) => key.includes('驱动'))
-            .map(([key, config]) => ({ key, name: config.name }));
-
-        // 为每个线路创建外层折叠面板
-        oldDriverLines.forEach(line => {
-            const sourceConfig = SOURCE_MAP[line.key];
+            // 根据JSON配置选择加载函数
+            const loadFunctionName = softwareConfig.loadFunction || 'loadFileListDownWay';
+            const loadFunction = window[loadFunctionName] || loadFileListDownWay;
             
-            // 构建显示文本，使用小胶囊样式
-            let text = `<span class="font-semibold">${line.name}</span>`;
-            
-            // 添加特点小胶囊
-            if (sourceConfig.description) {
-                text += createFeatureCapsule(sourceConfig.description, sourceConfig.icon);
-            }
-            
-            // 添加贡献者小胶囊
-            if (sourceConfig.provider) {
-                text += createProviderCapsule(sourceConfig.provider);
-            }
-
-            // 创建折叠面板内容
-            const panelContent = `
-                <div class="p-4" id="driver-${line.key}" class="space-y-3">
-                    <div class="text-center py-4 text-gray-500">
-                        <p>正在加载${line.name}...</p>
-                    </div>
-                </div>
-            `;
-
-            // 使用独立的折叠面板组件
-            const panel = createCollapsiblePanel(
-                text,
-                panelContent,
-                `driver-line-${line.key}`
-            );
-
-            container.appendChild(panel);
-        });
-
-        // 并行加载所有线路，谁先加载完谁先显示
-        oldDriverLines.forEach(async (line) => {
-            const sourceConfig = SOURCE_MAP[line.key];
-            if (sourceConfig) {
-                // 驱动线路使用简单文件列表格式，使用专门的函数
-                await loadFileListDownWay(sourceConfig.path, `driver-${line.key}`, line.key);
-            }
-        });
-        return;
-    }
-
-    // 使用新的软件分类结构
-    console.groupCollapsed('驱动下载：使用软件分类结构');
-    console.log('驱动线路数量:', Object.keys(driverLines).length);
-
-    // 为每个线路创建外层折叠面板
-    Object.entries(driverLines).forEach(([lineKey, lineConfig]) => {
-        // 构建显示文本，使用小胶囊样式
-        let text = `<span class="font-semibold">${lineConfig.name}</span>`;
-        
-        // 添加特点小胶囊
-        if (lineConfig.description) {
-            text += createFeatureCapsule(lineConfig.description, lineConfig.icon);
-        }
-        
-        // 添加贡献者小胶囊
-        if (lineConfig.provider) {
-            text += createProviderCapsule(lineConfig.provider);
-        }
-
-        // 创建折叠面板内容
-        const panelContent = `
-            <div class="p-4" id="driver-${lineKey}" class="space-y-3">
-                <div class="text-center py-4 text-gray-500">
-                    <p>正在加载${lineConfig.name}...</p>
-                </div>
-            </div>
-        `;
-
-        // 使用独立的折叠面板组件
-        const panel = createCollapsiblePanel(
-            text,
-            panelContent,
-            `driver-line-${lineKey}`
-        );
-
-        container.appendChild(panel);
-    });
-
-    // 并行加载所有线路，谁先加载完谁先显示
-    Object.entries(driverLines).forEach(async ([lineKey, lineConfig]) => {
-        if (lineConfig) {
-            // 驱动线路使用简单文件列表格式，使用专门的函数
-            await loadFileListDownWay(lineConfig.path, `driver-${lineKey}`, lineKey);
+            await loadFunction(lineConfig.path, `${softwareId}-${lineConfig.id}`, lineConfig.id);
         }
     });
     
@@ -810,4 +564,4 @@ async function loadAllDriverDownWays() {
 }
 
 // 导出函数
-export { loadFclDownWay, loadAllFclDownWays, loadAllZlDownWays, loadAllRendererDownWays, loadAllDriverDownWays };
+export { loadFclDownWay, loadAllSoftwareDownWays, loadSoftwareDownWays };

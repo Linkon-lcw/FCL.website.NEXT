@@ -179,6 +179,175 @@ TypeError: Cannot read properties of undefined (reading 'filter')
 - 新的`loadFileListDownWay`函数正确处理简单文件列表格式
 - 所有相关调用已修复，不再出现`fileTree.children`为undefined的错误
 
+## 合并所有软件到一个函数，通过JSON控制软件数量、名词 ✅ 已完成
+
+### 任务描述
+将当前多个相似的软件下载函数合并为一个统一的函数，通过JSON配置控制软件数量、名称和显示顺序。
+
+### 任务分析
+**当前问题：**
+1. downloads.js中有多个相似的软件下载函数（loadAllFclDownWays、loadAllZlDownWays、loadAllRendererDownWays、loadAllDriverDownWays）
+2. 这些函数结构重复，代码冗余
+3. 添加新软件时需要复制粘贴并修改函数
+4. 不利于代码维护和扩展
+
+**优化目标：**
+1. 创建一个统一的函数来处理所有软件下载
+2. 通过JSON配置控制要显示的软件列表
+3. 移除重复代码，提高代码复用性
+4. 确保功能完全一致，支持所有现有特性
+
+**实施步骤：**
+1. ✅ 分析当前所有软件下载函数的共同点和差异
+2. ✅ 设计统一的软件加载函数
+3. ✅ 修改JSON配置，添加软件显示控制字段
+4. ✅ 更新downloads.js，实现统一函数
+5. ✅ 更新main.js中的调用方式
+6. ✅ 测试合并后的功能
+7. ✅ 更新项目文档
+
+**实际完成内容：**
+- **software-config.json**：版本号更新为2.1.0，在metadata中添加了displayOrder和enabledSoftware字段
+- **downloadWays.js**：添加了getSoftwareDisplayOrder、getEnabledSoftware和getDisplaySoftwareList函数
+- **downloads.js**：
+  - 添加了统一的loadAllSoftwareDownWays函数
+  - 添加了loadSoftwareDownWays函数处理单个软件
+  - 更新了导入语句，添加getDisplaySoftwareList导入
+- **main.js**：更新导入语句和函数调用，使用新的统一函数
+
+**预期效果：**
+- 代码结构更简洁，减少重复代码
+- 通过JSON配置即可控制软件显示，无需修改代码
+- 便于后续添加新软件类型
+
+**验证结果：**
+- 网页服务器正常运行，HTTP状态码200
+- 预览页面无JavaScript错误
+- 统一函数成功加载所有软件下载线路
+- JSON配置正确控制软件显示顺序和启用状态
+
+## 优化软件配置文件结构
+
+### 任务描述
+优化软件配置文件，不分最新版和历史版，并且把所有固定在JS里的字符串迁移到JSON里，确保只通过修改JSON就能添加软件或者下载渠道。
+
+### 任务分析
+**当前问题：**
+1. JSON结构有复杂的版本分层（current/legacy），需要简化
+2. JS文件中有硬编码的软件分类名称（fcl, zl, zl2, renderer, driver）
+3. JS文件中有硬编码的容器ID（fcl-downloads, zl-downloads等）
+4. downloadWays.js中有硬编码的线路特点映射和版本名称
+5. 需要将所有硬编码字符串迁移到JSON中
+
+**优化目标：**
+1. 简化JSON结构，移除版本分层
+2. 将所有硬编码字符串迁移到JSON配置中
+3. 修改JS代码使其完全基于JSON配置工作
+4. 确保只通过修改JSON就能添加新软件或下载渠道
+
+### 实施步骤
+- [x] 设计简化的JSON结构，移除版本分层
+- [x] 将硬编码的软件分类名称迁移到JSON
+- [x] 将硬编码的容器ID迁移到JSON
+- [x] 将线路特点映射和贡献者映射迁移到JSON
+- [x] 修改downloads.js使其完全基于JSON配置工作
+- [x] 修改downloadWays.js适配新的JSON结构
+- [x] 测试优化后的功能
+- [x] 更新项目文档
+
+### 修改详情
+**已完成以下关键修改：**
+
+#### 1. 简化JSON结构
+- **software-config.json**：从"软件→版本→线路"三层结构改为"软件→线路"两层结构
+- 移除版本分层（current/legacy），所有线路直接放在软件分类下
+- 新增metadata字段，包含featureMapping和providerMapping映射表
+- 为每个软件分类添加id和containerId属性
+- 线路配置中移除icon字段，改为使用映射表
+
+#### 2. 迁移硬编码字符串到JSON
+- **软件分类名称**：fcl, zl, zl2, renderer, driver → 迁移到JSON的software数组
+- **容器ID**：fcl-downloads, zl-downloads等 → 迁移到JSON的containerId属性
+- **线路特点映射**：F1-F8, Z1, Z3, Z21-Z22等 → 迁移到JSON的metadata.featureMapping
+- **贡献者映射**：站长提供、哈哈66623332提供等 → 迁移到JSON的metadata.providerMapping
+
+#### 3. 修改downloadWays.js
+- 移除getDefaultSourceMap函数及所有硬编码线路配置
+- 添加getFeatureIcon和getProviderIcon映射函数
+- 修改getSoftwareLines函数以支持软件ID查询
+- 更新getSoftwareList返回结构
+- 新增getSoftwareById函数
+- 重构buildSourceMap以处理新JSON结构并应用映射表
+
+#### 4. 修改downloads.js
+- **删除硬编码软件加载函数**：完全移除loadAllFclDownWays、loadAllZlDownWays、loadAllRendererDownWays、loadAllDriverDownWays函数
+- **统一使用通用函数**：使用loadSoftwareDownWays和loadAllSoftwareDownWays函数替代所有硬编码函数
+- **更新导出语句**：只导出loadFclDownWay、loadAllSoftwareDownWays、loadSoftwareDownWays函数
+- **完全配置化**：所有软件加载逻辑现在完全通过JSON配置控制
+
+#### 5. 技术特点
+- **完全动态化**：所有软件信息都从JSON配置获取
+- **简化扩展**：只需修改JSON即可添加新软件或下载渠道
+- **向后兼容**：保持现有功能不变
+- **统一映射**：特点图标和贡献者图标通过映射表统一管理
+
+**优化状态：** ✅ 已完成
+
+### 硬编码软件加载函数删除完成
+- [x] **删除硬编码软件加载函数**：完全移除loadAllFclDownWays、loadAllZlDownWays、loadAllRendererDownWays、loadAllDriverDownWays函数
+- [x] **统一使用通用函数**：使用loadSoftwareDownWays和loadAllSoftwareDownWays函数替代所有硬编码函数
+- [x] **更新导出语句**：只导出loadFclDownWay、loadAllSoftwareDownWays、loadSoftwareDownWays函数
+- [x] **验证功能正常**：main.js文件已正确使用loadAllSoftwareDownWays函数
+- [x] **测试通过**：预览功能正常，所有软件加载逻辑现在完全通过JSON配置控制
+
+**完成时间**：硬编码参数配置化改造全部完成
+
+## 数据格式错误修复
+
+### 问题描述
+F5、F2、Z22、F8线路在开发者模式下出现数据格式错误，控制台显示"数据格式错误：期望数组格式或包含children数组的对象格式"。
+
+### 问题分析
+1. 这些线路在software-config.json中配置了外部URL路径
+2. 开发者模式拦截外部请求并重定向到本地测试数据文件
+3. 但外部API可能返回简单文件列表格式，而loadFclDownWay函数期望树状结构格式
+
+### 修复措施
+1. 修改software-config.json中F2、F5、F8、Z22线路的loadFunction为"loadFileListDownWay"
+2. 在loadFileListDownWay函数中添加详细调试日志，输出原始JSON数据、数据类型等信息
+3. 确保开发者模式能正确处理外部请求拦截
+
+### 修复详情
+- F2线路：添加loadFunction: "loadFileListDownWay"
+- F5线路：添加loadFunction: "loadFileListDownWay"  
+- F8线路：添加loadFunction: "loadFileListDownWay"
+- Z22线路：添加loadFunction: "loadFileListDownWay"
+- 在downloads.js的loadFileListDownWay函数中添加调试日志
+
+### 完成状态
+✅ 已完成修复
+
+## 开发者模式线路测试数据修复
+
+### 问题描述
+开发者模式关于线路的功能不会返回`file\testdata\fclExample.json`文件内容，导致测试数据无法正确加载。
+
+### 问题分析
+1. 开发者模式拦截外部请求后重定向到`./file/testdata/fclExample.json`
+2. 但代码错误地将fclExample.json的内容包装在`message`字段中
+3. 由于fclExample.json没有`message`字段，导致返回的数据格式错误
+
+### 修复措施
+修改devModeCore.js中外部请求拦截逻辑，直接返回fclExample.json的原始内容而不是包装message字段。
+
+### 修复详情
+- 修改devModeCore.js第578-583行
+- 将返回格式从`{message: json.message, url: url}`改为直接返回json
+- 保持其他逻辑不变（随机延迟、网络分析等）
+
+### 完成状态
+✅ 已完成修复
+
 ## 分支管理
 
 ### Beta分支创建

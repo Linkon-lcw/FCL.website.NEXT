@@ -577,10 +577,7 @@ class DevModeManager {
                     const response = await self.originalFetch.call(this, './file/testdata/fclExample.json');
                     const json = await response.json();
                     
-                    const mockResponse = new Response(JSON.stringify({
-                        message: json.message,
-                        url: url
-                    }), {
+                    const mockResponse = new Response(JSON.stringify(json), {
                         status: 200,
                         statusText: 'OK',
                         headers: { 'Content-Type': 'application/json' }
