@@ -148,7 +148,36 @@ async function setupIndexDownLinks(sourceKey) {
         }
 
         let latestVersionDir = findNestedDirectory(children, latest, sourceConfig.nestedPath);
-        if (!latestVersionDir) throw new Error(`未找到最新版本目录: ${latest}`);
+        
+        // 如果找不到最新版本目录，使用最靠前的版本（第一个可用的版本目录）
+        if (!latestVersionDir) {
+            console.warn(`开门见山：未找到最新版本目录: ${latest}，尝试使用最靠前的版本`);
+            
+            // 获取第一个可用的版本目录
+            let currentChildren = children;
+            if (sourceConfig.nestedPath) {
+                for (const dirName of sourceConfig.nestedPath) {
+                    const dir = currentChildren.find(
+                        d => d.name === dirName && d.type === 'directory'
+                    );
+                    if (!dir || !dir.children) {
+                        throw new Error(`未找到任何版本目录`);
+                    }
+                    currentChildren = dir.children;
+                }
+            }
+            
+            // 查找第一个版本目录
+            latestVersionDir = currentChildren.find(
+                dir => dir.type === 'directory'
+            );
+            
+            if (!latestVersionDir) {
+                throw new Error(`未找到任何版本目录`);
+            }
+            
+            console.log(`开门见山：使用最靠前的版本：${latestVersionDir.name}`);
+        }
 
         console.log(`开门见山：最新版本：${latestVersionDir.name}`);
 
