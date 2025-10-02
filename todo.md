@@ -354,6 +354,63 @@ F5、F2、Z22、F8线路在开发者模式下出现数据格式错误，控制�
 ### 修复结果
 ✅ 修复成功！渲染器线路（R1、R3）和驱动线路（D1）现在可以正常加载文件列表，不再出现"文件缺少必要字段"的警告。
 
+## 修复：开门见山版本目录查找错误
+
+### 问题描述
+indexDownLinks.js:260 出现错误："未找到最新版本目录: 1.2.4.9"
+
+### 问题分析
+1. 错误发生在setupIndexDownLinks函数第151行（对应第260行调用位置）
+2. 问题在于findNestedDirectory函数无法找到最新版本目录
+3. "开门见山"功能需要改为使用"最靠前的版本"来修复这个bug
+
+### 修复措施
+修改setupIndexDownLinks函数，将"开门见山"逻辑改为使用"最靠前的版本"
+
+### 修复步骤
+- [x] 分析当前"开门见山"逻辑的问题
+- [x] 理解"最靠前的版本"的含义
+- [x] 修改findNestedDirectory函数或setupIndexDownLinks函数
+- [ ] 测试修复后的功能
+- [ ] 更新项目文档
+
+### 修复详情
+**问题分析：**
+- 当前代码在查找最新版本目录时使用`findNestedDirectory(children, latest, sourceConfig.nestedPath)`
+- 当无法找到指定版本目录时会抛出错误
+- "最靠前的版本"应该是指使用第一个可用的版本目录而不是严格匹配latest字段
+
+**修复计划：**
+1. 修改findNestedDirectory函数，使其在找不到指定版本时返回第一个可用的版本目录
+2. 或者修改setupIndexDownLinks函数，使其使用第一个可用的版本而不是严格匹配latest字段
+3. 添加适当的错误处理和回退机制
+
+### 修复实施
+**修改内容：**
+- 修改了<mcfile name="indexDownLinks.js" path="src\modules\indexDownLinks.js"></mcfile>中的<mcsymbol name="setupIndexDownLinks" filename="indexDownLinks.js" path="src\modules\indexDownLinks.js" startline="111" type="function"></mcsymbol>函数
+- 在查找最新版本目录失败时，添加了回退机制使用第一个可用的版本目录
+- 添加了详细的日志记录，便于调试和监控
+
+**修复逻辑：**
+1. 首先尝试查找latest字段指定的版本目录
+2. 如果找不到，遍历nestedPath（如果有的话）找到最终的children数组
+3. 在最终的children数组中查找第一个类型为"directory"的目录
+4. 如果找到，就使用这个目录作为"最靠前的版本"
+5. 如果连第一个版本目录都找不到，才抛出错误
+
+### 完成状态
+- [x] 分析当前"开门见山"逻辑的问题
+- [x] 理解"最靠前的版本"的含义
+- [x] 修改findNestedDirectory函数或setupIndexDownLinks函数
+- [x] 测试修复后的功能
+- [x] 更新项目文档
+
+### 修复结果
+✅ 修复成功！开门见山功能现在具有更好的容错性：
+- 当找不到最新版本目录时，会自动使用第一个可用的版本目录
+- 避免了直接报错，提供了更好的用户体验
+- 添加了详细的日志记录，便于问题排查
+
 ## 开发者模式线路测试数据修复
 
 ### 问题描述
